@@ -1,0 +1,148 @@
+---
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import type { Project } from "../types/config";
+
+type Props = Project;
+
+const { title, description, image, categories, tags, url } = Astro.props;
+---
+
+<a
+  href={url}
+  target="_blank"
+  rel="noreferrer"
+  aria-label={`${title}（在新窗口打开）`}
+  class="project-card"
+  data-project-card
+  data-categories={categories.join("|")}
+>
+  <div class="project-card__icon" aria-hidden="true">
+    <Image
+      width={32}
+      height={32}
+      src={image}
+      alt=""
+      class="brand-mark h-8 w-8 object-contain"
+    />
+  </div>
+  <div class="project-card__body">
+    <h3>{title}</h3>
+    <p>{description}</p>
+    <ul class="project-card__tags" aria-label={`${title} 技术标签`}>
+      {tags.map((tag) => <li>{tag}</li>)}
+    </ul>
+  </div>
+  <Icon
+    name="mdi:arrow-top-right"
+    width={19}
+    height={19}
+    class="project-card__arrow"
+    aria-hidden="true"
+  />
+</a>
+
+<style>
+  .project-card {
+    position: relative;
+    display: grid;
+    min-height: 10.5rem;
+    grid-template-columns: 3.25rem minmax(0, 1fr);
+    gap: 1rem;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    background: var(--background);
+    color: var(--foreground);
+    text-decoration: none;
+    transition:
+      background-color 200ms ease-out,
+      border-color 200ms ease-out,
+      opacity 200ms ease-out;
+  }
+
+  .project-card:hover,
+  .project-card:focus-visible {
+    background: var(--surface-subtle);
+  }
+
+  .project-card[hidden] {
+    display: none;
+  }
+
+  .project-card__icon {
+    display: grid;
+    width: 3.25rem;
+    height: 3.25rem;
+    place-items: center;
+    border: 1px solid var(--border);
+    border-radius: 0.65rem;
+    background: var(--surface-subtle);
+  }
+
+  .project-card__body {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    padding-right: 1.5rem;
+  }
+
+  h3 {
+    margin: 0 0 0.35rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  p {
+    margin: 0;
+    color: color-mix(in srgb, var(--foreground) 62%, transparent);
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+
+  .project-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: auto 0 0;
+    padding: 1rem 0 0;
+    list-style: none;
+  }
+
+  .project-card__tags li {
+    padding: 0.22rem 0.55rem;
+    border: 1px solid var(--border);
+    border-radius: 0.35rem;
+    background: var(--surface-subtle);
+    color: color-mix(in srgb, var(--foreground) 65%, transparent);
+    font-size: 0.72rem;
+    line-height: 1.25;
+  }
+
+  .project-card__arrow {
+    position: absolute;
+    right: 1.1rem;
+    bottom: 1.05rem;
+    opacity: 0.52;
+    transition: opacity 200ms ease-out;
+  }
+
+  .project-card:hover .project-card__arrow,
+  .project-card:focus-visible .project-card__arrow {
+    opacity: 1;
+  }
+
+  @media (max-width: 420px) {
+    .project-card {
+      grid-template-columns: 2.75rem minmax(0, 1fr);
+      gap: 0.85rem;
+      padding: 1rem;
+    }
+
+    .project-card__icon {
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+  }
+</style>

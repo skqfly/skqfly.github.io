@@ -1,0 +1,130 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
+<button
+  id="back-to-top"
+  class="back-to-top"
+  type="button"
+  data-visible="false"
+  aria-label="返回页面顶部"
+  aria-hidden="true"
+  title="返回顶部"
+  tabindex="-1"
+>
+  <Icon name="mdi:arrow-up" width={23} height={23} aria-hidden="true" />
+</button>
+
+<script>
+  const button = document.getElementById(
+    "back-to-top"
+  ) as HTMLButtonElement | null;
+
+  if (button) {
+    const header = document.querySelector("body > header") as HTMLElement | null;
+    let animationFrame = 0;
+
+    const setVisible = (isVisible: boolean) => {
+      button.dataset.visible = String(isVisible);
+      button.setAttribute("aria-hidden", String(!isVisible));
+      button.tabIndex = isVisible ? 0 : -1;
+    };
+
+    const updateVisibility = () => {
+      animationFrame = 0;
+      const headerHeight = header?.offsetHeight ?? 96;
+      setVisible(window.scrollY > headerHeight);
+    };
+
+    const handleScroll = () => {
+      if (animationFrame) return;
+      animationFrame = window.requestAnimationFrame(updateVisibility);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    updateVisibility();
+
+    button.addEventListener("click", () => {
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      const shouldRestoreFocus = button.matches(":focus-visible");
+
+      window.scrollTo({
+        top: 0,
+        behavior: reduceMotion ? "auto" : "smooth",
+      });
+
+      if (shouldRestoreFocus) {
+        window.setTimeout(
+          () =>
+            document
+              .querySelector<HTMLElement>(".brand-home-link")
+              ?.focus({ preventScroll: true }),
+          reduceMotion ? 0 : 500
+        );
+      }
+    });
+  }
+</script>
+
+<style>
+  .back-to-top {
+    position: fixed;
+    right: max(1rem, env(safe-area-inset-right));
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    z-index: 35;
+    display: inline-flex;
+    width: 46px;
+    height: 46px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    color: var(--foreground);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(0.6rem) scale(0.94);
+    visibility: hidden;
+    backdrop-filter: blur(12px);
+    transition:
+      opacity 180ms ease-out,
+      visibility 180ms ease-out,
+      transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 180ms ease-out;
+  }
+
+  .back-to-top[data-visible="true"] {
+    opacity: 0.78;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+    visibility: visible;
+  }
+
+  .back-to-top[data-visible="true"]:hover {
+    background: var(--surface-hover);
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+
+  .back-to-top[data-visible="true"]:active {
+    transform: translateY(0) scale(0.94);
+  }
+
+  @media (max-width: 639px) {
+    .back-to-top {
+      right: max(0.75rem, env(safe-area-inset-right));
+      bottom: max(0.75rem, env(safe-area-inset-bottom));
+      width: 44px;
+      height: 44px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .back-to-top {
+      transition: none;
+    }
+  }
+</style>

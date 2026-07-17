@@ -1,0 +1,175 @@
+---
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import Layout from "../layouts/Layout.astro";
+import { homePageContent, identity } from "../config";
+import Link from "../components/Link.astro";
+import avatar from "../assets/me.webp";
+---
+
+<Layout seo={homePageContent.seo}>
+  <section class="home-page mt-10 max-w-2xl mx-auto px-6">
+    <h1 class="font-bold text-3xl mb-1">{identity.name}</h1>
+    <p class="opacity-60 mb-10">{homePageContent.role}</p>
+    <div class="mb-8">
+      <Image
+        src={avatar}
+        alt="skqfly 头像"
+        width={124}
+        height={124}
+        class="home-avatar"
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+    <p class="home-description max-w-md mb-8">
+      {homePageContent.description}
+    </p>
+    <div class="home-links flex items-center gap-4 group">
+      {
+        homePageContent.links.map((link) => (
+          <Link text={link.title} href={link.url} external={link.external} />
+        ))
+      }
+    </div>
+
+    <section class="home-connect" aria-labelledby="home-connect-title">
+      <h2 id="home-connect-title" class="home-connect__title">Contact me</h2>
+      <ul class="home-connect__list">
+        {
+          homePageContent.socialLinks.map((link) => (
+            <li>
+              <a
+                class="home-connect__link"
+                href={link.url}
+                target={link.external ? "_blank" : undefined}
+                rel={link.external ? "noreferrer" : undefined}
+              aria-label={
+                  link.external ? `${link.title}（在新窗口打开）` : link.title
+                }
+              >
+                {
+                  link.title === "X" ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M4 4l11.733 16h4.267l-11.733 -16l-4.267 0" />
+                      <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
+                    </svg>
+                  ) : (
+                    <Icon
+                      name={link.icon}
+                      width={20}
+                      height={20}
+                      aria-hidden="true"
+                    />
+                  )
+                }
+                <span>{link.title}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </section>
+</Layout>
+
+<style>
+  .home-page {
+    text-align: center;
+  }
+
+  .home-avatar {
+    display: block;
+    width: 7.75rem;
+    height: 7.75rem;
+    margin-inline: auto;
+    flex: 0 0 auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0.5rem 1rem rgba(0, 0, 0, 0.12));
+  }
+
+  .home-description {
+    margin-inline: auto;
+  }
+
+  .home-links {
+    justify-content: center;
+  }
+
+  .home-connect {
+    max-width: 36rem;
+    margin: 3rem auto 0;
+    padding-top: 1.5rem;
+    border-top: 1px dashed var(--border);
+  }
+
+  .home-connect__title {
+    margin: 0 0 0.65rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    opacity: 0.58;
+  }
+
+  .home-connect__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.15rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    justify-content: center;
+  }
+
+  .home-connect__link {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--foreground);
+    text-decoration: none;
+    opacity: 0.58;
+    transition:
+      opacity 180ms ease-out,
+      transform 180ms ease-out;
+  }
+
+  .home-connect__link:hover {
+    opacity: 1;
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 519px) {
+    .home-avatar {
+      width: 7rem;
+      height: 7rem;
+    }
+
+    .home-connect {
+      margin-top: 2.5rem;
+      padding-top: 1.25rem;
+    }
+
+    .home-connect__list {
+      column-gap: 1rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .home-connect__link {
+      transition: none;
+    }
+  }
+</style>

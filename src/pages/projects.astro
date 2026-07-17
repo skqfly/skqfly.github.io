@@ -1,0 +1,290 @@
+---
+import { Icon } from "astro-icon/components";
+import ProjectCard from "../components/ProjectCard.astro";
+import { projectsPageContent } from "../config";
+import Layout from "../layouts/Layout.astro";
+
+const preferredCategoryOrder = ["Web", "Research", "Tools", "Open Source"];
+const availableCategories = new Set(
+  projectsPageContent.projects.flatMap((project) => project.categories),
+);
+const categories = preferredCategoryOrder.filter((category) =>
+  availableCategories.has(category),
+);
+---
+
+<Layout seo={projectsPageContent.seo}>
+  <section class="projects-page" aria-labelledby="projects-title">
+    <header class="projects-intro">
+      <h1 id="projects-title">Projects</h1>
+      <p>{projectsPageContent.subtitle}</p>
+    </header>
+
+    <div class="project-filters" role="group" aria-label="按项目类型筛选">
+      <button
+        class="project-filter"
+        type="button"
+        data-project-filter="all"
+        aria-controls="project-grid"
+        aria-pressed="true"
+      >
+        全部
+      </button>
+      {
+        categories.map((category) => (
+          <button
+            class="project-filter"
+            type="button"
+            data-project-filter={category}
+            aria-controls="project-grid"
+            aria-pressed="false"
+          >
+            {category}
+          </button>
+        ))
+      }
+    </div>
+
+    <section class="project-section" aria-labelledby="current-focus-title">
+      <div class="project-section__heading">
+        <span class="project-section__number" aria-hidden="true">01</span>
+        <h2 id="current-focus-title">Current Focus</h2>
+        <span class="project-section__rule" aria-hidden="true"></span>
+        <button class="project-section__all" type="button" data-reset-project-filter>
+          查看全部
+          <Icon name="mdi:arrow-right" width={18} height={18} aria-hidden="true" />
+        </button>
+      </div>
+
+      <div id="project-grid" class="project-grid">
+        {
+          projectsPageContent.projects.map((project) => (
+            <ProjectCard {...project} />
+          ))
+        }
+      </div>
+      <p class="project-empty" data-project-empty hidden aria-live="polite">
+        这个分类暂时还没有项目。
+      </p>
+    </section>
+  </section>
+
+  <script>
+    const filterButtons = Array.from(
+      document.querySelectorAll<HTMLButtonElement>("[data-project-filter]"),
+    );
+    const projectCards = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-project-card]"),
+    );
+    const resetButton = document.querySelector<HTMLButtonElement>(
+      "[data-reset-project-filter]",
+    );
+    const emptyMessage = document.querySelector<HTMLElement>(
+      "[data-project-empty]",
+    );
+
+    const setProjectFilter = (filter: string) => {
+      filterButtons.forEach((button) => {
+        button.setAttribute(
+          "aria-pressed",
+          String(button.dataset.projectFilter === filter),
+        );
+      });
+
+      let visibleCount = 0;
+      projectCards.forEach((card) => {
+        const cardCategories = card.dataset.categories?.split("|") ?? [];
+        const isVisible = filter === "all" || cardCategories.includes(filter);
+        card.hidden = !isVisible;
+        if (isVisible) visibleCount += 1;
+      });
+
+      if (emptyMessage) emptyMessage.hidden = visibleCount > 0;
+    };
+
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        setProjectFilter(button.dataset.projectFilter ?? "all");
+      });
+    });
+
+    resetButton?.addEventListener("click", () => setProjectFilter("all"));
+  </script>
+</Layout>
+
+<style>
+  .projects-page {
+    width: min(100%, 80rem);
+    margin: 2.75rem auto 0;
+    padding: 0 2rem;
+  }
+
+  .projects-intro {
+    text-align: center;
+  }
+
+  .projects-intro h1,
+  .project-section h2 {
+    font-family:
+      "Iowan Old Style",
+      "Palatino Linotype",
+      "Book Antiqua",
+      Palatino,
+      Georgia,
+      serif;
+    font-weight: 400;
+    letter-spacing: -0.035em;
+  }
+
+  .projects-intro h1 {
+    margin: 0;
+    font-size: clamp(2.75rem, 6vw, 4.25rem);
+    line-height: 1;
+  }
+
+  .projects-intro p {
+    margin: 0.75rem 0 0;
+    color: color-mix(in srgb, var(--foreground) 58%, transparent);
+    font-size: 0.95rem;
+  }
+
+  .project-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.55rem;
+    margin: 2.75rem auto 3rem;
+  }
+
+  .project-filter {
+    min-height: 2.75rem;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    background: transparent;
+    color: var(--foreground);
+    font-size: 0.85rem;
+    opacity: 0.62;
+    transition:
+      background-color 180ms ease-out,
+      opacity 180ms ease-out;
+  }
+
+  .project-filter:hover,
+  .project-filter:focus-visible,
+  .project-filter[aria-pressed="true"] {
+    background: var(--surface);
+    opacity: 1;
+  }
+
+  .project-section__heading {
+    display: grid;
+    grid-template-columns: auto auto minmax(3rem, 1fr) auto;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .project-section__number {
+    color: color-mix(in srgb, var(--foreground) 58%, transparent);
+    font-size: 0.75rem;
+    letter-spacing: 0.24em;
+  }
+
+  .project-section h2 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.08;
+    white-space: nowrap;
+  }
+
+  .project-section__rule {
+    height: 1px;
+    background: var(--border);
+  }
+
+  .project-section__all {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.5rem 0.25rem 0.5rem 0.75rem;
+    color: var(--foreground);
+    font-size: 0.8rem;
+    opacity: 0.55;
+    transition: opacity 180ms ease-out;
+  }
+
+  .project-section__all:hover,
+  .project-section__all:focus-visible {
+    opacity: 1;
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .project-empty {
+    margin: 3rem 0;
+    color: color-mix(in srgb, var(--foreground) 58%, transparent);
+    text-align: center;
+  }
+
+  @media (max-width: 900px) {
+    .projects-page {
+      padding: 0 1.5rem;
+    }
+
+    .project-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .projects-page {
+      margin-top: 2rem;
+      padding: 0 1.1rem;
+    }
+
+    .project-filters {
+      justify-content: flex-start;
+      margin: 2.25rem 0 2.5rem;
+    }
+
+    .project-section__heading {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 0.75rem;
+    }
+
+    .project-section__rule {
+      display: none;
+    }
+
+    .project-section h2 {
+      font-size: clamp(1.8rem, 9vw, 2.35rem);
+    }
+
+    .project-section__all {
+      padding-left: 0;
+    }
+
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .project-section__heading {
+      grid-template-columns: auto 1fr;
+    }
+
+    .project-section__all {
+      grid-column: 2;
+      justify-self: start;
+      min-height: 2.25rem;
+      padding: 0;
+    }
+  }
+</style>

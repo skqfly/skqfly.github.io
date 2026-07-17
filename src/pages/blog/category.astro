@@ -1,0 +1,40 @@
+---
+import { getCollection } from "astro:content";
+import BlogSectionNav from "../../components/BlogSectionNav.astro";
+import Layout from "../../layouts/Layout.astro";
+import { identity } from "../../config";
+
+const posts = await getCollection("posts");
+const categoryCounts = new Map<string, number>();
+
+for (const post of posts) {
+  const category = post.data.category;
+  categoryCounts.set(category, (categoryCounts.get(category) ?? 0) + 1);
+}
+
+const seo = {
+  title: "Category | skqfly",
+  description: "按分类浏览 skqfly 的文章。",
+  image: identity.logo,
+};
+---
+
+<Layout seo={seo}>
+  <section class="mx-auto mt-10 w-full max-w-[48rem] px-5 sm:px-8">
+    <h1 class="sr-only">Category</h1>
+    <BlogSectionNav active="category" />
+
+    <div class="divide-y" style="border-color: var(--border)">
+      {
+        Array.from(categoryCounts.entries()).map(([category, count]) => (
+          <div class="flex min-h-14 items-center justify-between gap-4 py-3">
+            <h2 class="font-medium">{category}</h2>
+            <p class="text-sm opacity-50">
+              {count} {count === 1 ? "post" : "posts"}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,498 @@
+.talks-gallery {
+  padding-bottom: 5rem;
+}
+
+.talks-layout {
+  width: 100%;
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+.talk-timeline {
+  --date-column: 3.25rem;
+  --rail-column: 0.9rem;
+  --timeline-gap: 0.75rem;
+  --marker-y: 1.75rem;
+
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.talk-timeline__item {
+  display: grid;
+  grid-template-columns:
+    var(--date-column) var(--rail-column) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--timeline-gap);
+  padding-bottom: 0.75rem;
+}
+
+.talk-timeline__year {
+  display: grid;
+  min-height: 2.8rem;
+  grid-template-columns:
+    var(--date-column) var(--rail-column) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--timeline-gap);
+}
+
+.talk-timeline__year-label {
+  justify-self: center;
+  font-family:
+    "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino,
+    Georgia, serif;
+  font-size: 1.15rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  opacity: 0.7;
+}
+
+.talk-timeline__year-rail {
+  position: relative;
+  display: block;
+  align-self: stretch;
+}
+
+.talk-timeline__year-rail::before {
+  position: absolute;
+  inset-block: -0.55rem;
+  left: 50%;
+  width: 1px;
+  background: var(--border);
+  content: "";
+  transform: translateX(-50%);
+}
+
+.talk-timeline__date {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-top: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.talk-timeline__day {
+  font-family:
+    "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino,
+    Georgia, serif;
+  font-size: 1.55rem;
+  line-height: 1;
+}
+
+.talk-timeline__month {
+  font-size: 0.67rem;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+  opacity: 0.62;
+}
+
+.talk-timeline__rail {
+  position: relative;
+  display: block;
+  align-self: stretch;
+  min-height: 100%;
+}
+
+.talk-timeline__rail::before {
+  position: absolute;
+  top: -0.55rem;
+  bottom: -0.55rem;
+  left: 50%;
+  width: 1px;
+  background: var(--border);
+  content: "";
+  transform: translateX(-50%);
+}
+
+.talk-timeline__item:first-child .talk-timeline__rail::before {
+  top: var(--marker-y);
+}
+
+.talk-timeline__item:last-child .talk-timeline__rail::before {
+  bottom: calc(100% - var(--marker-y));
+}
+
+.talk-timeline__dot {
+  position: absolute;
+  top: var(--marker-y);
+  left: 50%;
+  width: 0.42rem;
+  height: 0.42rem;
+  border: 2px solid var(--background);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--foreground) 64%, transparent);
+  box-sizing: content-box;
+  transform: translate(-50%, -50%);
+}
+
+.talk-card {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 6.5rem;
+  padding: 1rem 1.1rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 0.78rem;
+  background: color-mix(in srgb, var(--surface) 84%, transparent);
+  color: var(--foreground);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.07);
+  font: inherit;
+  text-align: left;
+  transition:
+    background-color 180ms ease-out,
+    border-color 180ms ease-out,
+    box-shadow 220ms ease-out;
+}
+
+.talk-card:hover {
+  border-color: color-mix(in srgb, var(--foreground) 24%, transparent);
+  background: var(--surface);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.11);
+}
+
+.talk-card--static {
+  cursor: default;
+}
+
+.talk-card--static:hover {
+  border-color: var(--border);
+  background: color-mix(in srgb, var(--surface) 84%, transparent);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.07);
+}
+
+.talk-card__body {
+  --media-width: 0rem;
+
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr) var(--media-width);
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-items: stretch;
+  column-gap: 0.9rem;
+  row-gap: 0.55rem;
+}
+
+.talk-card[data-image-count="0"] .talk-card__body {
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: 0;
+}
+
+.talk-card[data-image-count="1"] .talk-card__body {
+  --media-width: 5.35rem;
+}
+
+.talk-card[data-image-count="2"] .talk-card__body {
+  --media-width: 10.8rem;
+}
+
+.talk-card[data-image-count="3"] .talk-card__body {
+  --media-width: 16.2rem;
+}
+
+.talk-card[data-image-count="4"] .talk-card__body,
+.talk-card[data-image-count="5"] .talk-card__body,
+.talk-card[data-image-count="6"] .talk-card__body,
+.talk-card[data-image-count="7"] .talk-card__body,
+.talk-card[data-image-count="8"] .talk-card__body {
+  --media-width: 9rem;
+}
+
+.talk-preview {
+  display: grid;
+  grid-column: 2;
+  grid-row: 1 / -1;
+  width: var(--media-width);
+  height: auto;
+  min-height: 0;
+  min-width: 0;
+  align-self: center;
+  gap: 0.35rem;
+}
+
+.talk-preview[data-count="1"] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.talk-preview[data-count="2"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.talk-preview[data-count="3"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.talk-preview[data-count="4"] {
+  height: auto;
+  min-height: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, auto);
+}
+
+.talk-preview__item {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 0.35rem;
+  background: transparent;
+}
+
+.talk-preview__item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 180ms ease-out;
+}
+
+.talk-card:hover .talk-preview__item img {
+  filter: brightness(0.92);
+}
+
+.talk-preview__extra {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.58);
+  color: #ffffff;
+  font-size: 1.15rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.talk-card__content {
+  min-width: 0;
+  grid-column: 1;
+  grid-row: 1;
+  font-family:
+    "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino,
+    Georgia, serif;
+  font-size: 1.08rem;
+  font-weight: 400;
+  letter-spacing: 0.005em;
+  line-height: 1.65;
+  color: var(--foreground);
+}
+
+.talk-card__date {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: end;
+  font-size: 0.68rem;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.58;
+}
+
+.talks-end-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  margin: 2rem auto 0;
+  font-family:
+    "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino,
+    Georgia, serif;
+  font-size: 0.9rem;
+  opacity: 0.56;
+}
+
+.talks-end-note span {
+  width: 2rem;
+  height: 1px;
+  background: var(--border);
+}
+
+.talks-dialog {
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: clamp(2.5rem, 6vw, 5rem);
+  overflow: hidden;
+  border: 0;
+  background: rgba(0, 0, 0, 0.58);
+  color: #ffffff;
+}
+
+.talks-dialog[open] {
+  display: grid;
+  place-items: center;
+}
+
+.talks-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(14px);
+}
+
+.talk-lightbox__close {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.38);
+  color: #ffffff;
+  opacity: 0.72;
+  transition: opacity 180ms ease;
+}
+
+.talk-lightbox__close:hover {
+  opacity: 1;
+}
+
+.talk-lightbox__close:focus-visible {
+  outline-color: #ffffff;
+}
+
+.talk-lightbox__image-button {
+  display: grid;
+  max-width: min(86vw, 1100px);
+  max-height: 82dvh;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  place-items: center;
+}
+
+.talk-lightbox__image-button:not(:disabled) {
+  cursor: pointer;
+}
+
+.talk-lightbox__image {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(86vw, 1100px);
+  max-height: 82dvh;
+  object-fit: contain;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 639px) {
+  .talk-timeline {
+    --date-column: 2.4rem;
+    --rail-column: 0.65rem;
+    --timeline-gap: 0.42rem;
+    --marker-y: 1.5rem;
+  }
+
+  .talk-timeline__item {
+    padding-bottom: 0.65rem;
+  }
+
+  .talk-timeline__year {
+    min-height: 2.4rem;
+  }
+
+  .talk-timeline__year-label {
+    font-size: 0.9rem;
+  }
+
+  .talk-timeline__date {
+    margin-top: 0.65rem;
+  }
+
+  .talk-timeline__day {
+    font-size: 1.28rem;
+  }
+
+  .talk-timeline__month {
+    font-size: 0.6rem;
+  }
+
+  .talk-timeline__dot {
+    width: 0.34rem;
+    height: 0.34rem;
+  }
+
+  .talk-card {
+    min-height: 5.75rem;
+    padding: 0.8rem 0.8rem 0.7rem;
+    border-radius: 0.68rem;
+  }
+
+  .talk-card__body {
+    column-gap: 0.65rem;
+    row-gap: 0.45rem;
+  }
+
+  .talk-card:not([data-image-count="0"]) .talk-card__body {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+  }
+
+  .talk-card:not([data-image-count="0"]) .talk-preview {
+    grid-column: 1;
+    grid-row: 2;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: auto;
+  }
+
+  .talk-preview {
+    height: auto;
+    min-height: 0;
+    gap: 0.45rem;
+  }
+
+  .talk-card:not([data-image-count="0"]) .talk-card__date {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .talk-card__content {
+    font-size: 1rem;
+    line-height: 1.62;
+  }
+
+  .talk-card__date {
+    font-size: 0.62rem;
+  }
+
+  .talks-end-note {
+    gap: 0.55rem;
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
+  }
+
+  .talks-end-note span {
+    width: 1.4rem;
+  }
+
+  .talks-dialog {
+    padding: 3.5rem 0.75rem 1rem;
+  }
+
+  .talk-lightbox__close {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .talk-lightbox__image-button,
+  .talk-lightbox__image {
+    max-width: calc(100vw - 1.5rem);
+    max-height: calc(100dvh - 4.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .talk-card,
+  .talk-preview__item img,
+  .talk-lightbox__close {
+    transition: none;
+  }
+}

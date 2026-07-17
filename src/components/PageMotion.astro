@@ -1,0 +1,137 @@
+<script is:inline>
+  (() => {
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.documentElement.classList.add("motion-enabled");
+    }
+  })();
+</script>
+
+<script>
+  const revealSelector = [
+    "#main-content > section",
+    "#main-content > article",
+    ".project-section",
+    ".friends-grid > li",
+    ".blog-post-item",
+    ".photo-gallery__item",
+    ".divide-y > *",
+    ".article-prose > h2",
+    ".article-prose > h3",
+    ".article-prose > p",
+    ".article-prose > pre",
+    ".article-prose > figure",
+    ".article-prose > table",
+    ".article-prose > blockquote",
+    ".article-prose > ul",
+    ".article-prose > ol",
+  ].join(",");
+
+  const initializePageMotion = () => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const preparedElements = new WeakSet<Element>();
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+
+          entry.target.classList.add("motion-reveal--visible");
+          revealObserver.unobserve(entry.target);
+        });
+      },
+      {
+        rootMargin: "0px 0px -8% 0px",
+        threshold: 0.06,
+      },
+    );
+
+    const prepareElement = (element: Element, index: number) => {
+      if (
+        preparedElements.has(element) ||
+        element.closest("dialog") ||
+        element.closest("astro-island") ||
+        element.hasAttribute("hidden")
+      ) {
+        return;
+      }
+
+      preparedElements.add(element);
+      const bounds = element.getBoundingClientRect();
+      const isInitiallyVisible =
+        bounds.top < window.innerHeight * 0.92 && bounds.bottom > 0;
+
+      if (isInitiallyVisible) return;
+
+      element.classList.add("motion-reveal");
+      (element as HTMLElement).style.setProperty(
+        "--motion-reveal-delay",
+        `${(index % 4) * 35}ms`,
+      );
+      revealObserver.observe(element);
+    };
+
+    const prepareWithin = (root: ParentNode) => {
+      const elements: Element[] = [];
+
+      if (root instanceof Element && root.matches(revealSelector)) {
+        elements.push(root);
+      }
+
+      elements.push(...root.querySelectorAll(revealSelector));
+      elements.forEach(prepareElement);
+    };
+
+    prepareWithin(document);
+
+    const contentObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (!(node instanceof Element)) return;
+
+          prepareWithin(node);
+        });
+      });
+    });
+
+    const main = document.getElementById("main-content");
+    if (main) {
+      contentObserver.observe(main, {
+        childList: true,
+        subtree: true,
+      });
+    }
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializePageMotion, {
+      once: true,
+    });
+  } else {
+    initializePageMotion();
+  }
+</script>
+
+<style is:global>
+  html.motion-enabled .motion-reveal {
+    opacity: 0;
+    transform: translate3d(0, 1.125rem, 0);
+    transition:
+      opacity 420ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--motion-reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+
+  html.motion-enabled .motion-reveal.motion-reveal--visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html.motion-enabled .motion-reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

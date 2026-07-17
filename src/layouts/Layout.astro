@@ -1,0 +1,480 @@
+---
+import "../styles/global.css";
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import { navBarLinks, identity } from "../config";
+import type { SEOInfo } from "../types/config";
+import ThemeToggle from "../components/ThemeToggle.astro";
+import BackToTop from "../components/BackToTop.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import PageMotion from "../components/PageMotion.astro";
+
+interface Props {
+  seo: SEOInfo;
+}
+
+const { seo } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<script>
+  const linkMenuButton = document.getElementById(
+    "link-menu-button"
+  ) as HTMLButtonElement;
+  const linkMenu = document.getElementById("link-menu") as HTMLDivElement;
+
+  const setMenuOpen = (isOpen: boolean) => {
+    linkMenu.classList.toggle("pointer-events-none", !isOpen);
+    linkMenu.classList.toggle("opacity-0", !isOpen);
+    linkMenu.inert = !isOpen;
+    linkMenuButton.setAttribute("aria-expanded", String(isOpen));
+    linkMenuButton.setAttribute("aria-label", isOpen ? "关闭菜单" : "打开菜单");
+    linkMenuButton.setAttribute("title", isOpen ? "关闭菜单" : "打开菜单");
+    linkMenu.setAttribute("aria-hidden", String(!isOpen));
+  };
+
+  linkMenuButton.addEventListener("click", () => {
+    setMenuOpen(linkMenu.classList.contains("opacity-0"));
+  });
+
+  document.addEventListener("click", (event) => {
+    const isLinkMenuButtonClicked =
+      event.target === linkMenuButton ||
+      linkMenuButton.contains(event.target as Node);
+    const isLinkMenuClicked =
+      event.target === linkMenu || linkMenu.contains(event.target as Node);
+
+    if (!isLinkMenuButtonClicked && !isLinkMenuClicked) {
+      setMenuOpen(false);
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (
+      event.key === "Escape" &&
+      linkMenuButton.getAttribute("aria-expanded") === "true"
+    ) {
+      setMenuOpen(false);
+      linkMenuButton.focus();
+    }
+  });
+
+  window.matchMedia("(min-width: 640px)").addEventListener("change", (event) => {
+    if (event.matches) setMenuOpen(false);
+  });
+</script>
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="preload"
+      href="/fonts/InterVariable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="alternate" type="application/rss+xml" title="skqfly RSS" href="/feed.xml" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{seo.title}</title>
+    <meta name="description" content={seo.description} />
+    <meta property="og:title" content={seo.title} />
+    <meta property="og:description" content={seo.description} />
+    <meta property="og:image" content={seo.image} />
+    <script is:inline>
+      (() => {
+        try {
+          const storedTheme = localStorage.getItem("theme");
+          const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+            .matches
+            ? "dark"
+            : "light";
+          document.documentElement.dataset.theme =
+            storedTheme === "dark" || storedTheme === "light"
+              ? storedTheme
+              : systemTheme;
+        } catch {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
+    <PageMotion />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
+    <header>
+      <div class="flex w-full items-center px-2 py-4 sm:px-3 lg:px-4">
+        <a
+          href="/"
+          class="brand-home-link flex min-h-11 min-w-11 items-center justify-center rounded-lg"
+          aria-label="skqfly 首页"
+        >
+          <Image
+            src={identity.logo}
+            alt=""
+            width={32}
+            height={32}
+            class="brand-mark h-8 w-8 object-contain"
+          />
+        </a>
+        <div class="ml-auto flex items-center gap-1 sm:gap-0">
+          <nav class="order-1 sm:order-none" aria-label="主导航">
+            <ul class="hidden sm:flex sm:items-center sm:gap-0">
+              {
+                navBarLinks.map((link) => (
+                  <li>
+                    <a
+                      class:list={[
+                        "group flex min-h-11 items-center rounded-lg px-3 py-2 transition-opacity hover:opacity-100",
+                        currentPath === link.url ||
+                        (link.url !== "/" && currentPath.startsWith(link.url))
+                          ? "opacity-100"
+                          : "opacity-60",
+                      ]}
+                      href={link.url}
+                      target={link.external ? "_blank" : "_self"}
+                      rel={link.external ? "noreferrer" : undefined}
+                      aria-current={
+                        currentPath === link.url ||
+                        (link.url !== "/" && currentPath.startsWith(link.url))
+                          ? "page"
+                          : undefined
+                      }
+                    >
+                      <span class="grid">
+                        <span class="col-start-1 row-start-1 group-hover:font-semibold">
+                          {link.title}
+                        </span>
+                        <span
+                          class="invisible col-start-1 row-start-1 font-semibold"
+                          aria-hidden="true"
+                        >
+                          {link.title}
+                        </span>
+                      </span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+            <div class="relative sm:hidden">
+              <button
+                id="link-menu-button"
+                class="relative inline-flex h-11 w-11 items-center justify-center rounded-lg opacity-80 transition-opacity hover:opacity-100"
+                type="button"
+                aria-controls="link-menu"
+                aria-expanded="false"
+                aria-label="打开菜单"
+                title="打开菜单"
+              >
+                <Icon name="mdi:menu" width={26} height={26} aria-hidden="true" />
+              </button>
+              <div
+                id="link-menu"
+                class="menu-surface pointer-events-none absolute right-0 top-full z-40 mt-2 w-44 rounded-lg border p-2 opacity-0 shadow-2xl transition-opacity duration-200 ease-out"
+                aria-hidden="true"
+                inert
+              >
+                <ul>
+                  {
+                    navBarLinks.map((link) => (
+                      <li>
+                        <a
+                          class="block min-h-11 rounded-md px-4 py-3 opacity-60 transition-opacity hover:font-semibold hover:opacity-100"
+                          href={link.url}
+                          target={link.external ? "_blank" : "_self"}
+                          rel={link.external ? "noreferrer" : undefined}
+                        >
+                          {link.title}
+                        </a>
+                      </li>
+                    ))
+                  }
+                </ul>
+                <div
+                  class="mt-2 flex items-center border-t pt-2"
+                  style="border-color: var(--border)"
+                >
+                  <a
+                    href="/photos"
+                    class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg opacity-60 transition-opacity hover:opacity-100"
+                    aria-label="Photos"
+                    title="Photos"
+                  >
+                    <Icon name="mdi:camera-outline" width={22} height={22} />
+                  </a>
+                  <a
+                    href="https://github.com/skqfly"
+                    class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg opacity-60 transition-opacity hover:opacity-100"
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="GitHub（在新窗口打开）"
+                    title="GitHub"
+                  >
+                    <Icon name="mdi:github" width={22} height={22} />
+                  </a>
+                  <a
+                    href="/feed.xml"
+                    class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg opacity-60 transition-opacity hover:opacity-100"
+                    aria-label="RSS feed"
+                    title="RSS"
+                  >
+                    <Icon name="mdi:rss" width={22} height={22} />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </nav>
+          <a
+            href="/photos"
+            class:list={[
+              "hidden min-h-11 min-w-11 items-center justify-center rounded-lg transition-opacity hover:opacity-100 sm:inline-flex",
+              currentPath === "/photos" ? "opacity-100" : "opacity-60",
+            ]}
+            aria-label="Photos"
+            title="Photos"
+          >
+            <Icon name="mdi:camera-outline" width={22} height={22} />
+          </a>
+          <a
+            href="https://github.com/skqfly"
+            class="hidden min-h-11 min-w-11 items-center justify-center rounded-lg opacity-60 transition-opacity hover:opacity-100 sm:inline-flex"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub（在新窗口打开）"
+            title="GitHub"
+          >
+            <Icon name="mdi:github" width={22} height={22} />
+          </a>
+          <a
+            href="/feed.xml"
+            class="hidden min-h-11 min-w-11 items-center justify-center rounded-lg opacity-60 transition-opacity hover:opacity-100 sm:inline-flex"
+            aria-label="RSS feed"
+            title="RSS"
+          >
+            <Icon name="mdi:rss" width={22} height={22} />
+          </a>
+          <ThemeToggle />
+          {
+            identity.email && (
+              <a
+                href={`mailto:${identity.email}`}
+                class="flex min-h-11 min-w-11 items-center justify-center rounded-lg opacity-60 transition-opacity hover:opacity-100"
+                aria-label="发送邮件"
+              >
+                <Icon name="mdi:email" width={20} height={20} />
+              </a>
+            )
+          }
+        </div>
+      </div>
+    </header>
+    <main id="main-content" class="mb-32" tabindex="-1">
+      <slot />
+    </main>
+    <SiteFooter />
+    <BackToTop />
+  </body>
+</html>
+
+<style is:global>
+  @font-face {
+    font-family: "Inter";
+    src: url("/fonts/InterVariable.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+  }
+
+  :root,
+  html[data-theme="dark"] {
+    --background: #000000;
+    --foreground: #f7f7f7;
+    --surface: #181818;
+    --surface-hover: #262626;
+    --surface-subtle: rgba(255, 255, 255, 0.035);
+    --border: rgba(255, 255, 255, 0.15);
+    --focus: #ffffff;
+    --brand-filter: invert(1);
+    --article-body: #b8b8b8;
+    --article-link: #93c5fd;
+    --skip-background: #ffffff;
+    --skip-foreground: #000000;
+    color-scheme: dark;
+  }
+
+  html[data-theme="light"] {
+    --background: #ffffff;
+    --foreground: #24211f;
+    --surface: #f3f3f3;
+    --surface-hover: #ececec;
+    --surface-subtle: rgba(36, 33, 31, 0.025);
+    --border: rgba(36, 33, 31, 0.16);
+    --focus: #24211f;
+    --brand-filter: none;
+    --article-body: #514d49;
+    --article-link: #1d4ed8;
+    --skip-background: #24211f;
+    --skip-foreground: #ffffff;
+    color-scheme: light;
+  }
+
+  html {
+    font-family: "Inter", sans-serif;
+    background: var(--background);
+    scrollbar-gutter: stable;
+  }
+
+  * {
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-width: 320px;
+    min-height: 100vh;
+    background: var(--background);
+    color: var(--foreground);
+  }
+
+  .brand-mark {
+    filter: var(--brand-filter);
+  }
+
+  .brand-home-link:hover .brand-mark,
+  .brand-home-link:focus-visible .brand-mark {
+    animation: brand-spin 480ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @keyframes brand-spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+  .menu-surface {
+    border-color: var(--border);
+    background: var(--surface);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
+  }
+
+  .surface-card {
+    border-color: var(--border);
+    background: var(--surface-subtle);
+  }
+
+  a,
+  button {
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  .skip-link {
+    position: fixed;
+    left: 1rem;
+    top: 1rem;
+    z-index: 100;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    background: var(--skip-background);
+    color: var(--skip-foreground);
+    transform: translateY(-160%);
+    transition: transform 180ms ease-out;
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+
+  code {
+    font-family:
+      Menlo,
+      Monaco,
+      Lucida Console,
+      Liberation Mono,
+      DejaVu Sans Mono,
+      Bitstream Vera Sans Mono,
+      Courier New,
+      monospace;
+  }
+
+  .hover-underline {
+    text-decoration: underline 1px transparent;
+    text-underline-offset: 5px;
+    transition: text-decoration-color 300ms;
+  }
+
+  .post:hover .hover-underline {
+    text-decoration-color: var(--foreground);
+  }
+
+  .article-prose {
+    --tw-prose-body: var(--article-body);
+    --tw-prose-headings: var(--foreground);
+    --tw-prose-lead: var(--article-body);
+    --tw-prose-links: var(--article-link);
+    --tw-prose-bold: var(--foreground);
+    --tw-prose-counters: var(--article-body);
+    --tw-prose-bullets: var(--article-body);
+    --tw-prose-hr: var(--border);
+    --tw-prose-quotes: var(--foreground);
+    --tw-prose-quote-borders: var(--border);
+    --tw-prose-captions: var(--article-body);
+    --tw-prose-code: var(--foreground);
+    --tw-prose-pre-code: var(--foreground);
+    --tw-prose-pre-bg: var(--surface);
+    --tw-prose-th-borders: var(--border);
+    --tw-prose-td-borders: var(--border);
+  }
+
+  .article-prose a {
+    text-underline-offset: 4px;
+  }
+
+  html.theme-fallback,
+  html.theme-fallback body,
+  html.theme-fallback * {
+    transition-property: background-color, color, border-color, box-shadow, filter;
+    transition-duration: 280ms;
+    transition-timing-function: ease-out;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  ::view-transition-old(root) {
+    z-index: 1;
+  }
+
+  ::view-transition-new(root) {
+    z-index: 2;
+  }
+
+  html.theme-transition-to-dark::view-transition-old(root) {
+    z-index: 2;
+  }
+
+  html.theme-transition-to-dark::view-transition-new(root) {
+    z-index: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+</style>
