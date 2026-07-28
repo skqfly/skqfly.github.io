@@ -64,7 +64,7 @@ const currentPath = Astro.url.pathname;
   });
 </script>
 
-<html lang="zh-CN">
+<html lang="zh-CN" style="background-color:#000000">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -78,6 +78,8 @@ const currentPath = Astro.url.pathname;
     />
     <link rel="alternate" type="application/rss+xml" title="skqfly RSS" href="/feed.xml" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <title>{seo.title}</title>
     <meta name="description" content={seo.description} />
     <meta property="og:title" content={seo.title} />
@@ -87,24 +89,24 @@ const currentPath = Astro.url.pathname;
       (() => {
         try {
           const storedTheme = localStorage.getItem("theme");
-          const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-            .matches
-            ? "dark"
-            : "light";
-          document.documentElement.dataset.theme =
-            storedTheme === "dark" || storedTheme === "light"
-              ? storedTheme
-              : systemTheme;
+          const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const theme = storedTheme === "dark" || storedTheme === "light"
+            ? storedTheme
+            : systemDark ? "dark" : "light";
+          document.documentElement.dataset.theme = theme;
+          // Inline bg on html to prevent white flash on navigation
+          document.documentElement.style.backgroundColor = theme === "dark" ? "#000000" : "#ffffff";
         } catch {
           document.documentElement.dataset.theme = "dark";
+          document.documentElement.style.backgroundColor = "#000000";
         }
       })();
     </script>
     <PageMotion />
   </head>
-  <body>
+  <body style="background-color: var(--background)">
     <a class="skip-link" href="#main-content">跳到主要内容</a>
-    <header>
+    <header class="mt-1">
       <div class="flex w-full items-center px-2 py-4 sm:px-3 lg:px-4">
         <a
           href="/"

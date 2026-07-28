@@ -115,14 +115,6 @@ export const projectsPageContent: ProjectPageContent = {
   subtitle: "一些公开项目、实验与个人工具。",
   projects: [
     {
-      title: "Academic Homepage",
-      description: "用于整理研究方向、经历与成果的响应式学术主页。",
-      image: identity.logo,
-      categories: ["Web", "Open Source"],
-      tags: ["Web", "Astro"],
-      url: "https://github.com/skqfly/profile",
-    },
-    {
       title: "ImgBed",
       description: "基于 Cloudflare 的开源文件存储、图床与网盘方案。",
       image: identity.logo,
@@ -206,7 +198,7 @@ export const talksPageContent = {
     description: "skqfly 的演讲、分享与交流记录。",
     image: identity.logo,
   },
-  subtitle: "记录生活日常",
+  subtitle: "",
   entries: [
     {
       id: "records-beyond-equations",
