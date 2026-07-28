@@ -70,17 +70,7 @@ function TalkPreview({ images, eager = false }) {
 }
 
 function CloseIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
-      <path
-        d="M6 6l12 12M18 6 6 18"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeWidth="1.8"
-      />
-    </svg>
-  );
+  return null;
 }
 
 function TalkTimelineItem({ talk, index, onOpen, selected }) {
@@ -256,10 +246,6 @@ export default function TalksGallery({ entries }) {
     requestAnimationFrame(() => lastTriggerRef.current?.focus());
   };
 
-  const handleBackdropClick = (event) => {
-    if (event.target === event.currentTarget) closeDialog();
-  };
-
   const selectedImage = selectedTalk?.images[selectedImageIndex] ?? null;
 
   const showNextImage = () => {
@@ -320,45 +306,27 @@ export default function TalksGallery({ entries }) {
         id="talk-detail-dialog"
         className="talks-dialog"
         aria-label="图片大图预览"
-        onClick={handleBackdropClick}
+        onClick={closeDialog}
         onClose={handleDialogClose}
       >
         {selectedTalk && selectedImage && (
-          <>
-            <button
-              className="talk-lightbox__close"
-              type="button"
-              aria-label="关闭图片预览"
-              title="关闭"
-              onClick={closeDialog}
-            >
-              <CloseIcon />
-            </button>
-
-            <button
-              className="talk-lightbox__image-button"
-              type="button"
-              disabled={selectedTalk.images.length < 2}
-              aria-label={
-                selectedTalk.images.length > 1
-                  ? "查看下一张图片"
-                  : selectedImage.alt
-              }
-              onClick={showNextImage}
-            >
-              <img
-                className="talk-lightbox__image"
-                src={selectedImage.src}
-                width={selectedImage.width}
-                height={selectedImage.height}
-                alt={selectedImage.alt}
-                loading="eager"
-                fetchPriority="high"
-                decoding="async"
-                draggable={false}
-              />
-            </button>
-          </>
+          <div className="talk-lightbox__wrapper">
+            <img
+              className="talk-lightbox__image"
+              src={selectedImage.src}
+              width={selectedImage.width}
+              height={selectedImage.height}
+              alt={selectedImage.alt}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+              draggable={false}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (selectedTalk.images.length > 1) showNextImage();
+              }}
+            />
+          </div>
         )}
       </dialog>
     </div>
