@@ -27,7 +27,7 @@ import TalksGallery from "../components/talks/TalksGallery.jsx";
       )
     }
     <div class="talks-page__content">
-      <TalksGallery entries={talksPageContent.entries} client:load />
+      <TalksGallery entries={talksPageContent.entries} client:idle />
     </div>
   </section>
 </Layout>

@@ -11,6 +11,8 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   site: "https://mmddskq.top",
 
+  prefetch: true,
+
   integrations: [icon(), react()],
 
   devToolbar: {
