@@ -63,11 +63,18 @@ const currentPath = Astro.url.pathname;
   });
 </script>
 
-<html lang="zh-CN" style="background-color:#121212">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Prevent background flash: match system scheme immediately -->
+    <style>
+      :root { background-color: #121212; }
+      @media (prefers-color-scheme: light) {
+        :root { background-color: #fafafa; }
+      }
+    </style>
     <link
       rel="preload"
       href="/fonts/InterVariable.woff2"

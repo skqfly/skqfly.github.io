@@ -131,7 +131,6 @@ function TalkTimelineItem({ talk, index, onOpen, selected }) {
 
 export default function TalksGallery({ entries }) {
   const dialogRef = useRef(null);
-  const lastTriggerRef = useRef(null);
   const [selectedTalk, setSelectedTalk] = useState(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
@@ -183,7 +182,6 @@ export default function TalksGallery({ entries }) {
   const openTalk = (talk, trigger, imageIndex = 0) => {
     if (talk.images.length === 0) return;
 
-    lastTriggerRef.current = trigger;
     setSelectedImageIndex(imageIndex);
     setSelectedTalk(talk);
   };
@@ -195,7 +193,6 @@ export default function TalksGallery({ entries }) {
   const handleDialogClose = () => {
     setSelectedTalk(null);
     setSelectedImageIndex(0);
-    requestAnimationFrame(() => lastTriggerRef.current?.focus());
   };
 
   const selectedImage = selectedTalk?.images[selectedImageIndex] ?? null;

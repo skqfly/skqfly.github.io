@@ -44,6 +44,7 @@
   type ViewTransitionDocument = Document & {
     startViewTransition?: (update: () => void) => {
       ready: Promise<void>;
+      finished: Promise<void>;
     };
   };
 
@@ -79,42 +80,50 @@
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
-    const viewTransitionDocument = document as ViewTransitionDocument;
+    const vtDoc = document as ViewTransitionDocument;
 
-    if (!viewTransitionDocument.startViewTransition || reduceMotion) {
-      root.classList.toggle("theme-fallback", !reduceMotion);
+    if (!vtDoc.startViewTransition || reduceMotion) {
+      root.classList.add("theme-fallback");
       applyTheme(nextTheme);
       window.setTimeout(() => root.classList.remove("theme-fallback"), 300);
       return;
     }
 
-    const { left, top, width, height } = toggle.getBoundingClientRect();
-    const x = left + width / 2;
-    const y = top + height / 2;
-    const radius = Math.hypot(
+    const rect = toggle.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    const maxRadius = Math.hypot(
       Math.max(x, window.innerWidth - x),
       Math.max(y, window.innerHeight - y)
     );
-    const transitionClass = "theme-transition-to-dark";
 
+    // Set initial clip-path BEFORE pseudo-elements are created
+    const initStyle = document.createElement("style");
+    initStyle.textContent =
+      `::view-transition-new(root){clip-path:circle(0px at ${x}px ${y}px)!important}`;
+    document.head.appendChild(initStyle);
+
+    const transitionClass = "theme-transition-to-dark";
     root.classList.toggle(transitionClass, isEnteringDark);
 
-    const transition = viewTransitionDocument.startViewTransition(() => {
+    const transition = vtDoc.startViewTransition(() => {
       applyTheme(nextTheme);
     });
 
     transition.ready
       .then(() => {
-        const animation = root.animate(
+        initStyle.remove();
+
+        const anim = root.animate(
           {
             clipPath: isEnteringDark
               ? [
-                  `circle(${radius}px at ${x}px ${y}px)`,
+                  `circle(${maxRadius}px at ${x}px ${y}px)`,
                   `circle(0px at ${x}px ${y}px)`,
                 ]
               : [
                   `circle(0px at ${x}px ${y}px)`,
-                  `circle(${radius}px at ${x}px ${y}px)`,
+                  `circle(${maxRadius}px at ${x}px ${y}px)`,
                 ],
           },
           {
@@ -128,14 +137,14 @@
           } as KeyframeAnimationOptions & { pseudoElement: string }
         );
 
-        animation.finished.then(
+        anim.finished.then(
           () => root.classList.remove(transitionClass),
           () => root.classList.remove(transitionClass)
         );
       })
       .catch(() => {
+        initStyle.remove();
         root.classList.remove(transitionClass);
-        // The theme is already applied if the transition is interrupted.
       });
   });
 </script>

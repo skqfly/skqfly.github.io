@@ -166,7 +166,6 @@ const seo = {
   const photoTriggers = Array.from(
     document.querySelectorAll<HTMLButtonElement>(".photo-gallery__trigger")
   );
-  let lastPhotoTrigger: HTMLButtonElement | null = null;
 
   const setPhotoLayout = (layout: PhotoLayout) => {
     const isOriginal = layout === "original";
@@ -206,7 +205,6 @@ const seo = {
 
   for (const trigger of photoTriggers) {
     trigger.addEventListener("click", () => {
-      lastPhotoTrigger = trigger;
       lightboxImage.src = trigger.dataset.photoSrc ?? "";
       lightboxImage.alt = trigger.dataset.photoAlt ?? "";
       lightbox.showModal();
@@ -222,7 +220,6 @@ const seo = {
   lightbox.addEventListener("close", () => {
     lightboxImage.removeAttribute("src");
     lightboxImage.alt = "";
-    lastPhotoTrigger?.focus();
   });
 </script>
 
