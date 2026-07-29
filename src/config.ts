@@ -31,11 +31,11 @@ export const socialLinks: SocialLink[] = [
 
 export const homePageContent: HomePageContent = {
   seo: {
-    title: "skqfly — 计算数学与科学计算",
+    title: "skqfly's home",
     description: "skqfly 的个人网站，记录计算数学、科学计算与数学建模。",
     image: identity.logo,
   },
-  role: "计算数学 · 科学计算 · 数学建模",
+  role: "",
   description: "把复杂问题做成清晰、可复现的方案。",
   socialLinks: [
     ...socialLinks,
@@ -58,9 +58,9 @@ export const homePageContent: HomePageContent = {
     },
   ],
   links: [
+    { title: "Blog", url: "/blog" },
     { title: "Projects", url: "/projects" },
     { title: "Talks", url: "/talks" },
-    { title: "Blog", url: "/blog" },
   ],
 };
 

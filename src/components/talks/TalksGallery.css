@@ -9,7 +9,7 @@
 }
 
 .talk-timeline {
-  --date-column: 3.25rem;
+  --date-column: 2.5rem;
   --rail-column: 0.9rem;
   --timeline-gap: 0.75rem;
   --marker-y: 1.75rem;
@@ -120,12 +120,11 @@
   position: absolute;
   top: var(--marker-y);
   left: 50%;
-  width: 0.42rem;
-  height: 0.42rem;
-  border: 2px solid var(--background);
+  width: 0.5rem;
+  height: 0.5rem;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--foreground) 64%, transparent);
-  box-sizing: content-box;
+  background: var(--foreground);
+  opacity: 0.5;
   transform: translate(-50%, -50%);
 }
 
@@ -345,7 +344,7 @@
 
 @media (max-width: 639px) {
   .talk-timeline {
-    --date-column: 2.4rem;
+    --date-column: 1.8rem;
     --rail-column: 0.65rem;
     --timeline-gap: 0.42rem;
     --marker-y: 1.5rem;
@@ -376,8 +375,8 @@
   }
 
   .talk-timeline__dot {
-    width: 0.34rem;
-    height: 0.34rem;
+    width: 0.45rem;
+    height: 0.45rem;
   }
 
   .talk-card {

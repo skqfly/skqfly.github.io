@@ -63,7 +63,7 @@ const currentPath = Astro.url.pathname;
   });
 </script>
 
-<html lang="zh-CN" style="background-color:#000000">
+<html lang="zh-CN" style="background-color:#121212">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -94,16 +94,16 @@ const currentPath = Astro.url.pathname;
             : systemDark ? "dark" : "light";
           document.documentElement.dataset.theme = theme;
           // Inline bg on html to prevent white flash on navigation
-          document.documentElement.style.backgroundColor = theme === "dark" ? "#000000" : "#ffffff";
+          document.documentElement.style.backgroundColor = theme === "dark" ? "#121212" : "#fafafa";
         } catch {
           document.documentElement.dataset.theme = "dark";
-          document.documentElement.style.backgroundColor = "#000000";
+          document.documentElement.style.backgroundColor = "#121212";
         }
       })();
     </script>
     <PageMotion />
   </head>
-  <body style="background-color: var(--background)">
+  <body style="display:flex;flex-direction:column;min-height:100vh;background-color:var(--background)">
     <a class="skip-link" href="#main-content">跳到主要内容</a>
     <header class="mt-1">
       <div class="flex w-full items-center px-2 py-4 sm:px-3 lg:px-4">
@@ -162,11 +162,11 @@ const currentPath = Astro.url.pathname;
                       }
                     >
                       <span class="grid">
-                        <span class="col-start-1 row-start-1 group-hover:font-semibold">
+                        <span class="col-start-1 row-start-1 font-normal">
                           {link.title}
                         </span>
                         <span
-                          class="invisible col-start-1 row-start-1 font-semibold"
+                          class="invisible col-start-1 row-start-1 font-normal"
                           aria-hidden="true"
                         >
                           {link.title}
@@ -200,7 +200,7 @@ const currentPath = Astro.url.pathname;
                     navBarLinks.map((link) => (
                       <li>
                         <a
-                          class="block min-h-11 rounded-md px-4 py-3 opacity-60 transition-opacity hover:font-semibold hover:opacity-100"
+                          class="block min-h-11 rounded-md px-4 py-3 opacity-60 transition-opacity hover:opacity-100"
                           href={link.url}
                           target={link.external ? "_blank" : "_self"}
                           rel={link.external ? "noreferrer" : undefined}
@@ -289,7 +289,7 @@ const currentPath = Astro.url.pathname;
         </div>
       </div>
     </header>
-    <main id="main-content" class="mb-32" tabindex="-1">
+    <main id="main-content" class="mb-32" tabindex="-1" style="flex:1">
       <slot />
     </main>
     <SiteFooter />
@@ -308,7 +308,7 @@ const currentPath = Astro.url.pathname;
 
   :root,
   html[data-theme="dark"] {
-    --background: #000000;
+    --background: #121212;
     --foreground: #f7f7f7;
     --surface: #181818;
     --surface-hover: #262626;
@@ -324,7 +324,7 @@ const currentPath = Astro.url.pathname;
   }
 
   html[data-theme="light"] {
-    --background: #ffffff;
+    --background: #fafafa;
     --foreground: #24211f;
     --surface: #f3f3f3;
     --surface-hover: #ececec;
@@ -350,10 +350,16 @@ const currentPath = Astro.url.pathname;
   }
 
   body {
+    display: flex;
+    flex-direction: column;
     min-width: 320px;
     min-height: 100vh;
     background: var(--background);
     color: var(--foreground);
+  }
+
+  #main-content {
+    flex: 1;
   }
 
   .brand-mark {

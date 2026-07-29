@@ -130,7 +130,6 @@ function TalkTimelineItem({ talk, index, onOpen, selected }) {
 }
 
 export default function TalksGallery({ entries }) {
-  const galleryRef = useRef(null);
   const dialogRef = useRef(null);
   const lastTriggerRef = useRef(null);
   const [selectedTalk, setSelectedTalk] = useState(null);
@@ -140,53 +139,6 @@ export default function TalksGallery({ entries }) {
     () => [...entries].sort((a, b) => b.date.localeCompare(a.date)),
     [entries],
   );
-
-  useEffect(() => {
-    const gallery = galleryRef.current;
-    if (
-      !gallery ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      return;
-    }
-
-    const items = Array.from(
-      gallery.querySelectorAll(
-        ".talk-timeline__item, .talk-timeline__year",
-      ),
-    );
-    const revealObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-
-          entry.target.classList.add("motion-reveal--visible");
-          revealObserver.unobserve(entry.target);
-        });
-      },
-      {
-        rootMargin: "0px 0px -8% 0px",
-        threshold: 0.06,
-      },
-    );
-
-    items.forEach((item, index) => {
-      const bounds = item.getBoundingClientRect();
-      const isInitiallyVisible =
-        bounds.top < window.innerHeight * 0.92 && bounds.bottom > 0;
-
-      if (isInitiallyVisible) return;
-
-      item.classList.add("motion-reveal");
-      item.style.setProperty(
-        "--motion-reveal-delay",
-        `${(index % 4) * 35}ms`,
-      );
-      revealObserver.observe(item);
-    });
-
-    return () => revealObserver.disconnect();
-  }, []);
 
   useEffect(() => {
     if (!selectedTalk || !dialogRef.current) return;
@@ -256,7 +208,7 @@ export default function TalksGallery({ entries }) {
   };
 
   return (
-    <div className="talks-gallery" ref={galleryRef}>
+    <div className="talks-gallery">
       <div className="talks-layout">
         <ol className="talk-timeline" aria-label="Talks 时间线">
           {sortedEntries.map((talk, index) => {

@@ -10,7 +10,7 @@ import avatar from "../assets/me.webp";
 <Layout seo={homePageContent.seo}>
   <section class="home-page mt-10 max-w-2xl mx-auto px-6">
     <h1 class="font-bold text-3xl mb-1">{identity.name}</h1>
-    <p class="opacity-60 mb-10">{homePageContent.role}</p>
+    {homePageContent.role && <p class="opacity-60 mb-10">{homePageContent.role}</p>}
     <div class="mb-8">
       <Image
         src={avatar}
@@ -75,7 +75,6 @@ import avatar from "../assets/me.webp";
                     />
                   )
                 }
-                <span>{link.title}</span>
               </a>
             </li>
           ))

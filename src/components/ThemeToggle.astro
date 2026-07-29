@@ -61,6 +61,7 @@
 
   const applyTheme = (theme: Theme) => {
     root.dataset.theme = theme;
+    root.style.backgroundColor = theme === "dark" ? "#121212" : "#fafafa";
     syncToggle(theme);
 
     try {

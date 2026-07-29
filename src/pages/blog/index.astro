@@ -152,6 +152,12 @@ const currentYear = new Date().getFullYear();
     gap: 0.5rem 2rem;
     color: var(--foreground);
     text-decoration: none;
+    opacity: 0.6;
+    transition: opacity 180ms ease-out;
+  }
+
+  .blog-post-row:hover {
+    opacity: 1;
   }
 
   .blog-post-title {
@@ -159,13 +165,6 @@ const currentYear = new Date().getFullYear();
     font-size: clamp(1.125rem, 1.6vw, 1.2rem);
     font-weight: 400;
     line-height: 1.35;
-    text-decoration: underline 1px transparent;
-    text-underline-offset: 0.35rem;
-    transition: text-decoration-color 180ms ease-out;
-  }
-
-  .blog-post-row:hover .blog-post-title {
-    text-decoration-color: var(--foreground);
   }
 
   .blog-post-meta {
@@ -174,7 +173,6 @@ const currentYear = new Date().getFullYear();
     font-variant-numeric: tabular-nums;
     line-height: 1.4;
     white-space: nowrap;
-    opacity: 0.62;
   }
 
   @media (max-width: 639px) {
