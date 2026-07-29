@@ -220,6 +220,7 @@ const seo = {
   lightbox.addEventListener("close", () => {
     lightboxImage.removeAttribute("src");
     lightboxImage.alt = "";
+    document.activeElement && (document.activeElement as HTMLElement).blur();
   });
 </script>
 

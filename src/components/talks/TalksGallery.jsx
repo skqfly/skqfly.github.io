@@ -193,6 +193,7 @@ export default function TalksGallery({ entries }) {
   const handleDialogClose = () => {
     setSelectedTalk(null);
     setSelectedImageIndex(0);
+    document.activeElement && document.activeElement.blur();
   };
 
   const selectedImage = selectedTalk?.images[selectedImageIndex] ?? null;
