@@ -117,7 +117,7 @@ export const projectsPageContent: ProjectPageContent = {
     {
       title: "ImgBed",
       description: "基于 Cloudflare 的开源文件存储、图床与网盘方案。",
-      image: identity.logo,
+      image: "/projects/imgbed.png",
       categories: ["Web", "Open Source"],
       tags: ["Web", "Cloudflare"],
       url: "https://github.com/skqfly/ImgBed",
@@ -125,7 +125,7 @@ export const projectsPageContent: ProjectPageContent = {
     {
       title: "nodewarden",
       description: "运行在 Cloudflare Workers 上的第三方 Bitwarden 服务端实现。",
-      image: identity.logo,
+      image: "/projects/nodewarden.png",
       categories: ["Tools", "Open Source"],
       tags: ["Tools", "Workers"],
       url: "https://github.com/skqfly/nodewarden",

@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 import type { Project } from "../types/config";
 
@@ -18,12 +17,12 @@ const { title, description, image, categories, tags, url } = Astro.props;
   data-categories={categories.join("|")}
 >
   <div class="project-card__icon" aria-hidden="true">
-    <Image
-      width={32}
-      height={32}
+    <img
       src={image}
       alt=""
-      class="brand-mark h-8 w-8 object-contain"
+      class="project-card__logo"
+      loading="lazy"
+      decoding="async"
     />
   </div>
   <div class="project-card__body">
@@ -81,6 +80,14 @@ const { title, description, image, categories, tags, url } = Astro.props;
     border: 1px solid var(--border);
     border-radius: 0.65rem;
     background: var(--surface-subtle);
+  }
+
+  .project-card__logo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0.4rem;
+    object-fit: contain;
   }
 
   .project-card__body {
