@@ -1,3 +1,4 @@
+import { photoLibrary as talkImages } from "./data/photos";
 import type {
   NavBarLink,
   SocialLink,
@@ -141,57 +142,6 @@ export const blogPageContent: BlogPageContent = {
   },
 };
 
-const talkImages = {
-  carWindow: {
-    src: "https://img.mmddskq.top/file/blog/1784106117834_IMG_4339.JPG",
-    width: 2560,
-    height: 1920,
-    alt: "车窗与远处山影交叠的蓝调画面",
-  },
-  caveLight: {
-    src: "https://img.mmddskq.top/file/blog/1784106119777_IMG_4555.JPG",
-    width: 1920,
-    height: 2560,
-    alt: "洞穴岩壁被一束暖光照亮",
-  },
-  paperGeometry: {
-    src: "https://img.mmddskq.top/file/blog/1784106123200_IMG_20260603_160516.JPG",
-    width: 2560,
-    height: 1920,
-    alt: "纸面上的圆环与几何构图",
-  },
-  greenObject: {
-    src: "https://img.mmddskq.top/file/blog/1784106188171_IMG_20260606_163316.JPG",
-    width: 2560,
-    height: 1920,
-    alt: "岩石缝隙中的绿色物体",
-  },
-  coast: {
-    src: "https://img.mmddskq.top/file/blog/1784107108670_IMG_20260601_190827.JPG",
-    width: 1920,
-    height: 2560,
-    alt: "海岸、棕榈与蓝色天空",
-  },
-  sunlitWalk: {
-    src: "https://img.mmddskq.top/file/blog/1784107109372_IMG_20260606_162539.JPG",
-    width: 2560,
-    height: 1920,
-    alt: "阳光下沿道路行走的人",
-  },
-  glassCabinet: {
-    src: "https://img.mmddskq.top/file/blog/1784107115373_IMG_4398.JPG",
-    width: 1920,
-    height: 2560,
-    alt: "玻璃柜中整齐排列的罐子",
-  },
-  nightLights: {
-    src: "https://img.mmddskq.top/file/blog/1784107114466_IMG_4461.JPG",
-    width: 1920,
-    height: 2560,
-    alt: "蓝色夜幕下的山影与灯带",
-  },
-} as const;
-
 export const talksPageContent = {
   seo: {
     title: "Talks | skqfly",
@@ -206,7 +156,6 @@ export const talksPageContent = {
       date: "2026-07-15",
       description:
         "在公式、代码和日常照片之间，记录帮助我把模糊的想法整理成一段可以回看、可以继续推进的过程。",
-      featured: true,
       images: [],
     },
     {

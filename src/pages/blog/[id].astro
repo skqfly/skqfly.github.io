@@ -43,7 +43,9 @@ const wordCountFormatter = new Intl.NumberFormat("zh-CN");
       <div>
         <p class="font-medium">{identity.name}</p>
         <p class="opacity-60">
-            {entry.data.pubDate.toLocaleDateString()} · {wordCountFormatter.format(wordCount)} words
+            <time datetime={entry.data.pubDate.toISOString()}>
+              {entry.data.pubDate.toLocaleDateString("zh-CN", { timeZone: "UTC" })}
+            </time> · {wordCountFormatter.format(wordCount)} words
         </p>
       </div>
     </div>

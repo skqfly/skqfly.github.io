@@ -1,6 +1,6 @@
 import { defineConfig } from "astro/config";
 import icon from "astro-icon";
-import react from "@astrojs/react";
+import { unified } from "@astrojs/markdown-remark";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import { remarkReadingTime } from "./remark-reading-time.mjs";
@@ -11,17 +11,19 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   site: "https://mmddskq.top",
 
-  prefetch: true,
+  prefetch: { prefetchAll: true, defaultStrategy: "hover" },
 
-  integrations: [icon(), react()],
+  integrations: [icon()],
 
   devToolbar: {
     enabled: false,
   },
 
   markdown: {
-    remarkPlugins: [remarkMath, remarkReadingTime],
-    rehypePlugins: [rehypeKatex],
+    processor: unified({
+      remarkPlugins: [remarkMath, remarkReadingTime],
+      rehypePlugins: [rehypeKatex],
+    }),
   },
 
   vite: {

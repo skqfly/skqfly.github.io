@@ -3,6 +3,7 @@ dist/
 
 # browser test artifacts
 .playwright-cli/
+output/
 
 # generated types
 .astro/

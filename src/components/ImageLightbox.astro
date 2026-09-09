@@ -1,0 +1,88 @@
+<dialog id="image-lightbox" class="image-lightbox" aria-label="图片大图预览">
+  <img class="image-lightbox__image" alt="" decoding="async" />
+</dialog>
+
+<script>
+  import type { Photo } from "../data/photos";
+
+  const dialog = document.getElementById("image-lightbox") as HTMLDialogElement;
+  const image = dialog.querySelector("img")!;
+  let images: Photo[] = [];
+  let index = 0;
+  let trigger: HTMLButtonElement | null = null;
+  let previousOverflow = "";
+
+  const showImage = (nextIndex: number) => {
+    index = (nextIndex + images.length) % images.length;
+    const photo = images[index];
+    image.src = photo.src;
+    image.alt = photo.alt;
+    image.width = photo.width;
+    image.height = photo.height;
+  };
+
+  document.querySelectorAll<HTMLButtonElement>("[data-lightbox-images]").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      images = JSON.parse(button.dataset.lightboxImages!);
+      const preview = (event.target as Element).closest<HTMLElement>("[data-image-index]");
+      trigger = button;
+      showImage(Number(preview?.dataset.imageIndex ?? 0));
+      previousOverflow = document.documentElement.style.overflow;
+      document.documentElement.style.overflow = "hidden";
+      dialog.showModal();
+      button.setAttribute("aria-expanded", "true");
+    });
+  });
+
+  dialog.addEventListener("click", (event) => {
+    if (event.target === dialog) dialog.close();
+    if (event.target === image) {
+      if (images.length > 1) showImage(index + 1);
+      else dialog.close();
+    }
+  });
+  dialog.addEventListener("keydown", (event) => {
+    if (images.length < 2 || !["ArrowLeft", "ArrowRight"].includes(event.key)) return;
+    event.preventDefault();
+    showImage(index + (event.key === "ArrowRight" ? 1 : -1));
+  });
+  dialog.addEventListener("close", () => {
+    document.documentElement.style.overflow = previousOverflow;
+    image.removeAttribute("src");
+    image.alt = "";
+    trigger?.setAttribute("aria-expanded", "false");
+    trigger?.focus({ preventScroll: true });
+    images = [];
+  });
+</script>
+
+<style>
+  .image-lightbox {
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    background: transparent;
+    color: #fff;
+  }
+  .image-lightbox[open] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .image-lightbox::backdrop {
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(14px);
+  }
+  .image-lightbox__image {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    cursor: pointer;
+  }
+</style>

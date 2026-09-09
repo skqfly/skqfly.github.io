@@ -2,7 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import { talksPageContent } from "../config";
 import BlogSectionNav from "../components/BlogSectionNav.astro";
-import TalksGallery from "../components/talks/TalksGallery.jsx";
+import TalksGallery from "../components/talks/TalksGallery.astro";
 ---
 
 <Layout seo={talksPageContent.seo}>
@@ -27,7 +27,7 @@ import TalksGallery from "../components/talks/TalksGallery.jsx";
       )
     }
     <div class="talks-page__content">
-      <TalksGallery entries={talksPageContent.entries} client:idle />
+      <TalksGallery entries={talksPageContent.entries} />
     </div>
   </section>
 </Layout>

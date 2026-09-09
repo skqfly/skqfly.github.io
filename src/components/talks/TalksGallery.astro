@@ -1,0 +1,80 @@
+---
+import type { Photo } from "../../data/photos";
+import ImageLightbox from "../ImageLightbox.astro";
+import "./TalksGallery.css";
+
+interface Talk {
+  id: string;
+  title: string;
+  date: string;
+  description: string;
+  images: Photo[];
+}
+
+interface Props { entries: Talk[] }
+
+const sortedEntries = [...Astro.props.entries].sort((a, b) => b.date.localeCompare(a.date));
+const monthFormatter = new Intl.DateTimeFormat("en", { month: "short", timeZone: "UTC" });
+---
+
+<div class="talks-gallery">
+  <div class="talks-layout">
+    <ol class="talk-timeline" aria-label="Talks 时间线">
+      {sortedEntries.map((talk, index) => {
+        const [year, month, day] = talk.date.split("-");
+        const imageCount = talk.images.length;
+        const content = `${talk.title}。${talk.description}`;
+        const visibleImages = talk.images.slice(0, 4);
+        const extraImages = imageCount - visibleImages.length;
+        const Card = imageCount > 0 ? "button" : "div";
+
+        return <>
+          {index > 0 && year !== sortedEntries[index - 1].date.slice(0, 4) && (
+            <li class="talk-timeline__year" role="separator" aria-label={`${year} 年`}>
+              <span class="talk-timeline__year-label">{year}</span>
+              <span class="talk-timeline__year-rail" aria-hidden="true" />
+            </li>
+          )}
+          <li class="talk-timeline__item">
+            <time class="talk-timeline__date" datetime={talk.date} aria-label={`${year}年${Number(month)}月${Number(day)}日`}>
+              <span class="talk-timeline__day">{day}</span>
+              <span class="talk-timeline__month">{monthFormatter.format(new Date(talk.date))}</span>
+            </time>
+            <span class="talk-timeline__rail" aria-hidden="true"><span class="talk-timeline__dot" /></span>
+            <Card
+              class:list={["talk-card", { "talk-card--static": !imageCount }]}
+              type={imageCount ? "button" : undefined}
+              data-image-count={imageCount}
+              data-lightbox-images={imageCount ? JSON.stringify(talk.images) : undefined}
+              aria-haspopup={imageCount ? "dialog" : undefined}
+              aria-controls={imageCount ? "image-lightbox" : undefined}
+              aria-expanded={imageCount ? "false" : undefined}
+              aria-label={imageCount ? `查看图片：${content}` : undefined}
+            >
+              <span class="talk-card__body">
+                <span class="talk-card__content">{content}</span>
+                {imageCount > 0 && (
+                  <span class="talk-preview" data-count={visibleImages.length} aria-hidden="true">
+                    {visibleImages.map((photo, imageIndex) => (
+                      <span class="talk-preview__item" data-image-index={imageIndex}>
+                        <img src={photo.preview} width={photo.width} height={photo.height} alt=""
+                          loading={index === 1 && imageIndex === 0 ? "eager" : "lazy"}
+                          decoding="async" draggable="false" />
+                        {extraImages > 0 && imageIndex === visibleImages.length - 1 && (
+                          <span class="talk-preview__extra">+{extraImages}</span>
+                        )}
+                      </span>
+                    ))}
+                  </span>
+                )}
+                <time class="talk-card__date" datetime={talk.date}>{talk.date.replaceAll("-", ".")}</time>
+              </span>
+            </Card>
+          </li>
+        </>;
+      })}
+    </ol>
+  </div>
+  <p class="talks-end-note"><span aria-hidden="true" />继续记录，慢慢整理。<span aria-hidden="true" /></p>
+</div>
+<ImageLightbox />

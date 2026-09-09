@@ -1,16 +1,11 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import { blogPageContent } from "../../config";
-import { render } from "astro:content";
 import BlogSectionNav from "../../components/BlogSectionNav.astro";
 
 const posts = await getCollection("posts");
-posts.sort((a, b) => {
-  const dateA = new Date(a.data.pubDate).getTime();
-  const dateB = new Date(b.data.pubDate).getTime();
-  return dateB - dateA;
-});
+posts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 for (const post of posts) {
   const { remarkPluginFrontmatter } = await render(post);
   post.data.wordCount = remarkPluginFrontmatter.wordCount;
@@ -18,7 +13,7 @@ for (const post of posts) {
 
 const postsByYear = new Map<number, typeof posts>();
 for (const post of posts) {
-  const year = post.data.pubDate.getFullYear();
+  const year = post.data.pubDate.getUTCFullYear();
   const yearPosts = postsByYear.get(year) ?? [];
   yearPosts.push(post);
   postsByYear.set(year, yearPosts);
@@ -27,6 +22,7 @@ for (const post of posts) {
 const dateFormatter = new Intl.DateTimeFormat("en", {
   month: "short",
   day: "numeric",
+  timeZone: "UTC",
 });
 const wordCountFormatter = new Intl.NumberFormat("zh-CN");
 const currentYear = new Date().getFullYear();

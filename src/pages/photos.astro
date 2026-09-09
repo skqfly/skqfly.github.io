@@ -2,81 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 import { identity } from "../config";
 import { Icon } from "astro-icon/components";
-
-const photos = [
-  {
-    src: "https://img.mmddskq.top/file/blog/1784106117834_IMG_4339.JPG",
-    width: 2560,
-    height: 1920,
-    alt: "skqfly 摄影作品 1",
-  },
-  {
-    src: "https://img.mmddskq.top/file/blog/1784106119777_IMG_4555.JPG",
-    width: 1920,
-    height: 2560,
-    alt: "skqfly 摄影作品 2",
-  },
-  {
-    src: "https://img.mmddskq.top/file/blog/1784106123200_IMG_20260603_160516.JPG",
-    width: 2560,
-    height: 1920,
-    alt: "skqfly 摄影作品 3",
-  },
-  {
-    src: "https://img.mmddskq.top/file/blog/1784106188171_IMG_20260606_163316.JPG",
-    width: 2560,
-    height: 1920,
-    alt: "skqfly 摄影作品 4",
-  },
-  {
-    src: "https://img.mmddskq.top/file/blog/1784107108670_IMG_20260601_190827.JPG",
-    width: 1920,
-    height: 2560,
-    alt: "skqfly 摄影作品 5",
-  },
-  {
-    src: "https://img.mmddskq.top/file/blog/1784107109372_IMG_20260606_162539.JPG",
-    width: 2560,
-    height: 1920,
-    alt: "skqfly 摄影作品 6",
-  },
-  {
-    src: "https://img.mmddskq.top/file/blog/1784107115373_IMG_4398.JPG",
-    width: 1920,
-    height: 2560,
-    alt: "skqfly 摄影作品 7",
-  },
-  {
-    src: "https://img.mmddskq.top/file/blog/1784107114466_IMG_4461.JPG",
-    width: 1920,
-    height: 2560,
-    alt: "skqfly 摄影作品 8",
-  },
-  {
-    src: "https://img.mmddskq.top/file/blog/1784107112532_IMG_4516.JPG",
-    width: 2560,
-    height: 1920,
-    alt: "skqfly 摄影作品 9",
-  },
-  {
-    src: "https://img.mmddskq.top/file/blog/1784107109272_IMG_20260601_190536.JPG",
-    width: 1920,
-    height: 2560,
-    alt: "skqfly 摄影作品 10",
-  },
-  {
-    src: "https://img.mmddskq.top/file/img/1785310322363_IMG_5783.JPG",
-    width: 2560,
-    height: 1920,
-    alt: "skqfly 摄影作品 11",
-  },
-  {
-    src: "https://img.mmddskq.top/file/img/1785310318490_IMG_5771.JPG",
-    width: 1920,
-    height: 2560,
-    alt: "skqfly 摄影作品 12",
-  },
-];
+import { photos } from "../data/photos";
+import ImageLightbox from "../components/ImageLightbox.astro";
 
 const seo = {
   title: "Photos | skqfly",
@@ -121,13 +48,16 @@ const seo = {
             <button
               class="photo-gallery__trigger"
               type="button"
-              data-photo-index={index}
-              data-photo-src={photo.src}
-              data-photo-alt={photo.alt}
+              data-lightbox-images={JSON.stringify([photo])}
+              aria-haspopup="dialog"
+              aria-controls="image-lightbox"
+              aria-expanded="false"
               aria-label={`查看大图：${photo.alt}`}
             >
               <img
-                src={photo.src}
+                src={photo.preview}
+                srcset={`${photo.preview} 480w, ${photo.previewLarge} 960w`}
+                sizes="(min-width: 768px) 25vw, (min-width: 640px) 50vw, 100vw"
                 width={photo.width}
                 height={photo.height}
                 alt={photo.alt}
@@ -142,9 +72,7 @@ const seo = {
     </ul>
   </section>
 
-  <dialog id="photo-lightbox" class="photo-lightbox" aria-label="照片大图预览">
-    <img id="photo-lightbox-image" class="photo-lightbox__image" alt="" />
-  </dialog>
+  <ImageLightbox />
 </Layout>
 
 <script>
@@ -154,19 +82,6 @@ const seo = {
   const layoutToggle = document.getElementById(
     "photo-layout-toggle"
   ) as HTMLButtonElement;
-  const lightbox = document.getElementById(
-    "photo-lightbox"
-  ) as HTMLDialogElement;
-  const lightboxImage = document.getElementById(
-    "photo-lightbox-image"
-  ) as HTMLImageElement;
-  const lightboxClose = document.getElementById(
-    "photo-lightbox-close"
-  ) as HTMLButtonElement;
-  const photoTriggers = Array.from(
-    document.querySelectorAll<HTMLButtonElement>(".photo-gallery__trigger")
-  );
-
   const setPhotoLayout = (layout: PhotoLayout) => {
     const isOriginal = layout === "original";
     const label = isOriginal
@@ -203,25 +118,6 @@ const seo = {
     );
   });
 
-  for (const trigger of photoTriggers) {
-    trigger.addEventListener("click", () => {
-      lightboxImage.src = trigger.dataset.photoSrc ?? "";
-      lightboxImage.alt = trigger.dataset.photoAlt ?? "";
-      lightbox.showModal();
-    });
-  }
-
-  lightbox.addEventListener("click", (event) => {
-    if (event.target === lightbox || event.target === lightboxImage) {
-      lightbox.close();
-    }
-  });
-
-  lightbox.addEventListener("close", () => {
-    lightboxImage.removeAttribute("src");
-    lightboxImage.alt = "";
-    document.activeElement && (document.activeElement as HTMLElement).blur();
-  });
 </script>
 
 <style>
@@ -320,43 +216,6 @@ const seo = {
   .photo-gallery__trigger:hover img {
     filter: brightness(0.9);
     transform: scale(1.015);
-  }
-
-  .photo-lightbox {
-    width: 100vw;
-    height: 100dvh;
-    max-width: none;
-    max-height: none;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: #ffffff;
-    overflow: hidden;
-  }
-
-  .photo-lightbox[open] {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .photo-lightbox::backdrop {
-    background: rgba(0, 0, 0, 0.72);
-    backdrop-filter: blur(14px);
-  }
-
-  .photo-lightbox__image {
-    display: block;
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    cursor: pointer;
-  }
-
-  .photo-lightbox__close {
-    display: none;
   }
 
   @media (min-width: 640px) {

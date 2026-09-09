@@ -1,5 +1,4 @@
 ---
-import { Icon } from "astro-icon/components";
 import ProjectCard from "../components/ProjectCard.astro";
 import { projectsPageContent } from "../config";
 import Layout from "../layouts/Layout.astro";
@@ -8,9 +7,10 @@ const preferredCategoryOrder = ["Web", "Research", "Tools", "Open Source"];
 const availableCategories = new Set(
   projectsPageContent.projects.flatMap((project) => project.categories),
 );
-const categories = preferredCategoryOrder.filter((category) =>
-  availableCategories.has(category),
-);
+const categories = [
+  ...preferredCategoryOrder.filter((category) => availableCategories.has(category)),
+  ...[...availableCategories].filter((category) => !preferredCategoryOrder.includes(category)),
+];
 ---
 
 <Layout seo={projectsPageContent.seo}>
@@ -72,9 +72,6 @@ const categories = preferredCategoryOrder.filter((category) =>
     const projectCards = Array.from(
       document.querySelectorAll<HTMLElement>("[data-project-card]"),
     );
-    const resetButton = document.querySelector<HTMLButtonElement>(
-      "[data-reset-project-filter]",
-    );
     const emptyMessage = document.querySelector<HTMLElement>(
       "[data-project-empty]",
     );
@@ -104,7 +101,6 @@ const categories = preferredCategoryOrder.filter((category) =>
       });
     });
 
-    resetButton?.addEventListener("click", () => setProjectFilter("all"));
   </script>
 </Layout>
 

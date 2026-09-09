@@ -40,16 +40,20 @@
 
 <script>
   type Theme = "dark" | "light";
-
-  type ViewTransitionDocument = Document & {
-    startViewTransition?: (update: () => void) => {
-      ready: Promise<void>;
-      finished: Promise<void>;
-    };
+  // The project's TypeScript DOM library predates the View Transition API.
+  type ViewTransition = {
+    ready: Promise<void>;
+    finished: Promise<void>;
+    skipTransition: () => void;
+  };
+  const transitionDocument = document as Document & {
+    startViewTransition?: (update: () => void) => ViewTransition;
   };
 
   const root = document.documentElement;
   const toggle = document.getElementById("theme-toggle") as HTMLButtonElement;
+  const themeColor = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+  let isTransitioning = false;
 
   const syncToggle = (theme: Theme) => {
     const nextThemeLabel = theme === "dark" ? "亮色" : "暗色";
@@ -63,6 +67,7 @@
   const applyTheme = (theme: Theme) => {
     root.dataset.theme = theme;
     root.style.backgroundColor = theme === "dark" ? "#121212" : "#fafafa";
+    if (themeColor) themeColor.content = root.style.backgroundColor;
     syncToggle(theme);
 
     try {
@@ -74,18 +79,16 @@
 
   syncToggle(root.dataset.theme === "light" ? "light" : "dark");
 
-  toggle.addEventListener("click", () => {
+  toggle.addEventListener("click", async () => {
+    // A second transition would cancel the first and invalidate its snapshots.
+    if (isTransitioning) return;
+
     const nextTheme: Theme = root.dataset.theme === "light" ? "dark" : "light";
-    const isEnteringDark = nextTheme === "dark";
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
-    const vtDoc = document as ViewTransitionDocument;
-
-    if (!vtDoc.startViewTransition || reduceMotion) {
-      root.classList.add("theme-fallback");
+    if (!transitionDocument.startViewTransition || reduceMotion) {
       applyTheme(nextTheme);
-      window.setTimeout(() => root.classList.remove("theme-fallback"), 300);
       return;
     }
 
@@ -97,55 +100,39 @@
       Math.max(y, window.innerHeight - y)
     );
 
-    // Set initial clip-path BEFORE pseudo-elements are created
-    const initStyle = document.createElement("style");
-    initStyle.textContent =
-      `::view-transition-new(root){clip-path:circle(0px at ${x}px ${y}px)!important}`;
-    document.head.appendChild(initStyle);
+    isTransitioning = true;
+    root.classList.add("theme-transition");
+    let transition: ViewTransition | undefined;
+    let animation: Animation | undefined;
 
-    const transitionClass = "theme-transition-to-dark";
-    root.classList.toggle(transitionClass, isEnteringDark);
-
-    const transition = vtDoc.startViewTransition(() => {
+    try {
+      transition = transitionDocument.startViewTransition(() => applyTheme(nextTheme));
+      await transition.ready;
+      animation = root.animate(
+        {
+          clipPath: [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${maxRadius}px at ${x}px ${y}px)`,
+          ],
+        },
+        {
+          duration: 420,
+          easing: "cubic-bezier(0.65, 0, 0.35, 1)",
+          pseudoElement: "::view-transition-new(root)",
+          fill: "both",
+        },
+      );
+      await animation.finished;
+    } catch {
+      // Hidden tabs and interrupted snapshots must still apply the preference.
+      transition?.skipTransition();
       applyTheme(nextTheme);
-    });
-
-    transition.ready
-      .then(() => {
-        initStyle.remove();
-
-        const anim = root.animate(
-          {
-            clipPath: isEnteringDark
-              ? [
-                  `circle(${maxRadius}px at ${x}px ${y}px)`,
-                  `circle(0px at ${x}px ${y}px)`,
-                ]
-              : [
-                  `circle(0px at ${x}px ${y}px)`,
-                  `circle(${maxRadius}px at ${x}px ${y}px)`,
-                ],
-          },
-          {
-            duration: isEnteringDark ? 350 : 480,
-            easing: isEnteringDark
-              ? "cubic-bezier(0.42, 0, 1, 1)"
-              : "cubic-bezier(0.65, 0, 0.35, 1)",
-            pseudoElement: isEnteringDark
-              ? "::view-transition-old(root)"
-              : "::view-transition-new(root)",
-          } as KeyframeAnimationOptions & { pseudoElement: string }
-        );
-
-        anim.finished.then(
-          () => root.classList.remove(transitionClass),
-          () => root.classList.remove(transitionClass)
-        );
-      })
-      .catch(() => {
-        initStyle.remove();
-        root.classList.remove(transitionClass);
-      });
+    } finally {
+      await transition?.finished.catch(() => {});
+      animation?.cancel();
+      root.classList.remove("theme-transition");
+      isTransitioning = false;
+    }
   });
 </script>
 

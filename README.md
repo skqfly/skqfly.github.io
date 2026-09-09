@@ -1,4 +1,4 @@
-# skqfly.com
+# mmddskq.top
 
 skqfly 的个人网站，记录计算数学、科学计算、数学建模与相关实践。
 
@@ -6,7 +6,7 @@ skqfly 的个人网站，记录计算数学、科学计算、数学建模与相�
 
 - **框架**：[Astro](https://astro.build) v6 — 静态站点生成
 - **样式**：Tailwind CSS v4 + CSS 自定义属性（亮/暗主题）
-- **UI 组件**：React（Talks 画廊）、Astro 组件
+- **UI 组件**：Astro 静态组件 + 原生浏览器脚本
 - **图标**：[astro-icon](https://github.com/natemoo-re/astro-icon)（Material Design Icons）
 - **数学渲染**：KaTeX（`remark-math` + `rehype-katex`）
 - **字体**：Inter Variable
@@ -17,9 +17,10 @@ skqfly 的个人网站，记录计算数学、科学计算、数学建模与相�
 src/
 ├── assets/          # 静态资源（头像等）
 ├── components/      # UI 组件
-│   └── talks/       # Talks 页面 React 组件
+│   └── talks/       # Talks 静态时间线组件
 ├── content/
 │   └── posts/       # 博客文章（Markdown）
+├── data/            # 共用照片数据
 ├── layouts/         # 页面布局
 ├── pages/           # 路由页面
 │   ├── blog/        # Blog 列表 & 文章页
@@ -35,9 +36,11 @@ src/
 
 ## 本地开发
 
+推荐 Node.js 24（最低 22.18），与 CloudBase 构建环境保持一致。
+
 ```bash
 # 安装依赖
-npm install
+npm ci
 
 # 启动开发服务器
 npm run dev
@@ -63,6 +66,10 @@ title: 文章标题
 pubDate: 2026-01-01
 category: 分类名
 description: 文章简介
+author: skqfly
+image:
+  url: /logo.svg
+  alt: skqfly 标志
 ---
 ```
 
@@ -88,10 +95,25 @@ description: 文章简介
 - 响应式设计（桌面 + 移动端）
 - KaTeX 数学公式渲染
 - RSS Feed（`/feed.xml`）
-- 预加载导航（`prefetch: true`）
+- 鼠标悬停或键盘聚焦时预加载站内导航
 - 摄影作品画廊（支持固定/原始比例切换）
+- Photos / Talks 共用图片预览，点击图片切换、点击空白关闭，支持方向键和 Escape
+- 本地 WebP 缩略图，打开预览时加载图床原图
+
+## 摄影图片
+
+`src/data/photos.ts` 统一维护原图地址、尺寸、说明及预览图路径。
+添加或更换图片后运行 `npm run images:generate`，生成 480 / 960 像素的 WebP
+预览图，并将 `public/photos/` 的产物一起提交。该命令需要联网读取图床，
+日常 `npm run build` 使用已生成的预览图，不依赖图床可用性。
+预览图命名为 `<photoLibrary 中的键名>-480.webp` 和 `-960.webp`，
+应与数据中的 `preview`、`previewLarge` 路径一致。
 
 ## 部署
 
 站点已配置 GitHub Pages 部署，推送到 `main` 分支后自动构建发布。
 
+CloudBase 静态网站托管：框架选 Astro，Node.js 24，目标目录 `./`，
+安装命令 `npm ci`，构建命令 `npm run build`，产物目录 `./dist`，部署路径 `/`。
+无需环境变量。正式域名由 `astro.config.mjs` 的 `site` 配置维护，
+用于 canonical、分享链接和 RSS；绑定新域名时一起更新。

@@ -14,6 +14,8 @@ interface Props {
 
 const { seo } = Astro.props;
 const currentPath = Astro.url.pathname;
+const canonicalURL = new URL(currentPath, Astro.site);
+const imageURL = new URL(seo.image, Astro.site);
 ---
 
 <script>
@@ -84,33 +86,33 @@ const currentPath = Astro.url.pathname;
     />
     <link rel="alternate" type="application/rss+xml" title="skqfly RSS" href="/feed.xml" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121212" />
     <title>{seo.title}</title>
     <meta name="description" content={seo.description} />
     <meta property="og:title" content={seo.title} />
     <meta property="og:description" content={seo.description} />
-    <meta property="og:image" content={seo.image} />
+    <link rel="canonical" href={canonicalURL} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={imageURL} />
     <script is:inline>
       (() => {
+        let theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark" : "light";
         try {
           const storedTheme = localStorage.getItem("theme");
-          const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-          const theme = storedTheme === "dark" || storedTheme === "light"
-            ? storedTheme
-            : systemDark ? "dark" : "light";
-          document.documentElement.dataset.theme = theme;
-          // Inline bg on html to prevent white flash on navigation
-          document.documentElement.style.backgroundColor = theme === "dark" ? "#121212" : "#fafafa";
+          if (storedTheme === "dark" || storedTheme === "light") theme = storedTheme;
         } catch {
-          document.documentElement.dataset.theme = "dark";
-          document.documentElement.style.backgroundColor = "#121212";
+          // Keep the system preference when storage is unavailable.
         }
+        document.documentElement.dataset.theme = theme;
+        const background = theme === "dark" ? "#121212" : "#fafafa";
+        document.documentElement.style.backgroundColor = background;
+        document.querySelector('meta[name="theme-color"]').content = background;
       })();
     </script>
     <PageMotion />
   </head>
-  <body style="display:flex;flex-direction:column;min-height:100vh;background-color:var(--background)">
+  <body>
     <a class="skip-link" href="#main-content">跳到主要内容</a>
     <header class="mt-1">
       <div class="flex w-full items-center px-2 py-4 sm:px-3 lg:px-4">
@@ -168,17 +170,7 @@ const currentPath = Astro.url.pathname;
                           : undefined
                       }
                     >
-                      <span class="grid">
-                        <span class="col-start-1 row-start-1 font-normal">
-                          {link.title}
-                        </span>
-                        <span
-                          class="invisible col-start-1 row-start-1 font-normal"
-                          aria-hidden="true"
-                        >
-                          {link.title}
-                        </span>
-                      </span>
+                      <span>{link.title}</span>
                     </a>
                   </li>
                 ))
@@ -468,34 +460,23 @@ const currentPath = Astro.url.pathname;
     text-underline-offset: 4px;
   }
 
-  html.theme-fallback,
-  html.theme-fallback body,
-  html.theme-fallback * {
-    transition-property: background-color, color, border-color, box-shadow, filter;
-    transition-duration: 280ms;
-    transition-timing-function: ease-out;
+  html.theme-transition * {
+    transition: none !important;
   }
 
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
+  html.theme-transition::view-transition-group(root),
+  html.theme-transition::view-transition-old(root),
+  html.theme-transition::view-transition-new(root) {
     animation: none;
     mix-blend-mode: normal;
   }
 
-  ::view-transition-old(root) {
+  html.theme-transition::view-transition-old(root) {
     z-index: 1;
   }
 
-  ::view-transition-new(root) {
+  html.theme-transition::view-transition-new(root) {
     z-index: 2;
-  }
-
-  html.theme-transition-to-dark::view-transition-old(root) {
-    z-index: 2;
-  }
-
-  html.theme-transition-to-dark::view-transition-new(root) {
-    z-index: 1;
   }
 
   @media (prefers-reduced-motion: reduce) {
