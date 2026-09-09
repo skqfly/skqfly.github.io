@@ -7,7 +7,6 @@ import ThemeToggle from "../components/ThemeToggle.astro";
 import BackToTop from "../components/BackToTop.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import PageMotion from "../components/PageMotion.astro";
-import PageTransition from "../components/PageTransition.astro";
 
 interface Props {
   seo: SEOInfo;
@@ -116,7 +115,6 @@ const imageURL = new URL(seo.image, Astro.site);
     <PageMotion />
   </head>
   <body>
-    <PageTransition />
     <a class="skip-link" href="#main-content">跳到主要内容</a>
     <header class="mt-1">
       <div class="flex w-full items-center px-2 py-4 sm:px-3 lg:px-4">
@@ -301,6 +299,18 @@ const imageURL = new URL(seo.image, Astro.site);
 </html>
 
 <style is:global>
+  /* Cross-document view transitions: shared chrome (site header) stays in
+     place while page content cross-fades between same-origin navigations.
+     Safari 18.1+/Chrome 126+ animate; other browsers fall back to a plain
+     page load. Reduced-motion users get a plain load automatically. */
+  @view-transition {
+    navigation: auto;
+  }
+
+  body > header {
+    view-transition-name: site-header;
+  }
+
   @font-face {
     font-family: "Inter";
     src: url("/fonts/InterVariable.woff2") format("woff2");
