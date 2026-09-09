@@ -33,6 +33,8 @@ const links = [
 <style>
   .blog-section-nav {
     margin-bottom: clamp(1.5rem, 3.5vw, 2.25rem);
+    /* Keep these tabs in place during cross-document view transitions. */
+    view-transition-name: blog-tabs;
   }
 
   .blog-section-tabs {
