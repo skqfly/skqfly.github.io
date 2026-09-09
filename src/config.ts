@@ -284,7 +284,7 @@ export const friendsPageContent = {
       description: "数学专业在读 · INFJ",
       url: "https://huowenlong.com/",
       domain: "huowenlong.com",
-      image: "https://huowenlong.com/favicon.ico",
+      image: "https://huowenlong.com/favicon.svg",
     },
   ],
 };
