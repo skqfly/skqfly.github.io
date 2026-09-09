@@ -25,6 +25,7 @@ const imageURL = new URL(seo.image, Astro.site);
   const linkMenu = document.getElementById("link-menu") as HTMLDivElement;
 
   const setMenuOpen = (isOpen: boolean) => {
+    linkMenu.closest("header")?.classList.toggle("mobile-menu-open", isOpen);
     linkMenu.classList.toggle("pointer-events-none", !isOpen);
     linkMenu.classList.toggle("opacity-0", !isOpen);
     linkMenu.inert = !isOpen;
@@ -36,6 +37,10 @@ const imageURL = new URL(seo.image, Astro.site);
 
   linkMenuButton.addEventListener("click", () => {
     setMenuOpen(linkMenu.classList.contains("opacity-0"));
+  });
+
+  linkMenu.addEventListener("click", (event) => {
+    if ((event.target as Element).closest("a")) setMenuOpen(false);
   });
 
   document.addEventListener("click", (event) => {
@@ -309,6 +314,10 @@ const imageURL = new URL(seo.image, Astro.site);
 
   body > header {
     view-transition-name: site-header;
+  }
+
+  body > header.mobile-menu-open {
+    z-index: 50;
   }
 
   @font-face {
