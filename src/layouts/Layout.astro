@@ -7,6 +7,7 @@ import ThemeToggle from "../components/ThemeToggle.astro";
 import BackToTop from "../components/BackToTop.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import PageMotion from "../components/PageMotion.astro";
+import PageTransition from "../components/PageTransition.astro";
 
 interface Props {
   seo: SEOInfo;
@@ -115,6 +116,7 @@ const imageURL = new URL(seo.image, Astro.site);
     <PageMotion />
   </head>
   <body>
+    <PageTransition />
     <a class="skip-link" href="#main-content">跳到主要内容</a>
     <header class="mt-1">
       <div class="flex w-full items-center px-2 py-4 sm:px-3 lg:px-4">
