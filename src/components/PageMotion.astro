@@ -1,15 +1,5 @@
-<script is:inline>
-  (() => {
-    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      document.documentElement.classList.add("motion-enabled");
-    }
-  })();
-</script>
-
 <script>
   const revealSelector = [
-    "#main-content > section",
-    "#main-content > article",
     ".project-section",
     ".friends-grid > li",
     ".blog-post-item",
@@ -26,8 +16,18 @@
     ".article-prose > ol",
   ].join(",");
 
+  let isFirstPage = true;
   const initializePageMotion = () => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.documentElement.classList.toggle("motion-enabled", !reduceMotion);
+    if (isFirstPage && !reduceMotion) {
+      document.getElementById("main-content")?.animate(
+        [{ opacity: 0.65, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }],
+        { duration: 260, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
+      );
+    }
+    isFirstPage = false;
+    if (reduceMotion) return;
 
     const revealObserver = new IntersectionObserver(
       (entries) => {
@@ -62,15 +62,10 @@
       );
       revealObserver.observe(element);
     });
+    document.addEventListener("astro:before-swap", () => revealObserver.disconnect(), { once: true });
   };
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initializePageMotion, {
-      once: true,
-    });
-  } else {
-    initializePageMotion();
-  }
+  document.addEventListener("astro:page-load", initializePageMotion);
 </script>
 
 <style is:global>
@@ -85,7 +80,7 @@
 
   html.motion-enabled .motion-reveal.motion-reveal--visible {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    transform: none;
   }
 
   @media (prefers-reduced-motion: reduce) {

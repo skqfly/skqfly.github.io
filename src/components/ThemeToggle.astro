@@ -39,100 +39,104 @@
 </button>
 
 <script>
-  type Theme = "dark" | "light";
-  // The project's TypeScript DOM library predates the View Transition API.
-  type ViewTransition = {
-    ready: Promise<void>;
-    finished: Promise<void>;
-    skipTransition: () => void;
-  };
-  const transitionDocument = document as Document & {
-    startViewTransition?: (update: () => void) => ViewTransition;
-  };
+  document.addEventListener("astro:page-load", () => {
+    const controller = new AbortController();
+    document.addEventListener("astro:before-swap", () => controller.abort(), { once: true });
+    type Theme = "dark" | "light";
+    // The project's TypeScript DOM library predates the View Transition API.
+    type ViewTransition = {
+      ready: Promise<void>;
+      finished: Promise<void>;
+      skipTransition: () => void;
+    };
+    const transitionDocument = document as Document & {
+      startViewTransition?: (update: () => void) => ViewTransition;
+    };
 
-  const root = document.documentElement;
-  const toggle = document.getElementById("theme-toggle") as HTMLButtonElement;
-  const themeColor = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
-  let isTransitioning = false;
+    const root = document.documentElement;
+    const toggle = document.getElementById("theme-toggle") as HTMLButtonElement;
+    const themeColor = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+    let isTransitioning = false;
 
-  const syncToggle = (theme: Theme) => {
-    const nextThemeLabel = theme === "dark" ? "亮色" : "暗色";
-    const label = `切换到${nextThemeLabel}模式`;
+    const syncToggle = (theme: Theme) => {
+      const nextThemeLabel = theme === "dark" ? "亮色" : "暗色";
+      const label = `切换到${nextThemeLabel}模式`;
 
-    toggle.setAttribute("aria-label", label);
-    toggle.setAttribute("title", label);
-    toggle.setAttribute("aria-pressed", String(theme === "light"));
-  };
+      toggle.setAttribute("aria-label", label);
+      toggle.setAttribute("title", label);
+      toggle.setAttribute("aria-pressed", String(theme === "light"));
+    };
 
-  const applyTheme = (theme: Theme) => {
-    root.dataset.theme = theme;
-    root.style.backgroundColor = theme === "dark" ? "#121212" : "#fafafa";
-    if (themeColor) themeColor.content = root.style.backgroundColor;
-    syncToggle(theme);
+    const applyTheme = (theme: Theme) => {
+      root.dataset.theme = theme;
+      root.style.backgroundColor = theme === "dark" ? "#121212" : "#fafafa";
+      if (themeColor) themeColor.content = root.style.backgroundColor;
+      syncToggle(theme);
 
-    try {
-      localStorage.setItem("theme", theme);
-    } catch {
-      // The selected theme still works when storage is unavailable.
-    }
-  };
+      try {
+        localStorage.setItem("theme", theme);
+      } catch {
+        // The selected theme still works when storage is unavailable.
+      }
+    };
 
-  syncToggle(root.dataset.theme === "light" ? "light" : "dark");
+    syncToggle(root.dataset.theme === "light" ? "light" : "dark");
 
-  toggle.addEventListener("click", async () => {
-    // A second transition would cancel the first and invalidate its snapshots.
-    if (isTransitioning) return;
+    toggle.addEventListener("click", async () => {
+      // A second transition would cancel the first and invalidate its snapshots.
+      if (isTransitioning) return;
 
-    const nextTheme: Theme = root.dataset.theme === "light" ? "dark" : "light";
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    if (!transitionDocument.startViewTransition || reduceMotion) {
-      applyTheme(nextTheme);
-      return;
-    }
+      const nextTheme: Theme = root.dataset.theme === "light" ? "dark" : "light";
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      if (!transitionDocument.startViewTransition || reduceMotion) {
+        applyTheme(nextTheme);
+        return;
+      }
 
-    const rect = toggle.getBoundingClientRect();
-    const x = rect.left + rect.width / 2;
-    const y = rect.top + rect.height / 2;
-    const maxRadius = Math.hypot(
-      Math.max(x, window.innerWidth - x),
-      Math.max(y, window.innerHeight - y)
-    );
-
-    isTransitioning = true;
-    root.classList.add("theme-transition");
-    let transition: ViewTransition | undefined;
-    let animation: Animation | undefined;
-
-    try {
-      transition = transitionDocument.startViewTransition(() => applyTheme(nextTheme));
-      await transition.ready;
-      animation = root.animate(
-        {
-          clipPath: [
-            `circle(0px at ${x}px ${y}px)`,
-            `circle(${maxRadius}px at ${x}px ${y}px)`,
-          ],
-        },
-        {
-          duration: 420,
-          easing: "cubic-bezier(0.65, 0, 0.35, 1)",
-          pseudoElement: "::view-transition-new(root)",
-          fill: "both",
-        },
+      const rect = toggle.getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+      const maxRadius = Math.hypot(
+        Math.max(x, window.innerWidth - x),
+        Math.max(y, window.innerHeight - y)
       );
-      await animation.finished;
-    } catch {
-      // Hidden tabs and interrupted snapshots must still apply the preference.
-      transition?.skipTransition();
-      applyTheme(nextTheme);
-    } finally {
-      await transition?.finished.catch(() => {});
-      animation?.cancel();
-      root.classList.remove("theme-transition");
-      isTransitioning = false;
-    }
+
+      isTransitioning = true;
+      root.classList.add("theme-transition");
+      let transition: ViewTransition | undefined;
+      let animation: Animation | undefined;
+
+      try {
+        transition = transitionDocument.startViewTransition(() => applyTheme(nextTheme));
+        await transition.ready;
+        animation = root.animate(
+          {
+            clipPath: [
+              `circle(0px at ${x}px ${y}px)`,
+              `circle(${maxRadius}px at ${x}px ${y}px)`,
+            ],
+          },
+          {
+            duration: 420,
+            easing: "cubic-bezier(0.65, 0, 0.35, 1)",
+            pseudoElement: "::view-transition-new(root)",
+            fill: "both",
+          },
+        );
+        await animation.finished;
+      } catch {
+        // Hidden tabs and interrupted snapshots must still apply the preference.
+        transition?.skipTransition();
+        applyTheme(nextTheme);
+      } finally {
+        await transition?.finished.catch(() => {});
+        animation?.cancel();
+        root.classList.remove("theme-transition");
+        isTransitioning = false;
+      }
+    }, { signal: controller.signal });
   });
 </script>
 

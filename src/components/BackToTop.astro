@@ -16,56 +16,65 @@ import { Icon } from "astro-icon/components";
 </button>
 
 <script>
-  const button = document.getElementById(
-    "back-to-top"
-  ) as HTMLButtonElement | null;
+  document.addEventListener("astro:page-load", () => {
+    const button = document.getElementById(
+      "back-to-top"
+    ) as HTMLButtonElement | null;
 
-  if (button) {
-    const header = document.querySelector("body > header") as HTMLElement | null;
-    let animationFrame = 0;
+    if (button) {
+      const header = document.querySelector("body > header") as HTMLElement | null;
+      let animationFrame = 0;
+      let focusTimeout = 0;
 
-    const setVisible = (isVisible: boolean) => {
-      button.dataset.visible = String(isVisible);
-      button.setAttribute("aria-hidden", String(!isVisible));
-      button.tabIndex = isVisible ? 0 : -1;
-    };
+      const setVisible = (isVisible: boolean) => {
+        button.dataset.visible = String(isVisible);
+        button.setAttribute("aria-hidden", String(!isVisible));
+        button.tabIndex = isVisible ? 0 : -1;
+      };
 
-    const updateVisibility = () => {
-      animationFrame = 0;
-      const headerHeight = header?.offsetHeight ?? 96;
-      setVisible(window.scrollY > headerHeight);
-    };
+      const updateVisibility = () => {
+        animationFrame = 0;
+        const headerHeight = header?.offsetHeight ?? 96;
+        setVisible(window.scrollY > headerHeight);
+      };
 
-    const handleScroll = () => {
-      if (animationFrame) return;
-      animationFrame = window.requestAnimationFrame(updateVisibility);
-    };
+      const handleScroll = () => {
+        if (animationFrame) return;
+        animationFrame = window.requestAnimationFrame(updateVisibility);
+      };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    updateVisibility();
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      document.addEventListener("astro:before-swap", () => {
+        window.removeEventListener("scroll", handleScroll);
+        window.cancelAnimationFrame(animationFrame);
+        window.clearTimeout(focusTimeout);
+      }, { once: true });
+      updateVisibility();
 
-    button.addEventListener("click", () => {
-      const reduceMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
-      const shouldRestoreFocus = button.matches(":focus-visible");
+      button.addEventListener("click", () => {
+        const reduceMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        ).matches;
+        const shouldRestoreFocus = button.matches(":focus-visible");
 
-      window.scrollTo({
-        top: 0,
-        behavior: reduceMotion ? "auto" : "smooth",
+        window.scrollTo({
+          top: 0,
+          behavior: reduceMotion ? "auto" : "smooth",
+        });
+
+        if (shouldRestoreFocus) {
+          window.clearTimeout(focusTimeout);
+          focusTimeout = window.setTimeout(
+            () =>
+              document
+                .querySelector<HTMLElement>(".brand-home-link")
+                ?.focus({ preventScroll: true }),
+            reduceMotion ? 0 : 500
+          );
+        }
       });
-
-      if (shouldRestoreFocus) {
-        window.setTimeout(
-          () =>
-            document
-              .querySelector<HTMLElement>(".brand-home-link")
-              ?.focus({ preventScroll: true }),
-          reduceMotion ? 0 : 500
-        );
-      }
-    });
-  }
+    }
+  });
 </script>
 
 <style>

@@ -66,41 +66,43 @@ const categories = [
   </section>
 
   <script>
-    const filterButtons = Array.from(
-      document.querySelectorAll<HTMLButtonElement>("[data-project-filter]"),
-    );
-    const projectCards = Array.from(
-      document.querySelectorAll<HTMLElement>("[data-project-card]"),
-    );
-    const emptyMessage = document.querySelector<HTMLElement>(
-      "[data-project-empty]",
-    );
+    document.addEventListener("astro:page-load", () => {
+      const filterButtons = Array.from(
+        document.querySelectorAll<HTMLButtonElement>("[data-project-filter]"),
+      );
+      const projectCards = Array.from(
+        document.querySelectorAll<HTMLElement>("[data-project-card]"),
+      );
+      const emptyMessage = document.querySelector<HTMLElement>(
+        "[data-project-empty]",
+      );
 
-    const setProjectFilter = (filter: string) => {
+      const setProjectFilter = (filter: string) => {
+        filterButtons.forEach((button) => {
+          button.setAttribute(
+            "aria-pressed",
+            String(button.dataset.projectFilter === filter),
+          );
+        });
+
+        let visibleCount = 0;
+        projectCards.forEach((card) => {
+          const cardCategories = card.dataset.categories?.split("|") ?? [];
+          const isVisible = filter === "all" || cardCategories.includes(filter);
+          card.hidden = !isVisible;
+          if (isVisible) visibleCount += 1;
+        });
+
+        if (emptyMessage) emptyMessage.hidden = visibleCount > 0;
+      };
+
       filterButtons.forEach((button) => {
-        button.setAttribute(
-          "aria-pressed",
-          String(button.dataset.projectFilter === filter),
-        );
+        button.addEventListener("click", () => {
+          setProjectFilter(button.dataset.projectFilter ?? "all");
+        });
       });
 
-      let visibleCount = 0;
-      projectCards.forEach((card) => {
-        const cardCategories = card.dataset.categories?.split("|") ?? [];
-        const isVisible = filter === "all" || cardCategories.includes(filter);
-        card.hidden = !isVisible;
-        if (isVisible) visibleCount += 1;
-      });
-
-      if (emptyMessage) emptyMessage.hidden = visibleCount > 0;
-    };
-
-    filterButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        setProjectFilter(button.dataset.projectFilter ?? "all");
-      });
     });
-
   </script>
 </Layout>
 

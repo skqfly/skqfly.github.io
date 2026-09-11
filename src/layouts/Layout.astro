@@ -7,6 +7,7 @@ import ThemeToggle from "../components/ThemeToggle.astro";
 import BackToTop from "../components/BackToTop.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import PageMotion from "../components/PageMotion.astro";
+import { ClientRouter, fade } from "astro:transitions";
 
 interface Props {
   seo: SEOInfo;
@@ -19,54 +20,104 @@ const imageURL = new URL(seo.image, Astro.site);
 ---
 
 <script>
-  const linkMenuButton = document.getElementById(
-    "link-menu-button"
-  ) as HTMLButtonElement;
-  const linkMenu = document.getElementById("link-menu") as HTMLDivElement;
+  document.addEventListener("astro:before-swap", (event) => {
+    const root = document.documentElement;
+    event.newDocument.documentElement.dataset.theme = root.dataset.theme;
+    event.newDocument.documentElement.style.backgroundColor = root.style.backgroundColor;
+    const themeColor = event.newDocument.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+    if (themeColor) themeColor.content = root.style.backgroundColor;
 
-  const setMenuOpen = (isOpen: boolean) => {
-    linkMenu.classList.toggle("pointer-events-none", !isOpen);
-    linkMenu.classList.toggle("opacity-0", !isOpen);
-    linkMenu.inert = !isOpen;
-    linkMenuButton.setAttribute("aria-expanded", String(isOpen));
-    linkMenuButton.setAttribute("aria-label", isOpen ? "关闭菜单" : "打开菜单");
-    linkMenuButton.setAttribute("title", isOpen ? "关闭菜单" : "打开菜单");
-    linkMenu.setAttribute("aria-hidden", String(!isOpen));
-  };
-
-  linkMenuButton.addEventListener("click", () => {
-    setMenuOpen(linkMenu.classList.contains("opacity-0"));
+    // Keep the existing controls and update only their route-dependent state.
+    const currentLinks = document.querySelectorAll<HTMLAnchorElement>(".site-header a");
+    event.newDocument.querySelectorAll<HTMLAnchorElement>(".site-header a")
+      .forEach((nextLink, index) => {
+        const currentLink = currentLinks[index];
+        for (const attribute of ["class", "aria-current"]) {
+          const value = nextLink.getAttribute(attribute);
+          if (currentLink.getAttribute(attribute) === value) continue;
+          if (value === null) currentLink.removeAttribute(attribute);
+          else currentLink.setAttribute(attribute, value);
+        }
+      });
   });
 
-  document.addEventListener("click", (event) => {
-    const isLinkMenuButtonClicked =
-      event.target === linkMenuButton ||
-      linkMenuButton.contains(event.target as Node);
-    const isLinkMenuClicked =
-      event.target === linkMenu || linkMenu.contains(event.target as Node);
+  document.addEventListener("astro:page-load", () => {
+    const controller = new AbortController();
+    const { signal } = controller;
+    const linkMenuButton = document.getElementById(
+      "link-menu-button"
+    ) as HTMLButtonElement;
+    const linkMenu = document.getElementById("link-menu") as HTMLDivElement;
 
-    if (!isLinkMenuButtonClicked && !isLinkMenuClicked) {
-      setMenuOpen(false);
-    }
-  });
+    document.querySelector<HTMLElement>(".site-header")!.addEventListener("click", (event) => {
+      const link = (event.target as Element).closest<HTMLAnchorElement>("a");
+      if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey ||
+          link.hasAttribute("download") || link.hasAttribute("data-astro-reload") ||
+          (link.target && link.target !== "_self")) return;
+      const destination = new URL(link.href);
+      if (destination.origin === location.origin &&
+          destination.pathname.replace(/\/$/, "") === location.pathname.replace(/\/$/, "") &&
+          destination.search === location.search && destination.hash === location.hash) {
+        event.preventDefault();
+      }
+    }, { capture: true, signal });
 
-  document.addEventListener("keydown", (event) => {
-    if (
-      event.key === "Escape" &&
-      linkMenuButton.getAttribute("aria-expanded") === "true"
-    ) {
-      setMenuOpen(false);
-      linkMenuButton.focus();
-    }
-  });
+    const setMenuOpen = (isOpen: boolean) => {
+      linkMenu.inert = !isOpen;
+      linkMenuButton.setAttribute("aria-expanded", String(isOpen));
+      linkMenuButton.setAttribute("aria-label", isOpen ? "关闭菜单" : "打开菜单");
+      linkMenuButton.setAttribute("title", isOpen ? "关闭菜单" : "打开菜单");
+      linkMenu.setAttribute("aria-hidden", String(!isOpen));
+    };
 
-  window.matchMedia("(min-width: 640px)").addEventListener("change", (event) => {
-    if (event.matches) setMenuOpen(false);
+    linkMenuButton.addEventListener("click", () => {
+      setMenuOpen(linkMenuButton.getAttribute("aria-expanded") !== "true");
+    }, { signal });
+
+    linkMenu.addEventListener("click", (event) => {
+      if ((event.target as Element).closest("a")) setMenuOpen(false);
+    }, { signal });
+
+    document.addEventListener("click", (event) => {
+      const isLinkMenuButtonClicked =
+        event.target === linkMenuButton ||
+        linkMenuButton.contains(event.target as Node);
+      const isLinkMenuClicked =
+        event.target === linkMenu || linkMenu.contains(event.target as Node);
+
+      if (!isLinkMenuButtonClicked && !isLinkMenuClicked) {
+        setMenuOpen(false);
+      }
+    }, { signal });
+
+    document.addEventListener("keydown", (event) => {
+      if (
+        event.key === "Escape" &&
+        linkMenuButton.getAttribute("aria-expanded") === "true"
+      ) {
+        setMenuOpen(false);
+        linkMenuButton.focus();
+      }
+    }, { signal });
+
+    document.addEventListener("focusin", (event) => {
+      if (!linkMenu.contains(event.target as Node) && event.target !== linkMenuButton) {
+        setMenuOpen(false);
+      }
+    }, { signal });
+
+    window.matchMedia("(min-width: 640px)").addEventListener("change", (event) => {
+      if (event.matches) setMenuOpen(false);
+    }, { signal });
+
+    document.addEventListener("astro:before-preparation", () => setMenuOpen(false), { signal });
+    document.addEventListener("astro:before-swap", () => controller.abort(), { once: true });
   });
 </script>
 
-<html lang="zh-CN">
+<html lang="zh-CN" transition:animate="none">
   <head>
+    <ClientRouter />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -116,7 +167,7 @@ const imageURL = new URL(seo.image, Astro.site);
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要内容</a>
-    <header class="mt-1">
+    <header class="site-header mt-1" transition:name="site-header" transition:animate="none" transition:persist>
       <div class="flex w-full items-center px-2 py-4 sm:px-3 lg:px-4">
         <a
           href="/"
@@ -192,7 +243,7 @@ const imageURL = new URL(seo.image, Astro.site);
               </button>
               <div
                 id="link-menu"
-                class="menu-surface pointer-events-none absolute right-0 top-full z-40 mt-2 w-44 rounded-lg border p-2 opacity-0 shadow-2xl transition-opacity duration-200 ease-out"
+                class="menu-surface absolute right-0 top-full z-40 mt-2 w-48 rounded-lg border p-2"
                 aria-hidden="true"
                 inert
               >
@@ -205,6 +256,12 @@ const imageURL = new URL(seo.image, Astro.site);
                           href={link.url}
                           target={link.external ? "_blank" : "_self"}
                           rel={link.external ? "noreferrer" : undefined}
+                          aria-current={
+                            currentPath === link.url ||
+                            (link.url !== "/" && currentPath.startsWith(link.url))
+                              ? "page"
+                              : undefined
+                          }
                         >
                           {link.title}
                         </a>
@@ -236,6 +293,7 @@ const imageURL = new URL(seo.image, Astro.site);
                   </a>
                   <a
                     href="/feed.xml"
+                    data-astro-reload
                     class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg opacity-60 transition-opacity hover:opacity-100"
                     aria-label="RSS feed"
                     title="RSS"
@@ -269,6 +327,7 @@ const imageURL = new URL(seo.image, Astro.site);
           </a>
           <a
             href="/feed.xml"
+            data-astro-reload
             class="hidden min-h-11 min-w-11 items-center justify-center rounded-lg opacity-60 transition-opacity hover:opacity-100 sm:inline-flex"
             aria-label="RSS feed"
             title="RSS"
@@ -290,7 +349,7 @@ const imageURL = new URL(seo.image, Astro.site);
         </div>
       </div>
     </header>
-    <main id="main-content" class="mb-32" tabindex="-1" style="flex:1">
+    <main id="main-content" class="mb-32" tabindex="-1" transition:name="page-content" transition:animate={fade({ duration: "220ms" })}>
       <slot />
     </main>
     <SiteFooter />
@@ -299,16 +358,9 @@ const imageURL = new URL(seo.image, Astro.site);
 </html>
 
 <style is:global>
-  /* Cross-document view transitions: shared chrome (site header) stays in
-     place while page content cross-fades between same-origin navigations.
-     Safari 18.1+/Chrome 126+ animate; other browsers fall back to a plain
-     page load. Reduced-motion users get a plain load automatically. */
-  @view-transition {
-    navigation: auto;
-  }
-
-  body > header {
-    view-transition-name: site-header;
+  .site-header {
+    position: relative;
+    z-index: 50;
   }
 
   @font-face {
@@ -372,6 +424,8 @@ const imageURL = new URL(seo.image, Astro.site);
   }
 
   #main-content {
+    position: relative;
+    z-index: 0;
     flex: 1;
   }
 
@@ -391,9 +445,37 @@ const imageURL = new URL(seo.image, Astro.site);
   }
 
   .menu-surface {
+    max-width: calc(100vw - 2rem);
+    max-height: calc(100dvh - 6.5rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
     border-color: var(--border);
     background: var(--surface);
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
+    transform-origin: top right;
+    transition:
+      opacity 160ms ease-out,
+      transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 180ms;
+  }
+
+  .menu-surface[aria-hidden="true"] {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-6px) scale(0.98);
+  }
+
+  .menu-surface[aria-hidden="false"] {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .menu-surface a:hover,
+  .menu-surface a[aria-current="page"] {
+    background: var(--surface-hover);
+    opacity: 1;
   }
 
   .surface-card {
@@ -476,6 +558,7 @@ const imageURL = new URL(seo.image, Astro.site);
 
   html.theme-transition * {
     transition: none !important;
+    view-transition-name: none !important;
   }
 
   html.theme-transition::view-transition-group(root),

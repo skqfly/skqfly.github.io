@@ -12,7 +12,7 @@ const links = [
 ];
 ---
 
-<nav aria-label="内容分区" class="blog-section-nav">
+<nav aria-label="内容分区" class="blog-section-nav" transition:name="blog-tabs" transition:animate="none">
   <ul class="blog-section-tabs">
     {
       links.map((link) => (
@@ -23,6 +23,9 @@ const links = [
             aria-current={active === link.id ? "page" : undefined}
           >
             {link.label}
+            {active === link.id && (
+              <span class="blog-section-indicator" transition:name="blog-tab-indicator" aria-hidden="true" />
+            )}
           </a>
         </li>
       ))
@@ -33,8 +36,6 @@ const links = [
 <style>
   .blog-section-nav {
     margin-bottom: clamp(1.5rem, 3.5vw, 2.25rem);
-    /* Keep these tabs in place during cross-document view transitions. */
-    view-transition-name: blog-tabs;
   }
 
   .blog-section-tabs {
@@ -72,14 +73,13 @@ const links = [
     opacity: 1;
   }
 
-  .blog-section-link[aria-current="page"]::after {
+  .blog-section-indicator {
     position: absolute;
     right: 0;
     bottom: 0;
     left: 0;
     height: 2px;
     background: var(--foreground);
-    content: "";
   }
 
   @media (max-width: 479px) {

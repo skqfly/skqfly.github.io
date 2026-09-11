@@ -78,46 +78,55 @@ const seo = {
 <script>
   type PhotoLayout = "fixed" | "original";
 
-  const gallery = document.getElementById("photo-gallery") as HTMLUListElement;
-  const layoutToggle = document.getElementById(
-    "photo-layout-toggle"
-  ) as HTMLButtonElement;
-  const setPhotoLayout = (layout: PhotoLayout) => {
-    const isOriginal = layout === "original";
-    const label = isOriginal
-      ? "切换为固定方形布局"
-      : "切换为原始比例布局";
-
-    gallery.dataset.layout = layout;
-    layoutToggle.dataset.layout = layout;
-    layoutToggle.setAttribute("aria-pressed", String(isOriginal));
-    layoutToggle.setAttribute("aria-label", label);
-    layoutToggle.setAttribute("title", label);
-
+  const getSavedPhotoLayout = (): PhotoLayout => {
     try {
-      localStorage.setItem("photo-layout", layout);
+      return localStorage.getItem("photo-layout") === "original" ? "original" : "fixed";
     } catch {
-      // Layout switching still works when storage is unavailable.
+      return "fixed";
     }
   };
 
-  let initialLayout: PhotoLayout = "fixed";
-  try {
-    initialLayout =
-      localStorage.getItem("photo-layout") === "original"
-        ? "original"
-        : "fixed";
-  } catch {
-    // Use the fixed layout when storage is unavailable.
-  }
-  setPhotoLayout(initialLayout);
-
-  layoutToggle.addEventListener("click", () => {
-    setPhotoLayout(
-      gallery.dataset.layout === "fixed" ? "original" : "fixed"
-    );
+  // Restore the layout before the router restores the scroll position.
+  document.addEventListener("astro:before-swap", (event) => {
+    const layout = getSavedPhotoLayout();
+    event.newDocument.querySelectorAll<HTMLElement>("#photo-gallery, #photo-layout-toggle")
+      .forEach((element) => { element.dataset.layout = layout; });
   });
 
+  document.addEventListener("astro:page-load", () => {
+    const gallery = document.getElementById("photo-gallery") as HTMLUListElement;
+    const layoutToggle = document.getElementById(
+      "photo-layout-toggle"
+    ) as HTMLButtonElement;
+    if (!gallery || !layoutToggle) return;
+    const setPhotoLayout = (layout: PhotoLayout) => {
+      const isOriginal = layout === "original";
+      const label = isOriginal
+        ? "切换为固定方形布局"
+        : "切换为原始比例布局";
+
+      gallery.dataset.layout = layout;
+      layoutToggle.dataset.layout = layout;
+      layoutToggle.setAttribute("aria-pressed", String(isOriginal));
+      layoutToggle.setAttribute("aria-label", label);
+      layoutToggle.setAttribute("title", label);
+
+      try {
+        localStorage.setItem("photo-layout", layout);
+      } catch {
+        // Layout switching still works when storage is unavailable.
+      }
+    };
+
+    setPhotoLayout(getSavedPhotoLayout());
+
+    layoutToggle.addEventListener("click", () => {
+      setPhotoLayout(
+        gallery.dataset.layout === "fixed" ? "original" : "fixed"
+      );
+    });
+
+  });
 </script>
 
 <style>

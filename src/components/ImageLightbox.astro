@@ -5,54 +5,64 @@
 <script>
   import type { Photo } from "../data/photos";
 
-  const dialog = document.getElementById("image-lightbox") as HTMLDialogElement;
-  const image = dialog.querySelector("img")!;
-  let images: Photo[] = [];
-  let index = 0;
-  let trigger: HTMLButtonElement | null = null;
-  let previousOverflow = "";
+  document.addEventListener("astro:page-load", () => {
+    const dialog = document.getElementById("image-lightbox") as HTMLDialogElement;
+    if (!dialog) return;
+    const image = dialog.querySelector("img")!;
+    let images: Photo[] = [];
+    let index = 0;
+    let trigger: HTMLButtonElement | null = null;
+    let previousOverflow = "";
 
-  const showImage = (nextIndex: number) => {
-    index = (nextIndex + images.length) % images.length;
-    const photo = images[index];
-    image.src = photo.src;
-    image.alt = photo.alt;
-    image.width = photo.width;
-    image.height = photo.height;
-  };
+    const showImage = (nextIndex: number) => {
+      index = (nextIndex + images.length) % images.length;
+      const photo = images[index];
+      image.src = photo.src;
+      image.alt = photo.alt;
+      image.width = photo.width;
+      image.height = photo.height;
+    };
 
-  document.querySelectorAll<HTMLButtonElement>("[data-lightbox-images]").forEach((button) => {
-    button.addEventListener("click", (event) => {
-      images = JSON.parse(button.dataset.lightboxImages!);
-      const preview = (event.target as Element).closest<HTMLElement>("[data-image-index]");
-      trigger = button;
-      showImage(Number(preview?.dataset.imageIndex ?? 0));
-      previousOverflow = document.documentElement.style.overflow;
-      document.documentElement.style.overflow = "hidden";
-      dialog.showModal();
-      button.setAttribute("aria-expanded", "true");
+    document.querySelectorAll<HTMLButtonElement>("[data-lightbox-images]").forEach((button) => {
+      button.addEventListener("click", (event) => {
+        images = JSON.parse(button.dataset.lightboxImages!);
+        const preview = (event.target as Element).closest<HTMLElement>("[data-image-index]");
+        trigger = button;
+        showImage(Number(preview?.dataset.imageIndex ?? 0));
+        previousOverflow = document.documentElement.style.overflow;
+        document.documentElement.style.overflow = "hidden";
+        dialog.showModal();
+        button.setAttribute("aria-expanded", "true");
+      });
     });
-  });
 
-  dialog.addEventListener("click", (event) => {
-    if (event.target === dialog) dialog.close();
-    if (event.target === image) {
-      if (images.length > 1) showImage(index + 1);
-      else dialog.close();
-    }
-  });
-  dialog.addEventListener("keydown", (event) => {
-    if (images.length < 2 || !["ArrowLeft", "ArrowRight"].includes(event.key)) return;
-    event.preventDefault();
-    showImage(index + (event.key === "ArrowRight" ? 1 : -1));
-  });
-  dialog.addEventListener("close", () => {
-    document.documentElement.style.overflow = previousOverflow;
-    image.removeAttribute("src");
-    image.alt = "";
-    trigger?.setAttribute("aria-expanded", "false");
-    trigger?.focus({ preventScroll: true });
-    images = [];
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+      if (event.target === image) {
+        if (images.length > 1) showImage(index + 1);
+        else dialog.close();
+      }
+    });
+    dialog.addEventListener("keydown", (event) => {
+      if (images.length < 2 || !["ArrowLeft", "ArrowRight"].includes(event.key)) return;
+      event.preventDefault();
+      showImage(index + (event.key === "ArrowRight" ? 1 : -1));
+    });
+    dialog.addEventListener("close", () => {
+      document.documentElement.style.overflow = previousOverflow;
+      image.removeAttribute("src");
+      image.alt = "";
+      trigger?.setAttribute("aria-expanded", "false");
+      trigger?.focus({ preventScroll: true });
+      images = [];
+    });
+    document.addEventListener("astro:before-swap", () => {
+      if (dialog.open) {
+        trigger = null;
+        dialog.close();
+        document.documentElement.style.overflow = previousOverflow;
+      }
+    }, { once: true });
   });
 </script>
 
