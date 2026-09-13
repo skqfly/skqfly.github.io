@@ -1,2 +1,9 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+
+img {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}

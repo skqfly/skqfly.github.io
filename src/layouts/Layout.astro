@@ -367,12 +367,12 @@ const imageURL = new URL(seo.image, Astro.site);
 
 <style is:global>
   /* Cross-fade each page at its own size, including long articles. */
-  html:not(.theme-transition)::view-transition-group(page-content) {
+  html::view-transition-group(page-content) {
     animation: none;
   }
 
-  html:not(.theme-transition)::view-transition-old(page-content),
-  html:not(.theme-transition)::view-transition-new(page-content) {
+  html::view-transition-old(page-content),
+  html::view-transition-new(page-content) {
     height: auto;
     animation-timing-function: ease-out;
   }
@@ -583,26 +583,6 @@ const imageURL = new URL(seo.image, Astro.site);
 
   .article-prose a {
     text-underline-offset: 4px;
-  }
-
-  html.theme-transition * {
-    transition: none !important;
-    view-transition-name: none !important;
-  }
-
-  html.theme-transition::view-transition-group(root),
-  html.theme-transition::view-transition-old(root),
-  html.theme-transition::view-transition-new(root) {
-    animation: none;
-    mix-blend-mode: normal;
-  }
-
-  html.theme-transition::view-transition-old(root) {
-    z-index: 1;
-  }
-
-  html.theme-transition::view-transition-new(root) {
-    z-index: 2;
   }
 
   @media (prefers-reduced-motion: reduce) {

@@ -120,8 +120,14 @@ const items = Astro.props.headings
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       const target = document.getElementById(link.dataset.heading!);
       if (!target) return;
+      event.preventDefault();
       closeSheet();
-      // Keep normal anchor navigation; move keyboard focus without animating the article.
+      history.replaceState(history.state, "", link.href);
+      target.scrollIntoView({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+        block: "start",
+      });
+      // Touch scrolling does not move keyboard focus to the heading.
       if (event.detail === 0) {
         target.setAttribute("tabindex", "-1");
         target.focus({ preventScroll: true });
@@ -220,10 +226,19 @@ const items = Astro.props.headings
     -webkit-tap-highlight-color: transparent;
   }
   .toc-toggle {
-    position: absolute;
-    left: 8px;
-    top: 0;
-    z-index: 40;
+    position: fixed;
+    left: max(1rem, env(safe-area-inset-left));
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    z-index: 35;
+    width: 46px;
+    height: 46px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    color: var(--foreground);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+    opacity: 0.78;
+    backdrop-filter: blur(12px);
   }
   .toc-desktop-toggle {
     margin: 0 0 0.75rem;
@@ -289,11 +304,13 @@ const items = Astro.props.headings
     border-top: 1px solid var(--border);
     padding-top: 0.75rem;
   }
-  @media (min-width: 640px) {
-    .toc-toggle { left: 12px; }
-  }
-  @media (min-width: 1024px) {
-    .toc-toggle { left: 16px; }
+  @media (max-width: 639px) {
+    .toc-toggle {
+      left: max(0.75rem, env(safe-area-inset-left));
+      bottom: max(0.75rem, env(safe-area-inset-bottom));
+      width: 44px;
+      height: 44px;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
     .toc-control {

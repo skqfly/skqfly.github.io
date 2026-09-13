@@ -55,6 +55,7 @@ const seo = {
               aria-label={`查看大图：${photo.alt}`}
             >
               <img
+                draggable="false"
                 src={photo.preview}
                 srcset={`${photo.preview} 480w, ${photo.previewLarge} 960w`}
                 sizes="(min-width: 768px) 25vw, (min-width: 640px) 50vw, 100vw"
