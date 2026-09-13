@@ -1,245 +1,162 @@
 ---
-title: "FRP 安装与配置"
+title: "frp 内网穿透：SSH 与网站访问"
 pubDate: 2025-10-03
-description: "本文档整理了你提供的 FRP 安装、解压、重命名、以及 frps.toml 与 frpc.toml 的示例配置，已经按 Markdown 格式美化，便于保存与分享。"
+description: "配置 frps 与 frpc，将内网 SSH 和 HTTP 服务映射到公网入口。"
 author: "skqfly"
 category: "Linux"
 image: { url: "/logo.svg", alt: "skqfly 标志" }
 ---
 
-# FRP 安装与配置
-## **FRP 安装与配置（整理版）**
+frp 由两部分组成：公网服务器运行 `frps`，内网机器运行 `frpc`。客户端主动连接服务端，再把指定的内网服务转发出去。
 
-本文档整理了你提供的 FRP 安装、解压、重命名、以及 `frps.toml` 与 `frpc.toml` 的示例配置，已经按 Markdown 格式美化，便于保存与分享。
+本文保留原笔记使用的 **v0.65.0** 作为安装示例，不代表当前最新版。示例分别映射 SSH 和 HTTP 网站，公网地址、域名与认证令牌都需要替换。
 
-[FRP 官方文档](https://gofrp.org/zh-cn/docs/overview/)
+## 1. 下载对应架构的程序
 
-[GITHUB 官方网址](https://github.com/fatedier/frp/releases)
+在公网服务器和内网机器上分别执行 `uname -m`。常见对应关系为 `x86_64 → amd64`、`aarch64 → arm64`，不能只根据设备名称选择压缩包。
 
- [FRP - Linux & Win 内网穿透教程 手搓难度](https://www.cnblogs.com/geek233/p/18791892)
+x86_64 Linux 示例：
 
-* * *
-
-### **1\. 下载（示例：AMD/x86\_64 架构）**
-
-```
- # AMD（x86_64）架构下载
- wget https://github.com/fatedier/frp/releases/download/v0.65.0/frp_0.65.0_linux_amd64.tar.gz
- # 树莓派arm64架构下载
- wget https://github.com/fatedier/frp/releases/download/v0.65.0/frp_0.65.0_linux_arm64.tar.gz
+```bash
+wget https://github.com/fatedier/frp/releases/download/v0.65.0/frp_0.65.0_linux_amd64.tar.gz
+tar -xzf frp_0.65.0_linux_amd64.tar.gz
+mv frp_0.65.0_linux_amd64 frp
+cd frp
 ```
 
-> 如果你是 ARM（树莓派），请改用对应的 `linux_arm` 或 `linux_arm64` 包。
+64 位树莓派使用同一版本的 `linux_arm64` 压缩包，并相应调整文件名。两端优先使用相同版本；从 [官方 Releases](https://github.com/fatedier/frp/releases) 获取文件并核对发布信息。
 
-* * *
+## 2. 配置公网服务端
 
-### **2\. 解压**
+在公网服务器的 frp 目录创建 `frps.toml`：
 
-```
- # 解压当前目录
- tar -zxvf frp_0.65.0_linux_amd64.tar.gz
- 
- # 解压到指定目录
- tar -zxvf frp_0.65.0_linux_amd64.tar.gz -C /path/to/dir
-```
-
-* * *
-
-### **3\. 重命名并进入目录**
-
-```
- # 解压后目录通常为 frp_0.65.0_linux_amd64
- mv frp_0.65.0_linux_amd64 frp
- cd frp
-```
-
-* * *
-
-### **4\. 服务端配置（**`**frps.toml**` **示例）**
-
-> 用 `sudo nano frps.toml` 编辑（或使用你偏好的编辑器）。下面是整理后的配置片段：
-
-```
- # =========== 基本监听 ===========
- # vhost HTTP（用于内网 HTTP 代理穿透）
- vhostHTTPPort = 80
- # vhost HTTPS（用于内网 HTTPS 代理穿透）
- vhostHTTPSPort = 443
- 
- # 如果使用子域名解析（动态子域名），设置 subDomainHost（没有域名请删除此行）
- # subDomainHost = "mmddskq.top"  # 示例：替换为你的真实域名或删除
- 
- # =========== Web 控制台（Dashboard） ===========
- [webServer]
- addr = "0.0.0.0"        # 监听地址（所有 IP）
- port = 7500              # Dashboard 端口（浏览器访问示例：http://公网IP:7500）
- user = ""         # Dashboard 登录用户名
- password = ""    # Dashboard 登录密码（请修改为更安全的密码）
- 
- # =========== 身份验证（Authentication） ===========
- # 支持 token、oidc 等方式。这里使用 token。
- auth.method = "token"
- # auth.token 在 frps.toml 与 frpc.toml 中必须一致
- # 示例：
- auth.token = ""
-```
-
-> 请务必替换 `webServer.password` 为更强的密码，并确认 `subDomainHost` 的使用需求（无域名则删除）。
-
-* * *
-
-### **5\. 客户端配置（**`**frpc.toml**` **示例）**
-
-> 用 `sudo nano frpc.toml` 编辑。下面是整理后的配置：
-
-```
- # 服务端地址（公网 IP 或域名）
- serverAddr = "公网ipv4"
- # 服务端监听端口（需与 frps 的 bindPort 保持一致）
- serverPort = 7000
- 
- # 连接协议
- transport.protocol = "tcp"
- 
- # 认证方式（与服务端一致）
- auth.method = "token"
- auth.token = ""
- 
- # =========== 代理配置 ===========
- [[proxies]]
- name = "ssh23"         # 代理名称（随意，但需唯一）
- type = "tcp"           # 选择 tcp（适合 SSH 等 IP:端口 直连）
- localIP = "127.0.0.1"   # 本地被转发的服务地址
- localPort = 22           # 本地被转发的服务端口（SSH 的默认端口为 22）
- remotePort = 23          # 服务端映射端口（访问 公网IP:23 将被转入本地 127.0.0.1:22）
- 
- # 如果使用域名/子域名访问，改用 type = "http" 并配置 subdomain 字段；
- # 如果使用 IP+端口 直连，请删除 subdomain 字段并使用 remotePort。
-```
-
-* * *
-
-### **6\. 注意事项与排查指引**
-
-*   修改 `frps.toml` 或 `frpc.toml` 后需要重启对应服务：
-    *   客户端：`sudo systemctl restart frpc`
-    *   服务端：`sudo systemctl restart frps`
-*   如果 `frpc` 启动失败并报错 `dial tcp ...: i/o timeout`：通常是网络不可达或服务端端口未开放。
-    *   在服务端检查监听：`sudo ss -lntp | grep 7000`
-    *   检查云厂商安全组或服务器防火墙是否放行 `7000/tcp`。
-    *   在客户端测试连通性：`telnet 公网ipv4 7000` 或 `nc -vz 公网ipv4 7000`。
-*   `auth.token` 必须在双方完全一致。
-*   如果运行在树莓派等 ARM 设备，确保下载与设备架构匹配的 frp 二进制（例如 `linux_arm` 或 `linux_arm64`）。
-
-* * *
-
-### **7\. 常用命令速查**
-
-```
- # systemd 管理
- sudo systemctl daemon-reload
- sudo systemctl enable frpc
- sudo systemctl start frpc
- sudo systemctl status frpc
- sudo systemctl restart frpc
- 
- sudo systemctl daemon-reload
- sudo systemctl enable frpc
- sudo systemctl start frpc
- sudo systemctl status frpc
- sudo systemctl restart frpc
- 
- sudo nano /etc/systemd/system/frpc.service
- 
- sudo nano /etc/systemd/system/frps.service
- 
- # mc联机
- 公网ipv4:25565
-```
-
-### **8\. 注意事项**
-
-这个文件权限里 **没有 x（可执行权限）**，说明它被当作普通文件而不是程序，所以 systemd 才会报错 `status=203/EXEC`。
-
-你已经执行了：
-
-```
- chmod +x /home/skqfly/frp/frpc
-```
-
-这样它就变成可执行文件了，再运行时权限问题就解决了。
-
-1.  **SSH**：依然走公网 IP 直连 → `公网ipv4 → 树莓派 127.0.0.1:22`
-2.  **网站（博客）**：走域名 `blog.mmddskq.top → 树莓派 127.0.0.1:8888`
-
-* * *
-
-### **服务端配置（**`**frps.toml**`**，云服务器）**
-
-```
-# =========== 基础监听 ===========
-bindPort = 7000                     # frps 服务端端口，frpc 要连这个
-vhostHTTPPort = 80                  # HTTP 代理端口
-vhostHTTPSPort = 443                # HTTPS 代理端口
-
-# 如果用子域名解析必须加上（这里用你的域名）
-subDomainHost = "mmddskq.top"
-
-# =========== Web 控制台 ===========
-[webServer]
-addr = "0.0.0.0"
-port = 7500
-user = ""
-password = ""                 # 建议换更安全的密码
-
-# =========== 身份验证 ===========
-auth.method = "token"
-auth.token = ""
-```
-
-* * *
-
-### **客户端配置（**`**frpc.toml**`**，树莓派）**
-
-```
-# =========== 服务端信息 ===========
-serverAddr = "123.60.219.241"        # 云服务器 IP
-serverPort = 7000                    # 要和 frps.toml 的 bindPort 对应
-
-transport.protocol = "tcp"
+```toml
+bindPort = 7000
+vhostHTTPPort = 8080
+subDomainHost = "example.com"
 
 auth.method = "token"
-auth.token = ""
+auth.token = "REPLACE_WITH_A_LONG_RANDOM_TOKEN"
 
-# =========== 代理配置 ===========
+webServer.addr = "127.0.0.1"
+webServer.port = 7500
+webServer.user = "admin"
+webServer.password = "REPLACE_WITH_A_STRONG_PASSWORD"
+```
 
-# 1. SSH（不用域名，IP直连）
+- `7000`：接收 frpc 的连接。
+- `8080`：接收转发到内网网站的 HTTP 请求，避开已有 Nginx 常用的 80 端口。
+- `example.com`：用于子域名转发的基础域名。
+- `7500`：可选控制台，这里仅监听本机；不需要时可删除四个 `webServer` 字段。
+
+运行前必须替换令牌和密码，客户端使用同一个认证令牌。配置里采用完整的点分键名，避免把 `auth` 误写进 `[webServer]` 表中。
+
+检查语法并以前台方式启动：
+
+```bash
+./frps verify -c ./frps.toml
+./frps -c ./frps.toml
+```
+
+## 3. 配置内网客户端
+
+在内网机器上创建 `frpc.toml`。把 `frp.example.com` 替换成公网服务器地址。
+
+```toml
+serverAddr = "frp.example.com"
+serverPort = 7000
+
+auth.method = "token"
+auth.token = "REPLACE_WITH_A_LONG_RANDOM_TOKEN"
+
 [[proxies]]
-name = "ssh23"
+name = "ssh"
 type = "tcp"
 localIP = "127.0.0.1"
 localPort = 22
-remotePort = 23                      # 访问 公网ipv4 → 树莓派 SSH
+remotePort = 60022
 
-# 2. 网站（博客，用域名 blog.mmddskq.top）
 [[proxies]]
 name = "blog"
 type = "http"
 localIP = "127.0.0.1"
-localPort = 8888                     # 树莓派本地网站监听端口
-subdomain = "blog"                   # 最终访问 blog.mmddskq.top
+localPort = 8888
+subdomain = "blog"
 ```
 
-* * *
+SSH 通过服务端的 `60022/tcp` 进入内网机器的 22 端口。网站使用 HTTP 类型，通过 Host 匹配 `blog.example.com`，再转发到内网的 `127.0.0.1:8888`。
 
-### **🔑 最终访问方式**
+先确认内网服务确实存在，再运行 frpc：
 
-*   **SSH**：
-    ```
-    ssh 用户名@公网ipv4 -p 23
-    ```
-*   **网站**： 打开浏览器访问：
-    ```
-    http://blog.mmddskq.top
-    ```
-（前提：你的 DNS 已经把 `*.mmddskq.top` 解析到云服务器 `公网ipv4`）
+```bash
+curl -I http://127.0.0.1:8888/
+./frpc verify -c ./frpc.toml
+./frpc -c ./frpc.toml
+```
+
+## 4. 配置 DNS 和公网端口
+
+将 `frp.example.com` 与 `blog.example.com` 的 DNS 记录指向公网服务器。只转发一个网站时，为 `blog` 添加明确的记录即可，不必先配置通配符域名。
+
+按用途配置公网服务器防火墙和云安全组：
+
+- `7000/tcp`：供内网 frpc 连接。
+- `60022/tcp`：供授权的 SSH 用户连接，尽量限制来源地址。
+- `8080/tcp`：供网站访问；若由同机 Nginx 接入，则可以只暴露 Nginx 的端口。
+- 控制台的 `7500` 只监听回环地址，无需对公网开放。
+
+从外部电脑验证：
+
+```bash
+ssh -p 60022 用户名@frp.example.com
+curl -I http://blog.example.com:8080/
+```
+
+当前网站示例是 HTTP。需要 HTTPS 时，可在公网 Nginx 终止 TLS，再代理至 frps 的 HTTP 端口，并保留 `Host` 请求头。不要只添加 `vhostHTTPSPort` 就认为证书已经配置完成。
+
+## 5. 交给 systemd 运行
+
+前台测试正常后，用 `Ctrl+C` 停止测试进程，再参考 [systemd 服务管理笔记](/blog/linux-service-autostart) 创建对应单元文件：
+
+- 公网服务器：`frps.service`，启动 `frps -c /实际路径/frps.toml`。
+- 内网机器：`frpc.service`，启动 `frpc -c /实际路径/frpc.toml`。
+
+单元文件存在后，分别在相应机器执行：
+
+```bash
+# 公网服务器
+sudo systemctl daemon-reload
+sudo systemctl enable --now frps
+
+# 内网机器
+sudo systemctl daemon-reload
+sudo systemctl enable --now frpc
+```
+
+## 6. 常见问题
+
+**连接超时**：检查服务端地址、监听端口、防火墙和安全组。先看日志，再测试网络。
+
+```bash
+# 公网服务器
+sudo ss -lntp | grep ':7000'
+journalctl -u frps -n 50 --no-pager
+
+# 内网机器
+nc -vz frp.example.com 7000
+journalctl -u frpc -n 50 --no-pager
+```
+
+**认证失败**：两端令牌必须完全一致，也要检查 TOML 字段是否处于正确层级。
+
+**程序无法执行**：核对执行权限、CPU 架构与文件路径；`203/EXEC` 不一定只是权限问题。
+
+**能连 frps，但网站打不开**：检查内网 8888 端口是否工作，以及 DNS、HTTP 入口端口和 Host 是否匹配。
+
+**端口占用**：确认没有另一个前台进程，或其他服务已经占用 `7000`、`8080`、`60022`。
+
+## 参考资料
+
+- [frp 安装与运行](https://gofrp.org/en/docs/setup/)
+- [服务端配置字段](https://gofrp.org/en/docs/reference/server-configures/)
+- [HTTP 与 HTTPS 转发](https://gofrp.org/en/docs/features/http-https/)

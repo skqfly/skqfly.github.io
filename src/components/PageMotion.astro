@@ -5,22 +5,13 @@
     ".blog-post-item",
     ".photo-gallery__item",
     ".divide-y > *",
-    ".article-prose > h2",
-    ".article-prose > h3",
-    ".article-prose > p",
-    ".article-prose > pre",
-    ".article-prose > figure",
-    ".article-prose > table",
-    ".article-prose > blockquote",
-    ".article-prose > ul",
-    ".article-prose > ol",
   ].join(",");
 
   let isFirstPage = true;
   const initializePageMotion = () => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     document.documentElement.classList.toggle("motion-enabled", !reduceMotion);
-    if (isFirstPage && !reduceMotion) {
+    if (isFirstPage && !reduceMotion && !document.querySelector(".article-prose")) {
       document.getElementById("main-content")?.animate(
         [{ opacity: 0.65, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }],
         { duration: 260, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
@@ -44,7 +35,7 @@
       },
     );
 
-    // Read layout before adding classes so a long article only needs one layout pass.
+    // Read layout before adding classes to avoid repeated layout passes.
     const elements = Array.from(document.querySelectorAll<HTMLElement>(revealSelector))
       .filter((element) => !element.closest("dialog") && !element.hidden)
       .map((element) => ({ element, bounds: element.getBoundingClientRect() }));
