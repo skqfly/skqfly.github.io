@@ -70,7 +70,12 @@ const { Content, headings } = await render(entry);
     scroll-margin-top: 2rem;
   }
 
+  @media (max-width: 1199px) {
+    .article-layout { margin-top: 4.25rem; }
+  }
+
   @media (min-width: 1200px) {
+    .article-column { grid-column: 2; }
     .article-layout {
       display: grid;
       grid-template-columns: 14rem minmax(0, 42rem) 14rem;

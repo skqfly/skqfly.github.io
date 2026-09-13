@@ -20,8 +20,16 @@ const imageURL = new URL(seo.image, Astro.site);
 ---
 
 <script>
+  document.addEventListener("pointerdown", (event) => {
+    document.documentElement.dataset.input = event.pointerType === "touch" ? "touch" : "pointer";
+  }, { capture: true, passive: true });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Tab") document.documentElement.dataset.input = "keyboard";
+  }, { capture: true });
+
   document.addEventListener("astro:before-swap", (event) => {
     const root = document.documentElement;
+    if (root.dataset.input) event.newDocument.documentElement.dataset.input = root.dataset.input;
     event.newDocument.documentElement.dataset.theme = root.dataset.theme;
     event.newDocument.documentElement.style.backgroundColor = root.style.backgroundColor;
     const themeColor = event.newDocument.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
@@ -115,7 +123,7 @@ const imageURL = new URL(seo.image, Astro.site);
   });
 </script>
 
-<html lang="zh-CN" transition:animate="none">
+<html lang="zh-CN" transition:name="root" transition:animate="none">
   <head>
     <ClientRouter />
     <meta charset="UTF-8" />
@@ -358,7 +366,20 @@ const imageURL = new URL(seo.image, Astro.site);
 </html>
 
 <style is:global>
+  /* Cross-fade each page at its own size, including long articles. */
+  html:not(.theme-transition)::view-transition-group(page-content) {
+    animation: none;
+  }
+
+  html:not(.theme-transition)::view-transition-old(page-content),
+  html:not(.theme-transition)::view-transition-new(page-content) {
+    height: auto;
+    animation-timing-function: ease-out;
+  }
+
   .site-header {
+    /* The persisted header must not depend on a per-page generated scope. */
+    view-transition-name: site-header;
     position: relative;
     z-index: 50;
   }
@@ -487,6 +508,14 @@ const imageURL = new URL(seo.image, Astro.site);
   button {
     cursor: pointer;
     touch-action: manipulation;
+  }
+
+  html[data-input="touch"] :focus-visible {
+    outline: none;
+  }
+
+  @media (pointer: coarse) {
+    a, button, summary { -webkit-tap-highlight-color: transparent; }
   }
 
   :focus-visible {

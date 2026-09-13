@@ -12,7 +12,7 @@ const links = [
 ];
 ---
 
-<nav aria-label="内容分区" class="blog-section-nav" transition:name="blog-tabs" transition:animate="none">
+<nav aria-label="内容分区" class="blog-section-nav">
   <ul class="blog-section-tabs">
     {
       links.map((link) => (
@@ -24,7 +24,7 @@ const links = [
           >
             {link.label}
             {active === link.id && (
-              <span class="blog-section-indicator" transition:name="blog-tab-indicator" aria-hidden="true" />
+              <span class="blog-section-indicator" aria-hidden="true" />
             )}
           </a>
         </li>
@@ -74,6 +74,7 @@ const links = [
   }
 
   .blog-section-indicator {
+    transform-origin: left center;
     position: absolute;
     right: 0;
     bottom: 0;
@@ -90,6 +91,73 @@ const links = [
     .blog-section-link {
       min-height: 3.75rem;
       font-size: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  // Share tab snapshots only when both pages contain this navigation.
+  document.addEventListener("astro:before-preparation", (event) => {
+    const load = event.loader;
+    event.loader = async () => {
+      await load();
+      if (event.signal.aborted || event.defaultPrevented) return;
+      const current = document.querySelector<HTMLElement>(".blog-section-nav");
+      const next = event.newDocument.querySelector<HTMLElement>(".blog-section-nav");
+      for (const nav of [current, next]) {
+        if (!nav) continue;
+        nav.style.setProperty("view-transition-name", current && next ? "blog-tabs" : "none");
+        const indicator = nav.querySelector<HTMLElement>(".blog-section-indicator");
+        if (indicator) indicator.style.setProperty("view-transition-name", current && next ? "blog-tab-indicator" : "none");
+      }
+    };
+  });
+
+  let previousIndicator: DOMRect | undefined;
+  document.addEventListener("astro:before-swap", (event) => {
+    previousIndicator = undefined;
+    if ("startViewTransition" in document && typeof document.startViewTransition === "function") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (event.newDocument.querySelector(".blog-section-nav")) {
+      previousIndicator = document.querySelector(".blog-section-indicator")?.getBoundingClientRect();
+    }
+  });
+  document.addEventListener("astro:after-swap", () => {
+    if (!previousIndicator) return;
+    const indicator = document.querySelector<HTMLElement>(".blog-section-indicator");
+    const next = indicator?.getBoundingClientRect();
+    if (indicator && next?.width) {
+      indicator.animate([
+        { transform: `translateX(${previousIndicator.x - next.x}px) scaleX(${previousIndicator.width / next.width})` },
+        { transform: "none" },
+      ], { duration: 260, easing: "cubic-bezier(0.22, 1, 0.36, 1)" });
+    }
+    previousIndicator = undefined;
+  });
+</script>
+
+<style is:global>
+  ::view-transition-group(blog-tabs) {
+    animation: none;
+  }
+  ::view-transition-old(blog-tabs),
+  ::view-transition-new(blog-tabs),
+  ::view-transition-old(blog-tab-indicator),
+  ::view-transition-new(blog-tab-indicator) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+  ::view-transition-old(blog-tabs),
+  ::view-transition-old(blog-tab-indicator) {
+    opacity: 0;
+  }
+  ::view-transition-group(blog-tab-indicator) {
+    animation-duration: 260ms;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    ::view-transition-group(blog-tab-indicator) {
+      animation: none;
     }
   }
 </style>

@@ -67,6 +67,42 @@ html[data-theme="dark"] .article-prose .astro-code span {
   tab-size: 4;
   scrollbar-width: thin;
 }
+
+/* Keep long code scrollable without the native arrow buttons and heavy track. */
+.article-prose pre {
+  scrollbar-color: color-mix(in srgb, var(--foreground) 22%, transparent) transparent;
+}
+@supports selector(::-webkit-scrollbar) {
+  .article-prose pre {
+    scrollbar-width: auto;
+    scrollbar-color: auto;
+  }
+  .article-prose pre::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background: transparent;
+  }
+  .article-prose pre::-webkit-scrollbar-track {
+    margin-inline: 12px;
+    background: transparent;
+  }
+  .article-prose pre::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--foreground) 22%, transparent);
+  }
+  .article-prose pre:hover::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--foreground) 35%, transparent);
+  }
+  .article-prose pre::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+  .article-prose pre::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
 .article-prose pre[data-language]::before {
   content: attr(data-language);
   display: block;
