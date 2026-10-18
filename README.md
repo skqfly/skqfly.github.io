@@ -117,3 +117,9 @@ CloudBase 静态网站托管：框架选 Astro，Node.js 24，目标目录 `./`�
 安装命令 `npm ci`，构建命令 `npm run build`，产物目录 `./dist`，部署路径 `/`。
 无需环境变量。正式域名由 `astro.config.mjs` 的 `site` 配置维护，
 用于 canonical、分享链接和 RSS；绑定新域名时一起更新。
+
+### 相册图片
+
+相册和 Talks 共用 `src/data/photos.ts`，图片保存在 `public/photos/`，随网站部署，不依赖外部图床。当前 11 张照片使用原图生成的最长边 2560 像素 WebP 大图，另外 2 张暂用已有 960 像素宽版本。原始 JPG 不随网站发布。
+
+新增照片时，将图片放入 `public/photos/`，在照片数据中填写以 `/photos/` 开头的站内路径，再运行 `npm run images:generate` 生成 480/960 像素宽预览图。该命令只读取本地文件；若源文件本身就是目标预览图，会保留源文件以避免重复压缩。

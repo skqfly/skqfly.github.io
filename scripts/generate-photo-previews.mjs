@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import sharp from "sharp";
 import { photoLibrary } from "../src/data/photos.ts";
 
@@ -7,12 +7,14 @@ await mkdir(outputDirectory, { recursive: true });
 const results = [];
 
 for (const [name, photo] of Object.entries(photoLibrary)) {
-  const response = await fetch(photo.src, { signal: AbortSignal.timeout(30_000) });
-  if (!response.ok) throw new Error(`${name}: HTTP ${response.status}`);
-  const original = Buffer.from(await response.arrayBuffer());
+  const original = await readFile(new URL(`../public${photo.src}`, import.meta.url));
   const previews = {};
 
   for (const width of [480, 960]) {
+    if (photo.src === `/photos/${name}-${width}.webp`) {
+      previews[width] = original.byteLength;
+      continue;
+    }
     const preview = await sharp(original)
       .rotate()
       .resize({ width, withoutEnlargement: true })
