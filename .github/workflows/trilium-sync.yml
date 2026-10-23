@@ -1,0 +1,69 @@
+name: Sync Trilium content
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/5 * * * *'
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: trilium-publish
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Check publication queue
+        id: queue
+        run: node scripts/trilium/queue.mjs
+        env:
+          TRILIUM_SERVER_URL: ${{ secrets.TRILIUM_SERVER_URL }}
+          TRILIUM_ETAPI_TOKEN: ${{ secrets.TRILIUM_ETAPI_TOKEN }}
+      - uses: actions/setup-node@v4
+        if: steps.queue.outputs.pending == 'true'
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+        if: steps.queue.outputs.pending == 'true'
+      - name: Test publishing rules
+        if: steps.queue.outputs.pending == 'true'
+        run: npm run trilium:check
+      - name: Fetch and validate published content
+        id: sync
+        if: steps.queue.outputs.pending == 'true'
+        run: node scripts/trilium/sync.mjs --queued
+        env:
+          TRILIUM_SERVER_URL: ${{ secrets.TRILIUM_SERVER_URL }}
+          TRILIUM_ETAPI_TOKEN: ${{ secrets.TRILIUM_ETAPI_TOKEN }}
+      - name: Build before pushing
+        if: steps.sync.outputs.request != ''
+        run: npm run build
+      - name: Commit content and trigger deployment
+        if: steps.sync.outputs.request != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/data/site.json src/data/photo-library.json src/content/posts trilium/published.json trilium/signals.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Update blog content from Trilium'
+            git push origin HEAD:main
+          fi
+          gh workflow run deploy-pages.yml --ref main
+      - name: Report result to Trilium
+        if: always() && steps.sync.outputs.request != ''
+        run: node scripts/trilium/sync.mjs report "$RESULT"
+        env:
+          RESULT: ${{ job.status }}
+          TRILIUM_REQUEST: ${{ steps.sync.outputs.request }}
+          TRILIUM_SERVER_URL: ${{ secrets.TRILIUM_SERVER_URL }}
+          TRILIUM_ETAPI_TOKEN: ${{ secrets.TRILIUM_ETAPI_TOKEN }}

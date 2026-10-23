@@ -4,7 +4,7 @@ pubDate: 2025-10-16
 description: "以 Ubuntu 22.04 为例，区分 Windows 与 Linux 命令，整理迁移和日常配置。"
 author: "skqfly"
 category: "Linux"
-image: { url: "/logo.svg", alt: "skqfly 标志" }
+image: {"url":"/logo.svg","alt":"skqfly 标志"}
 ---
 
 WSL 2 的配置经常跨越两个环境：Windows 负责发行版的安装和管理，Ubuntu 负责 Linux 用户、软件与服务。先分清命令在哪里执行，比记住所有参数更重要。

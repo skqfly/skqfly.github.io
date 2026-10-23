@@ -4,7 +4,7 @@ pubDate: 2026-07-15
 description: "关于这个网站，以及我想持续记录的事。"
 author: "skqfly"
 category: "Notes"
-image: { url: "/logo.svg", alt: "skqfly 标志" }
+image: {"url":"/logo.svg","alt":"skqfly 标志"}
 ---
 
 这个网站用来记录计算数学、科学计算和数学建模，也留下一些把想法变成可复现方案的过程。

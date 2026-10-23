@@ -4,7 +4,7 @@ pubDate: 2025-10-09
 description: "为本机服务绑定域名，用 Certbot 申请证书并验证自动续期。"
 author: "skqfly"
 category: "Linux"
-image: { url: "/logo.svg", alt: "skqfly 标志" }
+image: {"url":"/logo.svg","alt":"skqfly 标志"}
 ---
 
 一个服务已经在服务器的 `127.0.0.1:40301` 上运行，接下来希望通过域名和 HTTPS 访问。本文以 Ubuntu 的 Nginx 软件包和 Certbot 为例，依次处理 DNS、反向代理与证书。

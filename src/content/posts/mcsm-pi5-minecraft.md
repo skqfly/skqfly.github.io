@@ -4,7 +4,7 @@ pubDate: 2025-10-10
 description: "在 Ubuntu 24.04 上安装面板、连接节点，并创建 Java 版游戏实例。"
 author: "skqfly"
 category: "Game"
-image: { url: "/logo.svg", alt: "skqfly 标志" }
+image: {"url":"/logo.svg","alt":"skqfly 标志"}
 ---
 
 MCSManager 把游戏实例的文件、日志和启动命令集中到网页里。下面以树莓派 5 的 64 位 Ubuntu 24.04 为例，将 Web 面板与守护进程部署在同一台机器，再创建 Minecraft Java 版实例。

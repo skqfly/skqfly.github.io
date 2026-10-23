@@ -4,7 +4,7 @@ pubDate: 2025-10-05
 description: "从安装 Java 到首次启动，再用 systemd 保持服务运行。"
 author: "skqfly"
 category: "Game"
-image: { url: "/logo.svg", alt: "skqfly 标志" }
+image: {"url":"/logo.svg","alt":"skqfly 标志"}
 ---
 
 这篇笔记面向 Minecraft Java 版原版服务器，以 Ubuntu 24.04、Minecraft 1.21.x 和 Java 21 为示例环境。客户端与服务端版本需要一致；其他版本或模组服务端应先确认各自的 Java 要求。

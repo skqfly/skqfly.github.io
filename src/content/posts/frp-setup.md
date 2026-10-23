@@ -4,7 +4,7 @@ pubDate: 2025-10-03
 description: "配置 frps 与 frpc，将内网 SSH 和 HTTP 服务映射到公网入口。"
 author: "skqfly"
 category: "Linux"
-image: { url: "/logo.svg", alt: "skqfly 标志" }
+image: {"url":"/logo.svg","alt":"skqfly 标志"}
 ---
 
 frp 由两部分组成：公网服务器运行 `frps`，内网机器运行 `frpc`。客户端主动连接服务端，再把指定的内网服务转发出去。

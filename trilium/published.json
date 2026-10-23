@@ -1,0 +1,664 @@
+{
+  "site": {
+    "aboutPageContent": {
+      "seo": {
+        "title": "关于 | skqfly",
+        "description": "了解 skqfly 的研究方向、兴趣与技术栈。",
+        "image": "/logo.svg"
+      },
+      "subtitle": "保持好奇，持续计算，也持续记录。",
+      "about": {
+        "description": "\n我是 **skqfly**，关注计算数学，喜欢科学计算与数学建模。\n\n日常使用 Python、MATLAB、LaTeX 与 FreeFEM，希望把复杂问题整理成清晰、可靠且可复现的方案。"
+      },
+      "work": {
+        "description": "目前持续投入的方向与工具。",
+        "items": [
+          {
+            "title": "计算数学",
+            "company": {
+              "name": "研究方向",
+              "image": "/logo.svg",
+              "url": "https://github.com/skqfly"
+            },
+            "date": "Now"
+          },
+          {
+            "title": "科学计算与数学建模",
+            "company": {
+              "name": "Python · MATLAB · LaTeX · FreeFEM",
+              "image": "/logo.svg",
+              "url": "https://github.com/skqfly?tab=repositories"
+            },
+            "date": "Ongoing"
+          }
+        ]
+      },
+      "connect": {
+        "description": "欢迎通过 GitHub 交流学习、研究与合作。",
+        "links": [
+          {
+            "title": "GitHub",
+            "url": "https://github.com/skqfly",
+            "icon": "mdi:github",
+            "external": true
+          }
+        ]
+      }
+    },
+    "blogPageContent": {
+      "seo": {
+        "title": "Blogs | skqfly",
+        "description": "关于计算、建模与实践的笔记。",
+        "image": "/logo.svg"
+      }
+    },
+    "friendsPageContent": {
+      "seo": {
+        "title": "Friends | skqfly",
+        "description": "skqfly 的朋友们与值得关注的网站。",
+        "image": "/logo.svg"
+      },
+      "subtitle": "朋友们与值得关注的网站。",
+      "friends": [
+        {
+          "title": "longBlog",
+          "description": "数学专业在读 · INFJ",
+          "url": "https://huowenlong.com/",
+          "domain": "huowenlong.com",
+          "image": "https://huowenlong.com/favicon.svg"
+        }
+      ]
+    },
+    "homePageContent": {
+      "seo": {
+        "title": "skqfly's home",
+        "description": "skqfly 的个人网站，记录计算数学、科学计算与数学建模。",
+        "image": "/logo.svg"
+      },
+      "role": "",
+      "description": "把复杂问题做成清晰、可复现的方案。",
+      "socialLinks": [
+        {
+          "title": "GitHub",
+          "url": "https://github.com/skqfly",
+          "icon": "mdi:github",
+          "external": true
+        },
+        {
+          "title": "X",
+          "url": "https://x.com/keqiangsong",
+          "icon": "mdi:alpha-x",
+          "external": true
+        },
+        {
+          "title": "Telegram",
+          "url": "https://t.me/skqfly",
+          "icon": "mdi:telegram",
+          "external": true
+        },
+        {
+          "title": "Email",
+          "url": "mailto:skqfly@gmail.com",
+          "icon": "mdi:email-outline"
+        }
+      ],
+      "links": [
+        {
+          "title": "Blog",
+          "url": "/blog"
+        },
+        {
+          "title": "Projects",
+          "url": "/projects"
+        },
+        {
+          "title": "Talks",
+          "url": "/talks"
+        }
+      ]
+    },
+    "identity": {
+      "name": "skqfly",
+      "logo": "/logo.svg"
+    },
+    "navBarLinks": [
+      {
+        "title": "Blog",
+        "url": "/blog"
+      },
+      {
+        "title": "Projects",
+        "url": "/projects"
+      },
+      {
+        "title": "Talks",
+        "url": "/talks"
+      },
+      {
+        "title": "Friends",
+        "url": "/friends"
+      }
+    ],
+    "projectsPageContent": {
+      "seo": {
+        "title": "Projects | skqfly",
+        "description": "skqfly 的公开项目与实验。",
+        "image": "/logo.svg"
+      },
+      "subtitle": "一些公开项目、实验与个人工具。",
+      "projects": [
+        {
+          "title": "ImgBed",
+          "description": "基于 Cloudflare 的开源文件存储、图床与网盘方案。",
+          "image": "/projects/imgbed.png",
+          "categories": [
+            "Web",
+            "Open Source"
+          ],
+          "tags": [
+            "Web",
+            "Cloudflare"
+          ],
+          "url": "https://github.com/skqfly/ImgBed"
+        },
+        {
+          "title": "nodewarden",
+          "description": "运行在 Cloudflare Workers 上的第三方 Bitwarden 服务端实现。",
+          "image": "/projects/nodewarden.png",
+          "categories": [
+            "Tools",
+            "Open Source"
+          ],
+          "tags": [
+            "Tools",
+            "Workers"
+          ],
+          "url": "https://github.com/skqfly/nodewarden"
+        }
+      ]
+    },
+    "socialLinks": [
+      {
+        "title": "GitHub",
+        "url": "https://github.com/skqfly",
+        "icon": "mdi:github",
+        "external": true
+      }
+    ],
+    "talksPageContent": {
+      "seo": {
+        "title": "Talks | skqfly",
+        "description": "skqfly 的演讲、分享与交流记录。",
+        "image": "/logo.svg"
+      },
+      "subtitle": "",
+      "entries": [
+        {
+          "id": "records-beyond-equations",
+          "title": "记录，是计算之外的另一条线索",
+          "date": "2026-07-15",
+          "description": "在公式、代码和日常照片之间，记录帮助我把模糊的想法整理成一段可以回看、可以继续推进的过程。",
+          "images": []
+        },
+        {
+          "id": "observing-scale-between-rocks",
+          "title": "在岩石缝隙里观察尺度",
+          "date": "2026-06-06",
+          "description": "从一枚落在石缝里的绿色物体出发，观察形状、纹理与尺度。很多建模问题，也从选择合适的观察尺度开始。",
+          "images": [
+            {
+              "src": "/photos/greenObject-full.webp",
+              "width": 2560,
+              "height": 1920,
+              "alt": "电影场记板和胶片装置前的人",
+              "preview": "/photos/greenObject-480.webp",
+              "previewLarge": "/photos/greenObject-960.webp"
+            }
+          ]
+        },
+        {
+          "id": "geometry-in-everyday-photos",
+          "title": "圆、线与留白：生活照片里的几何",
+          "date": "2026-06-03",
+          "description": "圆环、纸面和边缘构成一组简单几何。把生活照片抽象成点、线和区域，是理解图像结构的第一步。",
+          "images": [
+            {
+              "src": "/photos/paperGeometry-full.webp",
+              "width": 2560,
+              "height": 1920,
+              "alt": "雨天撑着透明雨伞站在绿地旁的人",
+              "preview": "/photos/paperGeometry-480.webp",
+              "previewLarge": "/photos/paperGeometry-960.webp"
+            },
+            {
+              "src": "/photos/carWindow-full.webp",
+              "width": 2560,
+              "height": 1920,
+              "alt": "夜色中亮起灯光的和平饭店外墙",
+              "preview": "/photos/carWindow-480.webp",
+              "previewLarge": "/photos/carWindow-960.webp"
+            }
+          ]
+        },
+        {
+          "id": "blue-hour-by-the-coast",
+          "title": "海岸线的蓝调时刻",
+          "date": "2026-06-01",
+          "description": "蓝色天空、海面和远处地平线几乎连成一体。这里记录曝光、色阶与渐变如何共同塑造安静的画面。",
+          "images": [
+            {
+              "src": "/photos/coast-full.webp",
+              "width": 1920,
+              "height": 2560,
+              "alt": "高楼之间的两人合影",
+              "preview": "/photos/coast-480.webp",
+              "previewLarge": "/photos/coast-960.webp"
+            },
+            {
+              "src": "/photos/nightLights-full.webp",
+              "width": 1920,
+              "height": 2560,
+              "alt": "城市街头戴着眼镜的人",
+              "preview": "/photos/nightLights-480.webp",
+              "previewLarge": "/photos/nightLights-960.webp"
+            },
+            {
+              "src": "/photos/carWindow-full.webp",
+              "width": 2560,
+              "height": 1920,
+              "alt": "夜色中亮起灯光的和平饭店外墙",
+              "preview": "/photos/carWindow-480.webp",
+              "previewLarge": "/photos/carWindow-960.webp"
+            }
+          ]
+        },
+        {
+          "id": "framing-through-a-car-window",
+          "title": "车窗之外：移动中的取景",
+          "date": "2025-12-18",
+          "description": "隔着车窗拍摄，反射、速度与远景叠在同一帧里。这是一段关于运动、边界和偶然构图的短分享。",
+          "images": [
+            {
+              "src": "/photos/carWindow-full.webp",
+              "width": 2560,
+              "height": 1920,
+              "alt": "夜色中亮起灯光的和平饭店外墙",
+              "preview": "/photos/carWindow-480.webp",
+              "previewLarge": "/photos/carWindow-960.webp"
+            },
+            {
+              "src": "/photos/nightLights-full.webp",
+              "width": 1920,
+              "height": 2560,
+              "alt": "城市街头戴着眼镜的人",
+              "preview": "/photos/nightLights-480.webp",
+              "previewLarge": "/photos/nightLights-960.webp"
+            },
+            {
+              "src": "/photos/coast-full.webp",
+              "width": 1920,
+              "height": 2560,
+              "alt": "高楼之间的两人合影",
+              "preview": "/photos/coast-480.webp",
+              "previewLarge": "/photos/coast-960.webp"
+            },
+            {
+              "src": "/photos/caveLight-full.webp",
+              "width": 1920,
+              "height": 2560,
+              "alt": "手中拿着的一杯饮品",
+              "preview": "/photos/caveLight-480.webp",
+              "previewLarge": "/photos/caveLight-960.webp"
+            }
+          ]
+        },
+        {
+          "id": "how-light-changes-space",
+          "title": "一束光如何改变空间",
+          "date": "2025-08-09",
+          "description": "洞穴里的局部照明让轮廓突然清晰。借这组照片聊光照、阴影和空间深度之间的关系。",
+          "images": [
+            {
+              "src": "/photos/caveLight-full.webp",
+              "width": 1920,
+              "height": 2560,
+              "alt": "手中拿着的一杯饮品",
+              "preview": "/photos/caveLight-480.webp",
+              "previewLarge": "/photos/caveLight-960.webp"
+            },
+            {
+              "src": "/photos/sunlitWalk-full.webp",
+              "width": 2560,
+              "height": 1920,
+              "alt": "海边栏杆旁的人与远处海岸",
+              "preview": "/photos/sunlitWalk-480.webp",
+              "previewLarge": "/photos/sunlitWalk-960.webp"
+            },
+            {
+              "src": "/photos/greenObject-full.webp",
+              "width": 2560,
+              "height": 1920,
+              "alt": "电影场记板和胶片装置前的人",
+              "preview": "/photos/greenObject-480.webp",
+              "previewLarge": "/photos/greenObject-960.webp"
+            },
+            {
+              "src": "/photos/glassCabinet-full.webp",
+              "width": 1920,
+              "height": 2560,
+              "alt": "东方明珠塔前的人",
+              "preview": "/photos/glassCabinet-480.webp",
+              "previewLarge": "/photos/glassCabinet-960.webp"
+            },
+            {
+              "src": "/photos/paperGeometry-full.webp",
+              "width": 2560,
+              "height": 1920,
+              "alt": "雨天撑着透明雨伞站在绿地旁的人",
+              "preview": "/photos/paperGeometry-480.webp",
+              "previewLarge": "/photos/paperGeometry-960.webp"
+            }
+          ]
+        },
+        {
+          "id": "organizing-an-experiment-from-objects",
+          "title": "从眼前的物件开始整理实验",
+          "date": "2025-04-12",
+          "description": "从玻璃柜里的排列，到纸面上的几何，实验常常从一个足够小、能够复查的观察记录开始。",
+          "images": [
+            {
+              "src": "/photos/glassCabinet-full.webp",
+              "width": 1920,
+              "height": 2560,
+              "alt": "东方明珠塔前的人",
+              "preview": "/photos/glassCabinet-480.webp",
+              "previewLarge": "/photos/glassCabinet-960.webp"
+            },
+            {
+              "src": "/photos/paperGeometry-full.webp",
+              "width": 2560,
+              "height": 1920,
+              "alt": "雨天撑着透明雨伞站在绿地旁的人",
+              "preview": "/photos/paperGeometry-480.webp",
+              "previewLarge": "/photos/paperGeometry-960.webp"
+            },
+            {
+              "src": "/photos/greenObject-full.webp",
+              "width": 2560,
+              "height": 1920,
+              "alt": "电影场记板和胶片装置前的人",
+              "preview": "/photos/greenObject-480.webp",
+              "previewLarge": "/photos/greenObject-960.webp"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "photos": {
+    "carWindow": {
+      "src": "/photos/carWindow-full.webp",
+      "width": 2560,
+      "height": 1920,
+      "alt": "夜色中亮起灯光的和平饭店外墙",
+      "preview": "/photos/carWindow-480.webp",
+      "previewLarge": "/photos/carWindow-960.webp"
+    },
+    "caveLight": {
+      "src": "/photos/caveLight-full.webp",
+      "width": 1920,
+      "height": 2560,
+      "alt": "手中拿着的一杯饮品",
+      "preview": "/photos/caveLight-480.webp",
+      "previewLarge": "/photos/caveLight-960.webp"
+    },
+    "paperGeometry": {
+      "src": "/photos/paperGeometry-full.webp",
+      "width": 2560,
+      "height": 1920,
+      "alt": "雨天撑着透明雨伞站在绿地旁的人",
+      "preview": "/photos/paperGeometry-480.webp",
+      "previewLarge": "/photos/paperGeometry-960.webp"
+    },
+    "greenObject": {
+      "src": "/photos/greenObject-full.webp",
+      "width": 2560,
+      "height": 1920,
+      "alt": "电影场记板和胶片装置前的人",
+      "preview": "/photos/greenObject-480.webp",
+      "previewLarge": "/photos/greenObject-960.webp"
+    },
+    "coast": {
+      "src": "/photos/coast-full.webp",
+      "width": 1920,
+      "height": 2560,
+      "alt": "高楼之间的两人合影",
+      "preview": "/photos/coast-480.webp",
+      "previewLarge": "/photos/coast-960.webp"
+    },
+    "sunlitWalk": {
+      "src": "/photos/sunlitWalk-full.webp",
+      "width": 2560,
+      "height": 1920,
+      "alt": "海边栏杆旁的人与远处海岸",
+      "preview": "/photos/sunlitWalk-480.webp",
+      "previewLarge": "/photos/sunlitWalk-960.webp"
+    },
+    "glassCabinet": {
+      "src": "/photos/glassCabinet-full.webp",
+      "width": 1920,
+      "height": 2560,
+      "alt": "东方明珠塔前的人",
+      "preview": "/photos/glassCabinet-480.webp",
+      "previewLarge": "/photos/glassCabinet-960.webp"
+    },
+    "nightLights": {
+      "src": "/photos/nightLights-full.webp",
+      "width": 1920,
+      "height": 2560,
+      "alt": "城市街头戴着眼镜的人",
+      "preview": "/photos/nightLights-480.webp",
+      "previewLarge": "/photos/nightLights-960.webp"
+    },
+    "mountainView": {
+      "src": "/photos/mountainView-full.webp",
+      "width": 2560,
+      "height": 1920,
+      "alt": "skqfly 摄影作品 9",
+      "preview": "/photos/mountainView-480.webp",
+      "previewLarge": "/photos/mountainView-960.webp"
+    },
+    "eveningCoast": {
+      "src": "/photos/eveningCoast-full.webp",
+      "width": 1920,
+      "height": 2560,
+      "alt": "skqfly 摄影作品 10",
+      "preview": "/photos/eveningCoast-480.webp",
+      "previewLarge": "/photos/eveningCoast-960.webp"
+    },
+    "photoEleven": {
+      "src": "/photos/photoEleven-960.webp",
+      "width": 1920,
+      "height": 2560,
+      "alt": "skqfly 摄影作品 11",
+      "preview": "/photos/photoEleven-480.webp",
+      "previewLarge": "/photos/photoEleven-960.webp"
+    },
+    "photoTwelve": {
+      "src": "/photos/photoTwelve-960.webp",
+      "width": 1920,
+      "height": 2560,
+      "alt": "skqfly 摄影作品 12",
+      "preview": "/photos/photoTwelve-480.webp",
+      "previewLarge": "/photos/photoTwelve-960.webp"
+    },
+    "drone-green-hills": {
+      "src": "/photos/drone-green-hills-full.webp",
+      "width": 2560,
+      "height": 1920,
+      "alt": "无人机镜头下的绿山与石屋",
+      "preview": "/photos/drone-green-hills-480.webp",
+      "previewLarge": "/photos/drone-green-hills-960.webp"
+    }
+  },
+  "posts": {
+    "domain-ssl-cert": {
+      "meta": {
+        "title": "Nginx 反向代理与 HTTPS 配置",
+        "pubDate": "2025-10-09",
+        "description": "为本机服务绑定域名，用 Certbot 申请证书并验证自动续期。",
+        "author": "skqfly",
+        "category": "Linux",
+        "image": {
+          "url": "/logo.svg",
+          "alt": "skqfly 标志"
+        }
+      },
+      "content": "一个服务已经在服务器的 `127.0.0.1:40301` 上运行，接下来希望通过域名和 HTTPS 访问。本文以 Ubuntu 的 Nginx 软件包和 Certbot 为例，依次处理 DNS、反向代理与证书。\n\n示例使用 `panel.example.com`，需要替换成自己的域名。若应用还有安全入口路径，例如 `/skqfly`，访问时保留该路径；不要把它硬塞到所有反向代理请求里。\n\n## 1. 检查服务与域名解析\n\n先在服务器本机确认应用能够响应：\n\n```bash\ncurl -I http://127.0.0.1:40301/\n```\n\n应用返回登录跳转或需要入口路径，不一定意味着服务未启动。应结合实际地址和服务日志判断。\n\n在 DNS 服务商处添加 A 记录：以 `panel.example.com` 为例，主机记录通常填写 `panel`，记录值为服务器公网 IPv4。只有根域名才通常使用 `@`。\n\n```bash\ndig +short panel.example.com A\ndig +short panel.example.com AAAA\n```\n\nA 记录应指向目标服务器。若同时存在 AAAA 记录，IPv6 也必须能正确访问；不正确的 IPv6 记录可能影响证书验证。\n\n## 2. 安装 Nginx 与 Certbot\n\n如果已经由 1Panel、容器或其他服务管理 80、443 端口，先确认端口归属，不要另起一套冲突的 Nginx。\n\n```bash\nsudo ss -lntp | grep -E ':(80|443)'\nsudo apt update\nsudo apt install -y nginx certbot python3-certbot-nginx\nsudo systemctl enable --now nginx\n```\n\n这是 Ubuntu 软件源安装方式。使用其他 Certbot 安装方式时，按对应官方说明操作，避免混装多个版本。\n\n## 3. 创建反向代理站点\n\n编辑站点文件：\n\n```bash\nsudo nano /etc/nginx/sites-available/panel.example.com\n```\n\n```nginx\nserver {\n    listen 80;\n    server_name panel.example.com;\n\n    client_max_body_size 100M;\n\n    location / {\n        proxy_pass http://127.0.0.1:40301;\n        proxy_http_version 1.1;\n        proxy_set_header Host $host;\n        proxy_set_header X-Real-IP $remote_addr;\n        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n        proxy_set_header X-Forwarded-Proto $scheme;\n\n        proxy_set_header Upgrade $http_upgrade;\n        proxy_set_header Connection \"upgrade\";\n    }\n\n    access_log /var/log/nginx/panel_access.log;\n    error_log /var/log/nginx/panel_error.log;\n}\n```\n\n这里的 `proxy_pass` 只写上游地址，不附加 URI。根据 [Nginx 的路径转发规则](https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_pass)，请求中的路径会传给上游，因此 `/skqfly` 仍由应用处理。\n\nWebSocket 相关请求头用于终端等需要协议升级的功能。实际应用若提供了专用反向代理配置，应优先对照其说明调整。\n\n## 4. 启用站点并检查配置\n\nUbuntu 软件包通常通过 `sites-enabled` 加载站点。首次启用时创建软链接；如果链接已经存在，就不要重复创建。\n\n```bash\nsudo ln -s /etc/nginx/sites-available/panel.example.com /etc/nginx/sites-enabled/panel.example.com\nsudo nginx -t\n```\n\n只在检查通过后重新加载：\n\n```bash\nsudo systemctl reload nginx\n```\n\n此时先测试 HTTP 访问，确认域名、入口路径和静态资源都能正常工作，再进入证书步骤。\n\n## 5. 申请 HTTPS 证书\n\n确保公网可以访问该域名的 80 端口，并按需放行 443 端口；这同时涉及服务器防火墙和云安全组。\n\n```bash\nsudo certbot --nginx -d panel.example.com --redirect\n```\n\n按当前版本的提示填写账户信息并阅读条款。`--redirect` 用于将 HTTP 请求跳转到 HTTPS，不依赖教程截图里的菜单编号。\n\n申请完成后检查：\n\n```bash\nsudo nginx -t\nsudo certbot certificates\ncurl -I https://panel.example.com/\n```\n\n如果应用设置了安全入口，实际登录地址应类似 `https://panel.example.com/skqfly`。HTTPS 可用并不等于入口路径可以省略。\n\n## 6. 验证续期与排查问题\n\n```bash\nsudo certbot renew --dry-run\nsystemctl list-timers --all | grep -i certbot\n```\n\n`dry-run` 用于测试续期流程。定时任务的名称和管理方式取决于安装方式，不能仅凭一次申请成功就认定自动续期已配置。\n\n常见问题：\n\n- **证书验证失败**：检查 A/AAAA 记录、80 端口、域名代理或 CDN 设置。\n- **502 Bad Gateway**：先测试本机上游地址，再检查应用监听协议、端口和 Nginx 错误日志。\n- **首页能开但资源或登录失败**：核对路径转发、应用外部地址配置和安全入口。\n- **证书正常但浏览器仍有提醒**：查看具体原因，例如混合内容或证书域名不匹配，不以图标颜色作为判断依据。\n\n```bash\nsudo tail -n 50 /var/log/nginx/panel_error.log\n```\n\n## 参考资料\n\n- [Nginx 反向代理模块](https://nginx.org/en/docs/http/ngx_http_proxy_module.html)\n- [Nginx WebSocket 代理](https://nginx.org/en/docs/http/websocket.html)\n- [Certbot 使用与续期](https://eff-certbot.readthedocs.io/en/stable/using.html)\n"
+    },
+    "frp-setup": {
+      "meta": {
+        "title": "frp 内网穿透：SSH 与网站访问",
+        "pubDate": "2025-10-03",
+        "description": "配置 frps 与 frpc，将内网 SSH 和 HTTP 服务映射到公网入口。",
+        "author": "skqfly",
+        "category": "Linux",
+        "image": {
+          "url": "/logo.svg",
+          "alt": "skqfly 标志"
+        }
+      },
+      "content": "frp 由两部分组成：公网服务器运行 `frps`，内网机器运行 `frpc`。客户端主动连接服务端，再把指定的内网服务转发出去。\n\n本文保留原笔记使用的 **v0.65.0** 作为安装示例，不代表当前最新版。示例分别映射 SSH 和 HTTP 网站，公网地址、域名与认证令牌都需要替换。\n\n## 1. 下载对应架构的程序\n\n在公网服务器和内网机器上分别执行 `uname -m`。常见对应关系为 `x86_64 → amd64`、`aarch64 → arm64`，不能只根据设备名称选择压缩包。\n\nx86_64 Linux 示例：\n\n```bash\nwget https://github.com/fatedier/frp/releases/download/v0.65.0/frp_0.65.0_linux_amd64.tar.gz\ntar -xzf frp_0.65.0_linux_amd64.tar.gz\nmv frp_0.65.0_linux_amd64 frp\ncd frp\n```\n\n64 位树莓派使用同一版本的 `linux_arm64` 压缩包，并相应调整文件名。两端优先使用相同版本；从 [官方 Releases](https://github.com/fatedier/frp/releases) 获取文件并核对发布信息。\n\n## 2. 配置公网服务端\n\n在公网服务器的 frp 目录创建 `frps.toml`：\n\n```toml\nbindPort = 7000\nvhostHTTPPort = 8080\nsubDomainHost = \"example.com\"\n\nauth.method = \"token\"\nauth.token = \"REPLACE_WITH_A_LONG_RANDOM_TOKEN\"\n\nwebServer.addr = \"127.0.0.1\"\nwebServer.port = 7500\nwebServer.user = \"admin\"\nwebServer.password = \"REPLACE_WITH_A_STRONG_PASSWORD\"\n```\n\n- `7000`：接收 frpc 的连接。\n- `8080`：接收转发到内网网站的 HTTP 请求，避开已有 Nginx 常用的 80 端口。\n- `example.com`：用于子域名转发的基础域名。\n- `7500`：可选控制台，这里仅监听本机；不需要时可删除四个 `webServer` 字段。\n\n运行前必须替换令牌和密码，客户端使用同一个认证令牌。配置里采用完整的点分键名，避免把 `auth` 误写进 `[webServer]` 表中。\n\n检查语法并以前台方式启动：\n\n```bash\n./frps verify -c ./frps.toml\n./frps -c ./frps.toml\n```\n\n## 3. 配置内网客户端\n\n在内网机器上创建 `frpc.toml`。把 `frp.example.com` 替换成公网服务器地址。\n\n```toml\nserverAddr = \"frp.example.com\"\nserverPort = 7000\n\nauth.method = \"token\"\nauth.token = \"REPLACE_WITH_A_LONG_RANDOM_TOKEN\"\n\n[[proxies]]\nname = \"ssh\"\ntype = \"tcp\"\nlocalIP = \"127.0.0.1\"\nlocalPort = 22\nremotePort = 60022\n\n[[proxies]]\nname = \"blog\"\ntype = \"http\"\nlocalIP = \"127.0.0.1\"\nlocalPort = 8888\nsubdomain = \"blog\"\n```\n\nSSH 通过服务端的 `60022/tcp` 进入内网机器的 22 端口。网站使用 HTTP 类型，通过 Host 匹配 `blog.example.com`，再转发到内网的 `127.0.0.1:8888`。\n\n先确认内网服务确实存在，再运行 frpc：\n\n```bash\ncurl -I http://127.0.0.1:8888/\n./frpc verify -c ./frpc.toml\n./frpc -c ./frpc.toml\n```\n\n## 4. 配置 DNS 和公网端口\n\n将 `frp.example.com` 与 `blog.example.com` 的 DNS 记录指向公网服务器。只转发一个网站时，为 `blog` 添加明确的记录即可，不必先配置通配符域名。\n\n按用途配置公网服务器防火墙和云安全组：\n\n- `7000/tcp`：供内网 frpc 连接。\n- `60022/tcp`：供授权的 SSH 用户连接，尽量限制来源地址。\n- `8080/tcp`：供网站访问；若由同机 Nginx 接入，则可以只暴露 Nginx 的端口。\n- 控制台的 `7500` 只监听回环地址，无需对公网开放。\n\n从外部电脑验证：\n\n```bash\nssh -p 60022 用户名@frp.example.com\ncurl -I http://blog.example.com:8080/\n```\n\n当前网站示例是 HTTP。需要 HTTPS 时，可在公网 Nginx 终止 TLS，再代理至 frps 的 HTTP 端口，并保留 `Host` 请求头。不要只添加 `vhostHTTPSPort` 就认为证书已经配置完成。\n\n## 5. 交给 systemd 运行\n\n前台测试正常后，用 `Ctrl+C` 停止测试进程，再参考 [systemd 服务管理笔记](/blog/linux-service-autostart) 创建对应单元文件：\n\n- 公网服务器：`frps.service`，启动 `frps -c /实际路径/frps.toml`。\n- 内网机器：`frpc.service`，启动 `frpc -c /实际路径/frpc.toml`。\n\n单元文件存在后，分别在相应机器执行：\n\n```bash\n# 公网服务器\nsudo systemctl daemon-reload\nsudo systemctl enable --now frps\n\n# 内网机器\nsudo systemctl daemon-reload\nsudo systemctl enable --now frpc\n```\n\n## 6. 常见问题\n\n**连接超时**：检查服务端地址、监听端口、防火墙和安全组。先看日志，再测试网络。\n\n```bash\n# 公网服务器\nsudo ss -lntp | grep ':7000'\njournalctl -u frps -n 50 --no-pager\n\n# 内网机器\nnc -vz frp.example.com 7000\njournalctl -u frpc -n 50 --no-pager\n```\n\n**认证失败**：两端令牌必须完全一致，也要检查 TOML 字段是否处于正确层级。\n\n**程序无法执行**：核对执行权限、CPU 架构与文件路径；`203/EXEC` 不一定只是权限问题。\n\n**能连 frps，但网站打不开**：检查内网 8888 端口是否工作，以及 DNS、HTTP 入口端口和 Host 是否匹配。\n\n**端口占用**：确认没有另一个前台进程，或其他服务已经占用 `7000`、`8080`、`60022`。\n\n## 参考资料\n\n- [frp 安装与运行](https://gofrp.org/en/docs/setup/)\n- [服务端配置字段](https://gofrp.org/en/docs/reference/server-configures/)\n- [HTTP 与 HTTPS 转发](https://gofrp.org/en/docs/features/http-https/)\n"
+    },
+    "hello-skqfly": {
+      "meta": {
+        "title": "从这里开始：记录与计算",
+        "pubDate": "2026-07-15",
+        "description": "关于这个网站，以及我想持续记录的事。",
+        "author": "skqfly",
+        "category": "Notes",
+        "image": {
+          "url": "/logo.svg",
+          "alt": "skqfly 标志"
+        }
+      },
+      "content": "这个网站用来记录计算数学、科学计算和数学建模，也留下一些把想法变成可复现方案的过程。\n\n我希望笔记不只保存一个结论，还能说明问题从哪里来、尝试过什么，以及下一次如何继续。代码、推导和部署记录会慢慢积累在这里。\n\n网站基于 Astro 构建。先保持简单，再持续补充。\n"
+    },
+    "linux-service-autostart": {
+      "meta": {
+        "title": "用 systemd 管理 Linux 服务",
+        "pubDate": "2025-10-03",
+        "description": "以 frpc 为例，配置开机自启、异常重启和日志排查。",
+        "author": "skqfly",
+        "category": "Linux",
+        "image": {
+          "url": "/logo.svg",
+          "alt": "skqfly 标志"
+        }
+      },
+      "content": "终端里的程序运行正常，不代表关闭 SSH 后它还会继续运行。对需要长期运行的进程，可以交给 systemd 管理：统一启动方式，记录日志，并在异常退出后尝试重启。\n\n下面以 Ubuntu 上的 frpc 为例。示例沿用用户 `skqfly` 和目录 `/home/skqfly/frp`；使用前将它们替换成实际用户与路径。\n\n## 1. 先验证程序能独立运行\n\n先检查文件，再以前台方式启动。这样可以把程序自身的问题与 systemd 配置问题分开排查。\n\n```bash\nls -l /home/skqfly/frp/frpc\n/home/skqfly/frp/frpc -c /home/skqfly/frp/frpc.toml\n```\n\n确认连接正常后，按 `Ctrl+C` 退出。如果可信的程序文件没有执行权限，可补上：\n\n```bash\nchmod u+x /home/skqfly/frp/frpc\n```\n\n## 2. 创建服务文件\n\n编辑 `/etc/systemd/system/frpc.service`：\n\n```bash\nsudo nano /etc/systemd/system/frpc.service\n```\n\n写入以下配置。程序由普通用户运行；配置和目录也需要允许该用户读取。\n\n```ini\n[Unit]\nDescription=FRP Client\nWants=network-online.target\nAfter=network-online.target\n\n[Service]\nType=simple\nUser=skqfly\nWorkingDirectory=/home/skqfly/frp\nExecStart=/home/skqfly/frp/frpc -c /home/skqfly/frp/frpc.toml\nRestart=on-failure\nRestartSec=5s\n\n[Install]\nWantedBy=multi-user.target\n```\n\n几个容易混淆的字段：\n\n- `WorkingDirectory`：程序的工作目录，不等于可执行文件的位置。\n- `ExecStart`：启动命令，使用绝对路径。它不是普通 shell 命令行，不能直接照搬管道或重定向。\n- `Restart=on-failure`：异常退出时重启；主动停止服务不会因此反复启动。\n- `After` 与 `Wants`：请求网络就绪相关目标并安排启动顺序，不保证远端服务器一定可达。\n\n注释应独立成行，不要在配置值后追加解释。需要换行的启动命令也应遵循 systemd 的续行规则。\n\n## 3. 加载配置并启用服务\n\n```bash\nsudo systemctl daemon-reload\nsudo systemctl enable --now frpc\nsystemctl status frpc --no-pager\n```\n\n`daemon-reload` 让 systemd 重新读取单元文件；`enable --now` 同时设置开机自启并立即启动。已有服务文件修改后，还需要重启服务才能应用新的启动参数：\n\n```bash\nsudo systemctl daemon-reload\nsudo systemctl restart frpc\n```\n\n## 4. 日常管理与日志\n\n```bash\n# 查看最近的日志\njournalctl -u frpc -n 50 --no-pager\n\n# 持续跟踪日志，按 Ctrl+C 退出\njournalctl -u frpc -f\n\n# 重启或停止\nsudo systemctl restart frpc\nsudo systemctl stop frpc\n\n# 取消开机自启，并立即停止\nsudo systemctl disable --now frpc\n```\n\n如果当前账号没有读取服务日志的权限，在 `journalctl` 前加 `sudo`。\n\n## 5. 启动失败时检查什么\n\n遇到 `status=203/EXEC`，先检查 `ExecStart` 路径、执行权限和二进制架构；它不只表示“缺少执行权限”。\n\n```bash\nsystemctl cat frpc\nls -l /home/skqfly/frp/frpc\nfile /home/skqfly/frp/frpc\nuname -m\njournalctl -u frpc -b --no-pager\n```\n\n如果服务显示运行中但连接失败，再排查 frpc 配置、认证信息和网络。可以先检查配置语法：\n\n```bash\n/home/skqfly/frp/frpc verify -c /home/skqfly/frp/frpc.toml\n```\n\n运行 frps 时，同样可以创建 `frps.service`，将名称、可执行文件和配置路径改为 frps。运行账号还必须具备绑定目标端口的权限。\n\n## 6. 确认开机自启\n\n```bash\nsystemctl is-enabled frpc\nsystemctl is-active frpc\n```\n\n两条命令分别检查自启状态和当前运行状态。下次正常重启后，再查看 `systemctl status frpc` 与本次启动日志，确认服务确实自动恢复。\n\n## 参考资料\n\n- [systemd 服务配置](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html)\n- [systemd 配置文件语法](https://www.freedesktop.org/software/systemd/man/latest/systemd.syntax.html)\n- [frp 安装与 systemd 管理](https://gofrp.org/en/docs/setup/)\n"
+    },
+    "mcsm-pi5-minecraft": {
+      "meta": {
+        "title": "树莓派 5：用 MCSManager 管理 Minecraft",
+        "pubDate": "2025-10-10",
+        "description": "在 Ubuntu 24.04 上安装面板、连接节点，并创建 Java 版游戏实例。",
+        "author": "skqfly",
+        "category": "Game",
+        "image": {
+          "url": "/logo.svg",
+          "alt": "skqfly 标志"
+        }
+      },
+      "content": "MCSManager 把游戏实例的文件、日志和启动命令集中到网页里。下面以树莓派 5 的 64 位 Ubuntu 24.04 为例，将 Web 面板与守护进程部署在同一台机器，再创建 Minecraft Java 版实例。\n\n如果只需要一个后台服务，也可以使用 [不依赖面板的部署方式](/blog/minecraft-server-ubuntu)。\n\n## 1. 安装面板与守护进程\n\n安装前先检查系统架构和现有端口：\n\n```bash\nuname -m\nsudo ss -lntp\n```\n\n64 位 ARM 系统通常显示 `aarch64`。按 [MCSManager 官方安装说明](https://docs.mcsmanager.com/zh_cn/) 确认当前支持的环境。\n\n官方快速安装脚本需要 root 权限。可以先下载、查看内容，再执行：\n\n```bash\nsudo apt update\nsudo apt install -y curl ca-certificates\ncurl -fsSL https://script.mcsmanager.com/setup_cn.sh -o /tmp/mcsmanager-setup.sh\nless /tmp/mcsmanager-setup.sh\nsudo bash /tmp/mcsmanager-setup.sh\n```\n\n按安装结果检查两个服务：\n\n```bash\nsudo systemctl start mcsm-daemon.service\nsudo systemctl start mcsm-web.service\nsystemctl status mcsm-daemon mcsm-web --no-pager\n```\n\nWeb 面板默认监听 `23333`，守护进程默认监听 `24444`；如果安装时修改过配置，以实际端口为准。\n\n## 2. 打开面板并配置访问\n\n在树莓派本机打开浏览器时，使用 `http://localhost:23333`；在另一台电脑上访问时，改用树莓派的局域网 IP。\n\n按首次访问页面提示创建管理账号，并保存好密码。确认服务端口可达：\n\n```bash\nsudo ss -lntp | grep -E ':(23333|24444)'\n```\n\n如果已经启用 UFW，可仅允许管理设备访问面板相关端口。下面的地址是占位示例，需要改成你的电脑 IP：\n\n```bash\nsudo ufw allow from 192.168.1.100 to any port 23333 proto tcp\nsudo ufw allow from 192.168.1.100 to any port 24444 proto tcp\n```\n\n若准备首次启用防火墙，先放行实际使用的 SSH 端口，避免远程连接被切断。公网部署还需要配置云安全组和 HTTPS；不必为了游戏联机向所有人开放管理面板。\n\n## 3. 连接守护进程节点\n\n在面板的节点管理页面查看已有节点。单机安装若已自动建立本地节点，不需要重复添加。\n\n手动添加时填写：\n\n- **地址**：使用官方文档支持的连接地址；同机节点可按说明使用 `localhost`，远程节点则填写对应 IP 或域名。\n- **端口**：守护进程端口，默认 `24444`。\n- **密钥**：守护进程的节点密钥，不是面板登录密码。\n\n使用官方脚本安装时，节点配置通常位于：\n\n```bash\nsudo nano /opt/mcsmanager/daemon/data/Config/global.json\n```\n\n读取配置中的 `key`，填入节点管理页面。不要把真实密钥贴进公开文章或截图。\n\n节点在线不代表所有浏览器功能都已连通。如果远程终端、上传或下载失败，还应检查浏览器到节点的网络、WebSocket 和 HTTPS 配置，参照 [分布式部署说明](https://docs.mcsmanager.com/advanced/distributed.html)。\n\n## 4. 为目标版本准备 Java\n\n本文以 Minecraft 1.21.x 原版服务端为例，安装 Java 21：\n\n```bash\nsudo apt update\nsudo apt install -y openjdk-21-jre-headless\njava -version\n```\n\n如果安装了多个版本，可以查看并切换默认 Java：\n\n```bash\nsudo update-alternatives --config java\n```\n\n模组包可能要求不同的 Java 版本。需要同时运行多个版本时，在各实例启动命令中填写对应 Java 的绝对路径，不必反复修改系统默认值。\n\n## 5. 创建并启动游戏实例\n\n在面板中创建 Java 版实例，选择刚才连接的节点。将对应版本的服务端 JAR 上传到实例工作目录，命名为 `server.jar`。\n\n服务端文件从 [Minecraft 官方下载页](https://www.minecraft.net/zh-hans/download/server) 或目标版本发布说明获取。不要把不同版本的客户端、服务端混用。\n\n启动命令：\n\n```bash\njava -Xms1G -Xmx4G -jar server.jar nogui\n```\n\n这里初始分配 1 GiB 堆内存，最大 4 GiB。根据树莓派实际内存调整，并为系统、面板和堆外内存留出余量。\n\n首次启动通常会生成 `eula.txt`。阅读并同意 [Minecraft EULA](https://www.minecraft.net/eula) 后，在实例文件管理中将其改为：\n\n```properties\neula=true\n```\n\n再次启动，检查日志是否显示服务器就绪。游戏连接使用默认 `25565/tcp`，与面板的两个管理端口无关。\n\n## 6. 导入整合包时的区别\n\n整合包不一定用 `java -jar server.jar` 启动。以 [Better MC Forge BMC4](https://www.curseforge.com/minecraft/modpacks/better-mc-forge-bmc4) 这类整合包为例，应下载与目标版本对应的 **Server Pack**，再按包内说明准备 Java、安装加载器并设置启动命令。\n\n- 不要把客户端整合包直接当作服务端上传。\n- 优先使用 Server Pack 随附的启动脚本及参数。\n- 树莓派还需要确认包内原生库或工具支持 ARM64。\n- 首次运行先看日志，确认依赖和内存要求，再考虑自动重启或定时任务。\n\n## 参考资料\n\n- [MCSManager 快速开始](https://docs.mcsmanager.com/zh_cn/)\n- [MCSManager 节点与密钥](https://docs.mcsmanager.com/advanced/distributed.html)\n- [Minecraft Java 21 要求](https://www.minecraft.net/en-us/article/minecraft-java-edition-1-20-5)\n"
+    },
+    "minecraft-server-ubuntu": {
+      "meta": {
+        "title": "在 Ubuntu 24.04 部署 Minecraft 服务器",
+        "pubDate": "2025-10-05",
+        "description": "从安装 Java 到首次启动，再用 systemd 保持服务运行。",
+        "author": "skqfly",
+        "category": "Game",
+        "image": {
+          "url": "/logo.svg",
+          "alt": "skqfly 标志"
+        }
+      },
+      "content": "这篇笔记面向 Minecraft Java 版原版服务器，以 Ubuntu 24.04、Minecraft 1.21.x 和 Java 21 为示例环境。客户端与服务端版本需要一致；其他版本或模组服务端应先确认各自的 Java 要求。\n\n先让服务端以前台方式成功启动，再配置开机自启。这样出现问题时，可以更快定位到具体步骤。\n\n## 1. 安装 Java\n\n```bash\nsudo apt update\nsudo apt install -y openjdk-21-jre-headless\njava -version\n```\n\n这里安装运行环境即可，不需要为了运行服务器额外安装完整开发工具。输出应包含 Java 21；如果机器上有多个 Java 版本，检查实际执行路径：\n\n```bash\ncommand -v java\nreadlink -f \"$(command -v java)\"\n```\n\n不要把“下载最新服务端”与固定 Java 版本直接配对。升级 Minecraft 前，应重新核对目标版本的运行要求。\n\n## 2. 准备独立目录与服务端文件\n\n以下操作使用普通登录用户执行，示例用户为 `skqfly`。\n\n```bash\nmkdir -p ~/minecraft\ncd ~/minecraft\n```\n\n从 [Minecraft 官方服务端下载页](https://www.minecraft.net/zh-hans/download/server) 或目标版本的官方发布说明获取对应 JAR，放入该目录，统一命名为 `server.jar`。\n\n检查文件已经放好：\n\n```bash\nls -lh ~/minecraft/server.jar\n```\n\n不使用从网页文字中拼接下载地址的脚本，以免下载到错误版本或无效文件。\n\n## 3. 首次启动并确认 EULA\n\n```bash\ncd ~/minecraft\njava -Xms1G -Xmx4G -jar server.jar nogui\n```\n\n`-Xms1G` 表示初始堆内存为 1 GiB，`-Xmx4G` 表示最大堆内存为 4 GiB；`nogui` 表示不启动图形界面。它们是示例参数，需要为操作系统和 Java 堆外内存保留空间。\n\n首次启动通常会生成配置文件，并因尚未接受 EULA 而退出。阅读 [Minecraft EULA](https://www.minecraft.net/eula)，同意后编辑 `eula.txt`：\n\n```bash\nnano eula.txt\n```\n\n```properties\neula=true\n```\n\n如果没有生成文件，先检查终端中的实际错误，不要把所有启动失败都归因于 EULA。\n\n## 4. 再次启动并连接\n\n```bash\njava -Xms1G -Xmx4G -jar server.jar nogui\n```\n\n看到服务器就绪日志后，在同一局域网内使用服务器的局域网地址连接：\n\n```text\n服务器的局域网 IP:25565\n```\n\n原版 Java 服务器默认使用 `25565/tcp`。如已启用 UFW，可按需要放行：\n\n```bash\nsudo ufw allow 25565/tcp\n```\n\n公网访问还需要云安全组或路由器端口转发；没有公网入口的家庭网络可使用 [frp](/blog/frp-setup)。不要把面板端口与游戏端口混为一谈。\n\n测试结束后，在服务器控制台输入 `stop` 正常退出，避免与后面的 systemd 服务争用端口。\n\n## 5. 配置开机自启\n\n编辑服务文件：\n\n```bash\nsudo nano /etc/systemd/system/minecraft.service\n```\n\n下面沿用 `skqfly` 用户与 `/home/skqfly/minecraft` 目录。请先确认用户、JAR 和 Java 路径存在，再按实际情况修改。\n\n```ini\n[Unit]\nDescription=Minecraft Java Server\nAfter=network.target\n\n[Service]\nType=simple\nUser=skqfly\nWorkingDirectory=/home/skqfly/minecraft\nExecStart=/usr/bin/java -Xms1G -Xmx4G -jar server.jar nogui\nRestart=on-failure\nRestartSec=10s\nTimeoutStopSec=120s\n\n[Install]\nWantedBy=multi-user.target\n```\n\n先使用简洁的启动参数，等服务器稳定运行、确实存在性能问题后，再根据测量结果调整 JVM。不要把带行尾解释的多行命令直接写进 `ExecStart`。\n\n```bash\nsudo systemctl daemon-reload\nsudo systemctl enable --now minecraft\nsystemctl status minecraft --no-pager\njournalctl -u minecraft -n 50 --no-pager\n```\n\n## 6. 维护与排查\n\n- **Java 版本不匹配**：出现 `UnsupportedClassVersionError` 时，核对服务端要求与 systemd 使用的 Java 路径。\n- **端口已被占用**：检查是否还开着前台服务端。\n- **本机可连、外网不可连**：分别检查游戏端口、防火墙、云安全组与路由器转发。\n- **更新或备份世界**：先正常停止服务，备份世界目录和配置，再替换服务端文件。不要在没有备份时直接跨版本升级。\n\n```bash\nsudo ss -lntp | grep ':25565'\nsudo systemctl stop minecraft\nsudo systemctl start minecraft\n```\n\n## 参考资料\n\n- [Minecraft 服务端下载](https://www.minecraft.net/zh-hans/download/server)\n- [Java 21 要求的官方说明](https://www.minecraft.net/en-us/article/minecraft-java-edition-1-20-5)\n- [systemd 服务配置](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html)\n"
+    },
+    "wsl2-setup": {
+      "meta": {
+        "title": "WSL 2 配置：安装、备份与迁移",
+        "pubDate": "2025-10-16",
+        "description": "以 Ubuntu 22.04 为例，区分 Windows 与 Linux 命令，整理迁移和日常配置。",
+        "author": "skqfly",
+        "category": "Linux",
+        "image": {
+          "url": "/logo.svg",
+          "alt": "skqfly 标志"
+        }
+      },
+      "content": "WSL 2 的配置经常跨越两个环境：Windows 负责发行版的安装和管理，Ubuntu 负责 Linux 用户、软件与服务。先分清命令在哪里执行，比记住所有参数更重要。\n\n下面沿用 Ubuntu 22.04 作为示例。`D:\\WSL` 是 Windows 路径，`/etc/wsl.conf` 是发行版内部路径，不能直接混用。\n\n## 1. 安装并确认 WSL 2\n\n在管理员 PowerShell 中执行：\n\n```powershell\nwsl --install -d Ubuntu-22.04\n```\n\n根据提示重启，并完成 Ubuntu 首次启动时的用户名和密码设置。随后在 PowerShell 中检查：\n\n```powershell\nwsl --list --verbose\nwsl --status\n```\n\n确认发行版的 `VERSION` 为 `2`。设置后续安装默认使用 WSL 2，与转换现有发行版是两件不同的事：\n\n```powershell\n# 后续安装默认使用 WSL 2\nwsl --set-default-version 2\n\n# 现有发行版若仍为 WSL 1，可转换为 WSL 2\nwsl --set-version Ubuntu-22.04 2\n\n# 指定默认启动的发行版\nwsl --set-default Ubuntu-22.04\n```\n\n执行转换前，先备份重要数据。\n\n## 2. 导出备份，再导入新位置\n\n在 PowerShell 中创建目标目录。停止发行版前，先保存工作并关闭其中的服务。\n\n```powershell\nNew-Item -ItemType Directory -Force D:\\WSL | Out-Null\nwsl --terminate Ubuntu-22.04\nwsl --export Ubuntu-22.04 D:\\WSL\\ubuntu22.04.tar\nGet-Item D:\\WSL\\ubuntu22.04.tar\n```\n\n先用一个新名字导入到目标位置，保留原发行版用于核对：\n\n```powershell\nwsl --import Ubuntu-22.04-Moved D:\\WSL\\Ubuntu22.04-Moved D:\\WSL\\ubuntu22.04.tar --version 2\nwsl -d Ubuntu-22.04-Moved\n```\n\n进入后检查主目录、项目文件和重要服务。确认导入完整、备份可用，再设置新的默认发行版：\n\n```powershell\nwsl --set-default Ubuntu-22.04-Moved\n```\n\n> `wsl --unregister` 会永久删除指定发行版的数据。下面是确认迁移成功之后才需要的可选清理步骤，不要在备份验证前执行。\n\n```powershell\nwsl --unregister Ubuntu-22.04\n```\n\n## 3. 为导入的发行版设置默认用户\n\n导入后的发行版可能默认以 root 登录。先在 Ubuntu 内检查原有用户：\n\n```bash\ngetent passwd skqfly\n```\n\n若用户名不同，使用实际存在的账号。编辑 `/etc/wsl.conf`，保留文件已有配置，仅新增或修改 `[user]` 段：\n\n```bash\nsudo nano /etc/wsl.conf\n```\n\n```ini\n[user]\ndefault=skqfly\n```\n\n回到 PowerShell，终止并重新打开该发行版：\n\n```powershell\nwsl --terminate Ubuntu-22.04-Moved\nwsl -d Ubuntu-22.04-Moved\n```\n\n也可以临时指定登录用户：\n\n```powershell\nwsl -d Ubuntu-22.04-Moved --user skqfly\n```\n\n这与在 Ubuntu 内执行 `su - skqfly` 不同：前者指定一次 WSL 启动的用户，后者只切换当前 Linux 会话。\n\n## 4. 按版本选择软件源\n\n软件源必须匹配发行版代号与 CPU 架构。先在 Ubuntu 中确认：\n\n```bash\n. /etc/os-release\nprintf '%s\\n' \"$VERSION_CODENAME\"\ndpkg --print-architecture\n```\n\nUbuntu 22.04 的代号为 `jammy`。以下是使用传统 `sources.list` 的 **amd64 Ubuntu 22.04** 示例；其他版本或 ARM 系统应按 [镜像站说明](https://mirrors.ustc.edu.cn/help/ubuntu.html) 选择对应源。\n\n```bash\nsudo cp -a /etc/apt/sources.list /etc/apt/sources.list.bak\nsudo nano /etc/apt/sources.list\n```\n\n```text\ndeb https://mirrors.ustc.edu.cn/ubuntu/ jammy main restricted universe multiverse\ndeb https://mirrors.ustc.edu.cn/ubuntu/ jammy-updates main restricted universe multiverse\ndeb https://mirrors.ustc.edu.cn/ubuntu/ jammy-backports main restricted universe multiverse\ndeb https://mirrors.ustc.edu.cn/ubuntu/ jammy-security main restricted universe multiverse\n```\n\n```bash\nsudo apt update\n```\n\n如果系统使用 `/etc/apt/sources.list.d/ubuntu.sources`，它属于 deb822 格式，不要直接把上面的传统格式覆盖进去。\n\n## 5. 图形界面按需安装\n\n命令行开发通常不需要完整 Ubuntu 桌面。需要运行单个 Linux GUI 应用时，先确认当前 Windows 与 WSL 环境是否支持 WSLg，再安装目标应用。\n\n```powershell\nwsl --update\n```\n\n只有确实需要完整桌面环境，并准备好对应显示或远程桌面方案时，才考虑：\n\n```bash\nsudo apt install --no-install-recommends ubuntu-desktop-minimal\n```\n\n安装桌面软件包本身不等于已经配置好图形登录。也不建议为了“精简”直接批量删除或锁定不熟悉的系统服务。\n\n## 6. 安装 Docker Desktop\n\n从 [Docker 官方说明](https://docs.docker.com/desktop/setup/install/windows-install/) 获取安装程序并确认系统要求。以下命令在安装程序所在目录的 **Windows CMD** 中执行，使用自定义安装和 WSL 数据路径：\n\n```bat\nstart /w \"\" \"Docker Desktop Installer.exe\" install --installation-dir=\"D:\\Program Files\\Docker\" --wsl-default-data-root=\"D:\\DockerData\"\n```\n\n这些参数对应支持该选项的全用户安装方式，需要相应权限；其他安装模式以当前安装程序说明为准。安装后启用 WSL 2 后端，并在 WSL Integration 中选择需要使用 Docker 的发行版。\n\n进入该发行版检查：\n\n```bash\ndocker version\ndocker run --rm hello-world\n```\n\n如果只有客户端信息而连接不到服务端，先检查 Docker Desktop 是否启动，以及发行版集成是否开启。\n\n## 参考资料\n\n- [WSL 基本命令](https://learn.microsoft.com/en-us/windows/wsl/basic-commands)\n- [WSL 用户与配置文件](https://learn.microsoft.com/en-us/windows/wsl/wsl-config)\n- [WSL 图形应用](https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps)\n- [Ubuntu 镜像使用说明](https://mirrors.ustc.edu.cn/help/ubuntu.html)\n- [Docker Desktop Windows 安装](https://docs.docker.com/desktop/setup/install/windows-install/)\n"
+    }
+  },
+  "ids": {
+    "talk": [
+      "records-beyond-equations",
+      "observing-scale-between-rocks",
+      "geometry-in-everyday-photos",
+      "blue-hour-by-the-coast",
+      "framing-through-a-car-window",
+      "how-light-changes-space",
+      "organizing-an-experiment-from-objects"
+    ],
+    "project": [
+      "project-1",
+      "project-2"
+    ],
+    "friend": [
+      "friend-1"
+    ]
+  },
+  "signals": {
+    "JCmMu9kLDQ1H": "w2AtEFTKyOvJ:integration-test-2",
+    "i27QtbMEPCqU": "pANAJ3m3tcB4:",
+    "9zAjufOaHWy5": "GSj9eRXCnQVr:",
+    "bqL3xyuOJ7u9": "0NrHbZNW9XNi:",
+    "cghXhhzZCXKp": "d5Bp4ecYrlwB:",
+    "f8vXu6T6pwSy": "gArHN3ZmjlIA:",
+    "5LmZODWhnQKr": "u4l1jKjExplS:",
+    "aWKArbUT2uAL": "h50sSvYFH8DF:",
+    "Eo7K06GKjwRk": "3NvUNTXUUKtY:",
+    "R5fTNHnfovQd": "Tz1GFtfjcjXC:",
+    "8tmnRSDCfYbI": "iEdNzaPcVGYW:",
+    "1cruNa8wR8v4": "cmMpRGqTpZYS:",
+    "wc36wKsWOkKS": "Osl4J1rk0T8v:",
+    "Ks0kAztep493": "7NQXDK9gqv03:",
+    "OWljl5wXqSKF": "dIZAeunEtME5:",
+    "5bWHqfZxPSwa": "AGW3eRBUgV9i:",
+    "zTi5LIwYHmta": "yNcyg8e9ZdkH:",
+    "jI25BaWHWmMI": "79rWLh5EGqsr:",
+    "teAmeld70bQS": "YHmpufk87L79:",
+    "kSAgvaVg9LgW": "5IzNoEJgYZge:",
+    "j4b8xVrOSTFS": "IvGzeCOCuSeq:",
+    "e80K3oY1QXOx": "unLeVyfuhYBP:",
+    "ddrfUdHnb1vS": "93IgRr7Q1xAo:",
+    "tD7TaNE0uXlW": "fSVMGgfdvjBF:",
+    "NfcnxiYbcgyO": "0cggsvSEPahU:",
+    "vLOwL9uZQRwk": "BaOBqGmzjZuY:",
+    "6aoXmpte2Cpa": "5M3u6uAW4nhB:",
+    "z6e15Pur3bud": "PWfyKqZLKTwe:",
+    "LzSFdJzkxpvQ": "BmIPJoOshtth:",
+    "TapQaEMvYK7l": "mAEQzMiJ5kdN:",
+    "I0rZV5FL6L9z": "F233DseEWRUT:",
+    "WqBXKT2d83Gi": "oRYY0WEa1fu9:",
+    "Fz0aGqsprtl3": "LP30MnfV7c7B:",
+    "BwFOTSK70IXQ": "HHdgdW8zGf5W:",
+    "T9c92TLUviYA": "uhcCcU1kXJYm:",
+    "n4DB588nnQ4Y": "HuMRd2oBoyL4:",
+    "YZtscEHg91NZ": "3ZuhRtrwGGO3:",
+    "19BRjPjIBweE": "SqevloJ1QlSi:",
+    "FZ37ztbeFnbf": "M0xc1a93zNvp:",
+    "VVeOusJBW6lP": "gx36ueQ8Vftg:"
+  }
+}

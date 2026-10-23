@@ -4,7 +4,7 @@ pubDate: 2025-10-03
 description: "以 frpc 为例，配置开机自启、异常重启和日志排查。"
 author: "skqfly"
 category: "Linux"
-image: { url: "/logo.svg", alt: "skqfly 标志" }
+image: {"url":"/logo.svg","alt":"skqfly 标志"}
 ---
 
 终端里的程序运行正常，不代表关闭 SSH 后它还会继续运行。对需要长期运行的进程，可以交给 systemd 管理：统一启动方式，记录日志，并在异常退出后尝试重启。
