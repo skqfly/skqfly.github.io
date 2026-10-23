@@ -1,4 +1,4 @@
-import library from "./photo-library.json";
+import library from "./photo-library.json" with { type: "json" };
 
 export interface Photo {
   src: string;

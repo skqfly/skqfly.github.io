@@ -1,4 +1,4 @@
-import site from "./data/site.json";
+import site from "./data/site.json" with { type: "json" };
 import type {
   NavBarLink, SocialLink, Identity, AboutPageContent,
   ProjectPageContent, BlogPageContent, HomePageContent,
