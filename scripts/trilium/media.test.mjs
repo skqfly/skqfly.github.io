@@ -8,6 +8,13 @@ const image = () => sharp({ create: { width: 12, height: 8, channels: 4, backgro
 const asset = (noteId = 'image_1', mime = 'image/png') => ({ noteId, mime, attrs: { blogKind: 'asset' }, content: '' });
 const photo = (attrs = {}) => ({ noteId: 'photo_1', title: '测试照片', attrs: { blogKind: 'photo', publish: 'v1', src: 'trilium:image_1', ...attrs }, content: '照片描述' });
 
+test('animated images retain both frames in the full image and previews', async () => {
+  const gif = await sharp(Buffer.from([255, 0, 0, 255, 0, 0, 255, 255]), { raw: { width: 1, height: 2, channels: 4, pageHeight: 1 } }).gif({ delay: [100, 100], loop: 0 }).toBuffer();
+  const result = await prepareMedia(async () => gif, [asset('image_1', 'image/gif'), photo()], {});
+  for (const bytes of result.files.values()) assert.equal((await sharp(bytes).metadata()).pages, 2);
+  assert.equal(result.assets.image_1.height, 1);
+});
+
 test('published image exports a WebP and both previews with real image dimensions', async () => {
   const png = await image();
   const calls = [];

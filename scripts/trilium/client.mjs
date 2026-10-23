@@ -7,7 +7,7 @@ export function createClient() {
   return async (path, { method = 'GET', body, raw = false, binary = false, contentType } = {}) => {
     const response = await fetch(new URL(`/etapi/${path}`, base), {
       method, redirect: 'error', signal: AbortSignal.timeout(30000),
-      headers: { Authorization: token, ...(body !== undefined ? { 'Content-Type': contentType || (raw || binary ? 'text/plain' : 'application/json') } : {}) },
+      headers: { Authorization: token, ...(body !== undefined ? { 'Content-Type': contentType || (binary ? 'application/octet-stream' : raw ? 'text/plain' : 'application/json') } : {}) },
       body: body === undefined ? undefined : raw || binary ? body : JSON.stringify(body),
     });
     if (!response.ok) throw new Error(`Trilium ${method} ${path}: HTTP ${response.status}`);

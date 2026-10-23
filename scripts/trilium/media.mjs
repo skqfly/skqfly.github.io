@@ -51,10 +51,10 @@ export async function prepareMedia(client, records, snapshot) {
     paths[id] = path;
     published[id] = { ...snapshot.assets?.[id], path, sha256 };
     if (snapshot.assets?.[id]?.sha256 === sha256) continue;
-    const { data: full, info } = await sharp(original, { limitInputPixels: 40000000 }).rotate().resize({ width: 4096, height: 4096, fit: 'inside', withoutEnlargement: true }).webp({ quality: 88 }).toBuffer({ resolveWithObject: true });
-    Object.assign(published[id], { width: info.width, height: info.height });
+    const { data: full, info } = await sharp(original, { animated: true, limitInputPixels: 40000000 }).rotate().resize({ width: 4096, height: 4096, fit: 'inside', withoutEnlargement: true }).webp({ quality: 88 }).toBuffer({ resolveWithObject: true });
+    Object.assign(published[id], { width: info.width, height: info.pageHeight || info.height });
     files.set(`public${path}`, full);
-    for (const width of [480, 960]) files.set(`public${path.replace('.webp', `-${width}.webp`)}`, await sharp(full).resize({ width, withoutEnlargement: true }).webp({ quality: 78 }).toBuffer());
+    for (const width of [480, 960]) files.set(`public${path.replace('.webp', `-${width}.webp`)}`, await sharp(full, { animated: true }).resize({ width, withoutEnlargement: true }).webp({ quality: 78 }).toBuffer());
   }
   const resolved = content.map(record => {
     if (!Object.hasOwn(record.attrs, 'publish') || record.attrs.blogDeleted === 'true') return record;

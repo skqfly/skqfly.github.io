@@ -3,7 +3,7 @@ $ErrorActionPreference = 'Stop'
 # Reuse the locally configured credential without writing another token file.
 $configPath = Join-Path $env:USERPROFILE '.codex\config.toml'
 $config = [IO.File]::ReadAllText($configPath)
-$section = [regex]::Match($config, '(?ms)^\[mcp_servers\.trilium\]\s*\r?\n(.*?)(?=^\[|\z)').Groups[1].Value
+$section = [regex]::Match($config, '(?ms)^\[mcp_servers\.trilium\]\s*\r?\n(.*?)(?=^\[(?!mcp_servers\.trilium\.)|\z)').Groups[1].Value
 $token = [regex]::Match($section, 'Authorization\s*=\s*"Bearer ([^"]+)"').Groups[1].Value
 if (!$token) { throw 'Trilium credential not found in the local Codex configuration.' }
 $env:TRILIUM_ETAPI_TOKEN = $token

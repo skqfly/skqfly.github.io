@@ -34,7 +34,7 @@ async function importFile(source) {
     imported.set(source, note);
   }
   if (labels(note).blogSourceSha !== hash) {
-    await client(`notes/${note.noteId}/content`, { method: 'PUT', body: bytes, binary: true, contentType: mime[extname(path)] });
+    await client(`notes/${note.noteId}/content`, { method: 'PUT', body: bytes, binary: true });
     await setLabel(client, note, 'blogSourceSha', hash);
   }
   console.log(`Image imported: ${basename(path)}`);
@@ -61,7 +61,7 @@ if (home) {
       await setLabel(client, asset, 'blogKind', 'asset');
       await setLabel(client, asset, 'blogSource', 'avatar');
     }
-    await client(`notes/${asset.noteId}/content`, { method: 'PUT', binary: true, body: bytes, contentType: 'image/webp' });
+    await client(`notes/${asset.noteId}/content`, { method: 'PUT', binary: true, body: bytes });
     content.avatar = `trilium:${asset.noteId}`;
     await client(`notes/${home.noteId}/content`, { method: 'PUT', raw: true, body: JSON.stringify(content, null, 2) });
   }

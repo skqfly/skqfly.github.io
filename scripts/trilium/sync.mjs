@@ -1,4 +1,4 @@
-import { readFile, writeFile, mkdir, unlink } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, unlink, access } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createClient, labels, setLabel } from './client.mjs';
@@ -63,7 +63,13 @@ export async function run({ dryRun = false } = {}) {
   const snapshot = JSON.parse(await readFile(resolve(root, 'trilium/published.json'), 'utf8'));
   const records = await collect(client, config.rootNoteId);
   if (!records.length) throw new Error('No managed content found; refusing to publish an empty tree.');
-  const media = await prepareMedia(client, records, snapshot);
+  const mediaBase = { ...snapshot, assets: { ...snapshot.assets } };
+  for (const id of Object.keys(mediaBase.assets)) {
+    const path = mediaPath(id);
+    try { await Promise.all(['', '-480', '-960'].map(suffix => access(resolve(root, `public${path.replace('.webp', `${suffix}.webp`)}`)))); }
+    catch (error) { if (error.code === 'ENOENT') delete mediaBase.assets[id]; else throw error; }
+  }
+  const media = await prepareMedia(client, records, mediaBase);
   const updated = applyRecords(snapshot, media.records);
   updated.assets = media.assets;
   const removed = Object.keys(snapshot.posts).filter(id => !Object.hasOwn(updated.posts, id)).map(id => {
@@ -82,8 +88,8 @@ export async function run({ dryRun = false } = {}) {
   updated.signals = signals;
   const changes = [];
   for (const [path, content] of new Map([...outputFiles(updated), ...media.files])) {
-    const current = await readFile(resolve(root, path), 'utf8').catch(error => { if (error.code === 'ENOENT') return ''; throw error; });
-    if (current !== content) changes.push([path, content]);
+    const current = await readFile(resolve(root, path), Buffer.isBuffer(content) ? undefined : 'utf8').catch(error => { if (error.code === 'ENOENT') return undefined; throw error; });
+    if (Buffer.isBuffer(content) ? !current?.equals(content) : current !== content) changes.push([path, content]);
   }
   console.log(JSON.stringify({ managedNotes: records.length, publishedNotes: records.filter(r => Object.hasOwn(r.attrs, 'publish')).length, dryRun, changedFiles: changes.map(([p]) => p), removedFiles: removed }, null, 2));
   if (dryRun) return;

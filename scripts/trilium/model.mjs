@@ -76,8 +76,8 @@ export function applyRecords(snapshot, records) {
         if (!photo) throw new Error(`Unknown photo: ${photoId}`);
         return photo;
       }) });
-      if (kind === 'friend') Object.assign(data, { url: attrs.url, domain: attrs.domain, image: attrs.image });
-      if (kind === 'project') Object.assign(data, { url: attrs.url, image: attrs.image, categories: (attrs.categories || '').split(',').map(s => s.trim()).filter(Boolean), tags: (attrs.tags || '').split(',').map(s => s.trim()).filter(Boolean) });
+      if (kind === 'friend') Object.assign(data, { url: attrs.url, domain: attrs.domain, image: attrs.image || '/logo.svg' });
+      if (kind === 'project') Object.assign(data, { url: attrs.url, image: attrs.image || '/logo.svg', categories: (attrs.categories || '').split(',').map(s => s.trim()).filter(Boolean), tags: (attrs.tags || '').split(',').map(s => s.trim()).filter(Boolean) });
       const schema = { talk: talkSchema, friend: friendSchema, project: projectSchema }[kind];
       const parsed = schema.parse(data);
       const list = collections[kind];

@@ -10,7 +10,7 @@
     "astro": "astro",
     "images:generate": "node scripts/generate-photo-previews.mjs",
     "favicon:generate": "node scripts/generate-favicon.mjs",
-    "trilium:check": "node --test scripts/trilium/model.test.mjs scripts/trilium/media.test.mjs scripts/trilium/deletion.test.mjs",
+    "trilium:check": "node --test scripts/trilium/model.test.mjs scripts/trilium/media.test.mjs scripts/trilium/deletion.test.mjs scripts/trilium/manager-ui.test.mjs",
     "trilium:preview": "node scripts/trilium/sync.mjs --dry-run",
     "trilium:sync": "node scripts/trilium/sync.mjs"
   },

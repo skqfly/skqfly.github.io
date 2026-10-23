@@ -56,18 +56,18 @@ npm run preview
 
 ### Trilium 编辑与发布
 
-现有内容已导入 Trilium 的“博客管理 · skqfly”目录。文章使用 Markdown，Talks、照片、友链及项目使用独立笔记与属性，首页等配置使用分段 JSON。
+现有内容和图片已导入 Trilium 的“博客管理 · skqfly”目录。打开“博客管理面板 · 编辑与发布”，通过表单和按钮新增、编辑、保存草稿、发布、下架、恢复、导入图片和导出原图。无需手填标签、GitHub 令牌或启用后端脚本。
 
-使用方法和字段见 [Trilium 使用说明](trilium/使用说明.md)。带 `publish` 标签的笔记可以发布；运行“同步到博客”脚本会提交发布请求。GitHub 工作流读取、校验并构建内容后才推送，随后显式触发现有 Pages 部署。默认令牌产生的提交不会自动触发另一个 `push` 工作流，因此这里使用 `workflow_dispatch`。
+使用方法见 [Trilium 使用说明](trilium/使用说明.md)。管理面板自动维护发布标签，GitHub 工作流读取、校验并构建内容后才推送，随后显式触发现有 Pages 部署。默认令牌产生的提交不会自动触发另一个 `push` 工作流，因此这里使用 `workflow_dispatch`。
 
 - `npm run trilium:check`：运行同步逻辑测试。
 - `npm run trilium:preview`：只读预览待同步文件，不修改仓库。
 - `npm run trilium:sync`：写入本地内容文件，不自动提交或推送。
 - CLI 使用 `TRILIUM_SERVER_URL`、`TRILIUM_ETAPI_TOKEN`；本机 PowerShell 可运行 `./scripts/trilium/local.ps1 preview`，复用已配置的 Codex 凭据。
 - GitHub Secrets：`TRILIUM_SERVER_URL`、`TRILIUM_ETAPI_TOKEN`。不要将令牌写入仓库。
-- 定时队列约每 5 分钟检查一次，GitHub 调度可能延迟。即时发布需在 Trilium 私有配置笔记中填写仅具此仓库 Actions 写权限的专用 token。
+- 定时队列约每 5 分钟检查一次，GitHub 调度可能延迟。新管理面板不依赖旧版即时发布配置。
 
-同步只管理 `src/data/site.json`、`src/data/photo-library.json`、`src/content/posts/*.md` 和已发布快照 `trilium/published.json`。移除发布标签或删除笔记不会自动删除线上版本。图片目前使用已有站内路径或外部 HTTPS 图床，不导出 Trilium 内嵌图片。已接管内容请在 Trilium 修改，避免与 GitHub 手工修改同一内容。
+同步管理 `src/data/site.json`、`src/data/photo-library.json`、`src/content/posts/*.md`、`public/trilium-media/` 和已发布快照。管理台“删除 / 下架”会提交可恢复的删除请求；直接删原笔记不会自动下架。图片以 Trilium 文件笔记保存，已发布引用自动导出为 WebP 和缩略图，并保留原图供下载；草稿图片不公开。已接管内容请在 Trilium 修改，避免与 GitHub 手工修改同一内容。
 
 ### 博客文章
 
