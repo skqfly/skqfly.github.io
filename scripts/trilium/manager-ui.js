@@ -1,9 +1,11 @@
-/* Trilium 0.106.0 frontend render script. Uses the current session, never an ETAPI/GitHub token.
+/* Trilium 0.106.0 frontend render script. Uses the current Trilium session.
+ * The private GitHub token is read only at publication time and sent only to the fixed workflow endpoint.
  * Source contracts: apps/client/src/services/server.ts and packages/trilium-core/src/routes/index.ts,
  * routes/api/{notes,attributes,import,search}.ts in github.com/TriliumNext/Trilium at v0.106.0.
  */
 await (async () => {
 const rootId = '__ROOT__';
+const settingsId = '__SETTINGS__';
 const publicOrigin = 'https://mmddskq.top';
 const host = api.$container.find('.blog-manager')[0];
 if (!host) throw new Error('博客管理界面未加载，请重新打开此笔记。');
@@ -35,6 +37,48 @@ async function request(path, method = 'GET', body) {
 function status(message, error = false) {
   ui('.bm-status').textContent = message;
   ui('.bm-status').dataset.error = String(error);
+}
+
+async function triggerGitHub() {
+  let githubToken = '';
+  try {
+    let privateContent;
+    try { privateContent = (await request(`notes/${settingsId}/blob`)).content; }
+    catch { return { triggered: false, reason: '无法读取即时发布配置，请刷新 Trilium 会话后重试' }; }
+    try { githubToken = JSON.parse(privateContent).githubToken; }
+    catch { return { triggered: false, reason: '私有发布配置无效，请检查配置笔记中的 JSON' }; }
+    privateContent = undefined;
+    if (githubToken !== undefined && typeof githubToken !== 'string') return { triggered: false, reason: '私有发布配置无效，令牌必须是文本' };
+    if (typeof githubToken !== 'string' || !githubToken.trim()) return { triggered: false, reason: '尚未填写即时发布令牌' };
+    const response = await fetch('https://api.github.com/repos/skqfly/skqfly.github.io/actions/workflows/trilium-sync.yml/dispatches', {
+      method: 'POST', redirect: 'error', credentials: 'omit', signal: AbortSignal.timeout(20000),
+      headers: { Authorization: `Bearer ${githubToken.trim()}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json', 'X-GitHub-Api-Version': '2022-11-28' },
+      body: JSON.stringify({ ref: 'main', return_run_details: true }),
+    });
+    if (response.status === 204) return { triggered: true };
+    if (response.status === 200) {
+      let details;
+      try { details = await response.json(); } catch { /* The dispatch was accepted; details are optional. */ }
+      return { triggered: true, runUrl: /^https:\/\/github\.com\/skqfly\/skqfly\.github\.io\/actions\/runs\/\d+$/.test(details?.html_url) ? details.html_url : undefined };
+    }
+    const reasons = { 401: 'GitHub 令牌无效或已过期', 403: 'GitHub 令牌权限不足，请授予此仓库的 Actions 写入权限', 404: 'GitHub 仓库或同步工作流不可访问，请检查令牌仓库权限' };
+    return { triggered: false, reason: `${reasons[response.status] || 'GitHub 未接受同步请求'}（HTTP ${response.status}）` };
+  } catch (error) {
+    return { triggered: false, reason: ['TimeoutError', 'AbortError'].includes(error.name) ? '连接 GitHub 超时' : '无法连接 GitHub，请检查网络或浏览器跨域限制' };
+  } finally { githubToken = ''; }
+}
+
+async function notifyPublication(prefix) {
+  status(`${prefix}正在触发 GitHub 同步…`);
+  const result = await triggerGitHub();
+  status(result.triggered
+    ? `${prefix}已触发 GitHub 同步，请点击「查看发布进度」查看构建和部署结果。`
+    : `${prefix}已排队，尚未触发 GitHub：${result.reason}。可打开「查看发布进度」手动运行同步；定时同步也会继续检查。`, !result.triggered);
+  if (result.runUrl) {
+    const link = document.createElement('a');
+    link.href = result.runUrl; link.target = '_blank'; link.rel = 'noopener'; link.textContent = '打开本次同步 ↗';
+    ui('.bm-status').append(document.createTextNode(' '), link);
+  }
 }
 
 async function action(work) {
@@ -277,7 +321,8 @@ async function save(record, publish, avatar = false) {
   if (kind === 'talk') await label(record, 'photos', data.getAll('talkPhoto').join(','));
   if (publish) await label(record, 'publish', revision());
   state.dirty = false;
-  status(publish ? '已提交发布，GitHub 会定时同步并构建部署。可点击下方「查看发布进度」。' : '草稿已保存。点击「保存并发布」或「发布全部更改」后上线。');
+  if (publish) await notifyPublication('已提交发布。');
+  else status('草稿已保存。点击「保存并发布」或「发布全部更改」后上线。');
   await render();
   return true;
 }
@@ -288,7 +333,7 @@ async function markDeleted(record) {
   await label(record, 'blogDeleted', 'true');
   await label(record, 'publish', revision());
   state.dirty = false;
-  status('已移入回收站并提交下架请求。图片若仍被其他内容使用，会继续保留。');
+  await notifyPublication('已移入回收站并提交下架请求。图片若仍被其他内容使用，会继续保留。');
   state.selected = null;
   await render();
 }
@@ -395,7 +440,8 @@ host.addEventListener('click', event => {
       const version = revision();
       for (const record of records) await label(record, 'publish', version);
       await request(`notes/${rootId}/set-attribute`, 'PUT', { type: 'label', name: 'publish', value: version, isInheritable: false });
-      await render(); status('所有内容已提交发布，等待 GitHub 定时同步。');
+      await notifyPublication('所有内容已提交发布。');
+      await render();
     } else if (command === 'import-assets' || command === 'import-photos') {
       chooseFiles(true, async files => {
         status(`正在导入 ${files.length} 张图片…`);
