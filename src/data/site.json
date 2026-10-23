@@ -114,7 +114,8 @@
         "title": "Talks",
         "url": "/talks"
       }
-    ]
+    ],
+    "avatar": "/trilium-media/hsoG3EWvAyqw.webp"
   },
   "identity": {
     "name": "skqfly",
@@ -149,7 +150,7 @@
       {
         "title": "ImgBed",
         "description": "基于 Cloudflare 的开源文件存储、图床与网盘方案。",
-        "image": "/projects/imgbed.png",
+        "image": "/trilium-media/snZQtDsA7A4L.webp",
         "categories": [
           "Web",
           "Open Source"
@@ -163,7 +164,7 @@
       {
         "title": "nodewarden",
         "description": "运行在 Cloudflare Workers 上的第三方 Bitwarden 服务端实现。",
-        "image": "/projects/nodewarden.png",
+        "image": "/trilium-media/LFlCWvNjemQI.webp",
         "categories": [
           "Tools",
           "Open Source"
@@ -206,12 +207,12 @@
         "description": "从一枚落在石缝里的绿色物体出发，观察形状、纹理与尺度。很多建模问题，也从选择合适的观察尺度开始。",
         "images": [
           {
-            "src": "/photos/greenObject-full.webp",
+            "src": "/trilium-media/vgM1Md96FJ5b.webp",
             "width": 2560,
             "height": 1920,
             "alt": "电影场记板和胶片装置前的人",
-            "preview": "/photos/greenObject-480.webp",
-            "previewLarge": "/photos/greenObject-960.webp"
+            "preview": "/trilium-media/vgM1Md96FJ5b-480.webp",
+            "previewLarge": "/trilium-media/vgM1Md96FJ5b-960.webp"
           }
         ]
       },
@@ -222,20 +223,20 @@
         "description": "圆环、纸面和边缘构成一组简单几何。把生活照片抽象成点、线和区域，是理解图像结构的第一步。",
         "images": [
           {
-            "src": "/photos/paperGeometry-full.webp",
+            "src": "/trilium-media/EtEKZGn9wR9K.webp",
             "width": 2560,
             "height": 1920,
             "alt": "雨天撑着透明雨伞站在绿地旁的人",
-            "preview": "/photos/paperGeometry-480.webp",
-            "previewLarge": "/photos/paperGeometry-960.webp"
+            "preview": "/trilium-media/EtEKZGn9wR9K-480.webp",
+            "previewLarge": "/trilium-media/EtEKZGn9wR9K-960.webp"
           },
           {
-            "src": "/photos/carWindow-full.webp",
+            "src": "/trilium-media/gw2rYe0OGixC.webp",
             "width": 2560,
             "height": 1920,
             "alt": "夜色中亮起灯光的和平饭店外墙",
-            "preview": "/photos/carWindow-480.webp",
-            "previewLarge": "/photos/carWindow-960.webp"
+            "preview": "/trilium-media/gw2rYe0OGixC-480.webp",
+            "previewLarge": "/trilium-media/gw2rYe0OGixC-960.webp"
           }
         ]
       },
@@ -246,28 +247,28 @@
         "description": "蓝色天空、海面和远处地平线几乎连成一体。这里记录曝光、色阶与渐变如何共同塑造安静的画面。",
         "images": [
           {
-            "src": "/photos/coast-full.webp",
+            "src": "/trilium-media/BCYzP1pBR9WL.webp",
             "width": 1920,
             "height": 2560,
             "alt": "高楼之间的两人合影",
-            "preview": "/photos/coast-480.webp",
-            "previewLarge": "/photos/coast-960.webp"
+            "preview": "/trilium-media/BCYzP1pBR9WL-480.webp",
+            "previewLarge": "/trilium-media/BCYzP1pBR9WL-960.webp"
           },
           {
-            "src": "/photos/nightLights-full.webp",
+            "src": "/trilium-media/wjASPN7JsGKa.webp",
             "width": 1920,
             "height": 2560,
             "alt": "城市街头戴着眼镜的人",
-            "preview": "/photos/nightLights-480.webp",
-            "previewLarge": "/photos/nightLights-960.webp"
+            "preview": "/trilium-media/wjASPN7JsGKa-480.webp",
+            "previewLarge": "/trilium-media/wjASPN7JsGKa-960.webp"
           },
           {
-            "src": "/photos/carWindow-full.webp",
+            "src": "/trilium-media/gw2rYe0OGixC.webp",
             "width": 2560,
             "height": 1920,
             "alt": "夜色中亮起灯光的和平饭店外墙",
-            "preview": "/photos/carWindow-480.webp",
-            "previewLarge": "/photos/carWindow-960.webp"
+            "preview": "/trilium-media/gw2rYe0OGixC-480.webp",
+            "previewLarge": "/trilium-media/gw2rYe0OGixC-960.webp"
           }
         ]
       },
@@ -278,36 +279,36 @@
         "description": "隔着车窗拍摄，反射、速度与远景叠在同一帧里。这是一段关于运动、边界和偶然构图的短分享。",
         "images": [
           {
-            "src": "/photos/carWindow-full.webp",
+            "src": "/trilium-media/gw2rYe0OGixC.webp",
             "width": 2560,
             "height": 1920,
             "alt": "夜色中亮起灯光的和平饭店外墙",
-            "preview": "/photos/carWindow-480.webp",
-            "previewLarge": "/photos/carWindow-960.webp"
+            "preview": "/trilium-media/gw2rYe0OGixC-480.webp",
+            "previewLarge": "/trilium-media/gw2rYe0OGixC-960.webp"
           },
           {
-            "src": "/photos/nightLights-full.webp",
+            "src": "/trilium-media/wjASPN7JsGKa.webp",
             "width": 1920,
             "height": 2560,
             "alt": "城市街头戴着眼镜的人",
-            "preview": "/photos/nightLights-480.webp",
-            "previewLarge": "/photos/nightLights-960.webp"
+            "preview": "/trilium-media/wjASPN7JsGKa-480.webp",
+            "previewLarge": "/trilium-media/wjASPN7JsGKa-960.webp"
           },
           {
-            "src": "/photos/coast-full.webp",
+            "src": "/trilium-media/BCYzP1pBR9WL.webp",
             "width": 1920,
             "height": 2560,
             "alt": "高楼之间的两人合影",
-            "preview": "/photos/coast-480.webp",
-            "previewLarge": "/photos/coast-960.webp"
+            "preview": "/trilium-media/BCYzP1pBR9WL-480.webp",
+            "previewLarge": "/trilium-media/BCYzP1pBR9WL-960.webp"
           },
           {
-            "src": "/photos/caveLight-full.webp",
+            "src": "/trilium-media/YQjo9stzKRQ2.webp",
             "width": 1920,
             "height": 2560,
             "alt": "手中拿着的一杯饮品",
-            "preview": "/photos/caveLight-480.webp",
-            "previewLarge": "/photos/caveLight-960.webp"
+            "preview": "/trilium-media/YQjo9stzKRQ2-480.webp",
+            "previewLarge": "/trilium-media/YQjo9stzKRQ2-960.webp"
           }
         ]
       },
@@ -318,44 +319,44 @@
         "description": "洞穴里的局部照明让轮廓突然清晰。借这组照片聊光照、阴影和空间深度之间的关系。",
         "images": [
           {
-            "src": "/photos/caveLight-full.webp",
+            "src": "/trilium-media/YQjo9stzKRQ2.webp",
             "width": 1920,
             "height": 2560,
             "alt": "手中拿着的一杯饮品",
-            "preview": "/photos/caveLight-480.webp",
-            "previewLarge": "/photos/caveLight-960.webp"
+            "preview": "/trilium-media/YQjo9stzKRQ2-480.webp",
+            "previewLarge": "/trilium-media/YQjo9stzKRQ2-960.webp"
           },
           {
-            "src": "/photos/sunlitWalk-full.webp",
+            "src": "/trilium-media/iQlqXg4gZzaH.webp",
             "width": 2560,
             "height": 1920,
             "alt": "海边栏杆旁的人与远处海岸",
-            "preview": "/photos/sunlitWalk-480.webp",
-            "previewLarge": "/photos/sunlitWalk-960.webp"
+            "preview": "/trilium-media/iQlqXg4gZzaH-480.webp",
+            "previewLarge": "/trilium-media/iQlqXg4gZzaH-960.webp"
           },
           {
-            "src": "/photos/greenObject-full.webp",
+            "src": "/trilium-media/vgM1Md96FJ5b.webp",
             "width": 2560,
             "height": 1920,
             "alt": "电影场记板和胶片装置前的人",
-            "preview": "/photos/greenObject-480.webp",
-            "previewLarge": "/photos/greenObject-960.webp"
+            "preview": "/trilium-media/vgM1Md96FJ5b-480.webp",
+            "previewLarge": "/trilium-media/vgM1Md96FJ5b-960.webp"
           },
           {
-            "src": "/photos/glassCabinet-full.webp",
+            "src": "/trilium-media/BvXTab9QpoCY.webp",
             "width": 1920,
             "height": 2560,
             "alt": "东方明珠塔前的人",
-            "preview": "/photos/glassCabinet-480.webp",
-            "previewLarge": "/photos/glassCabinet-960.webp"
+            "preview": "/trilium-media/BvXTab9QpoCY-480.webp",
+            "previewLarge": "/trilium-media/BvXTab9QpoCY-960.webp"
           },
           {
-            "src": "/photos/paperGeometry-full.webp",
+            "src": "/trilium-media/EtEKZGn9wR9K.webp",
             "width": 2560,
             "height": 1920,
             "alt": "雨天撑着透明雨伞站在绿地旁的人",
-            "preview": "/photos/paperGeometry-480.webp",
-            "previewLarge": "/photos/paperGeometry-960.webp"
+            "preview": "/trilium-media/EtEKZGn9wR9K-480.webp",
+            "previewLarge": "/trilium-media/EtEKZGn9wR9K-960.webp"
           }
         ]
       },
@@ -366,28 +367,28 @@
         "description": "从玻璃柜里的排列，到纸面上的几何，实验常常从一个足够小、能够复查的观察记录开始。",
         "images": [
           {
-            "src": "/photos/glassCabinet-full.webp",
+            "src": "/trilium-media/BvXTab9QpoCY.webp",
             "width": 1920,
             "height": 2560,
             "alt": "东方明珠塔前的人",
-            "preview": "/photos/glassCabinet-480.webp",
-            "previewLarge": "/photos/glassCabinet-960.webp"
+            "preview": "/trilium-media/BvXTab9QpoCY-480.webp",
+            "previewLarge": "/trilium-media/BvXTab9QpoCY-960.webp"
           },
           {
-            "src": "/photos/paperGeometry-full.webp",
+            "src": "/trilium-media/EtEKZGn9wR9K.webp",
             "width": 2560,
             "height": 1920,
             "alt": "雨天撑着透明雨伞站在绿地旁的人",
-            "preview": "/photos/paperGeometry-480.webp",
-            "previewLarge": "/photos/paperGeometry-960.webp"
+            "preview": "/trilium-media/EtEKZGn9wR9K-480.webp",
+            "previewLarge": "/trilium-media/EtEKZGn9wR9K-960.webp"
           },
           {
-            "src": "/photos/greenObject-full.webp",
+            "src": "/trilium-media/vgM1Md96FJ5b.webp",
             "width": 2560,
             "height": 1920,
             "alt": "电影场记板和胶片装置前的人",
-            "preview": "/photos/greenObject-480.webp",
-            "previewLarge": "/photos/greenObject-960.webp"
+            "preview": "/trilium-media/vgM1Md96FJ5b-480.webp",
+            "previewLarge": "/trilium-media/vgM1Md96FJ5b-960.webp"
           }
         ]
       }

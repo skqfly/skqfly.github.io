@@ -1,5 +1,5 @@
 ---
-title: "Nginx 反向代理与 HTTPS 配置"
+title: "Nginx 反向代理与 HTTPS 配置测试"
 pubDate: 2025-10-09
 description: "为本机服务绑定域名，用 Certbot 申请证书并验证自动续期。"
 author: "skqfly"

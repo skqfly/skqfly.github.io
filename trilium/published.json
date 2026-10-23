@@ -115,7 +115,8 @@
           "title": "Talks",
           "url": "/talks"
         }
-      ]
+      ],
+      "avatar": "/trilium-media/hsoG3EWvAyqw.webp"
     },
     "identity": {
       "name": "skqfly",
@@ -150,7 +151,7 @@
         {
           "title": "ImgBed",
           "description": "基于 Cloudflare 的开源文件存储、图床与网盘方案。",
-          "image": "/projects/imgbed.png",
+          "image": "/trilium-media/snZQtDsA7A4L.webp",
           "categories": [
             "Web",
             "Open Source"
@@ -164,7 +165,7 @@
         {
           "title": "nodewarden",
           "description": "运行在 Cloudflare Workers 上的第三方 Bitwarden 服务端实现。",
-          "image": "/projects/nodewarden.png",
+          "image": "/trilium-media/LFlCWvNjemQI.webp",
           "categories": [
             "Tools",
             "Open Source"
@@ -207,12 +208,12 @@
           "description": "从一枚落在石缝里的绿色物体出发，观察形状、纹理与尺度。很多建模问题，也从选择合适的观察尺度开始。",
           "images": [
             {
-              "src": "/photos/greenObject-full.webp",
+              "src": "/trilium-media/vgM1Md96FJ5b.webp",
               "width": 2560,
               "height": 1920,
               "alt": "电影场记板和胶片装置前的人",
-              "preview": "/photos/greenObject-480.webp",
-              "previewLarge": "/photos/greenObject-960.webp"
+              "preview": "/trilium-media/vgM1Md96FJ5b-480.webp",
+              "previewLarge": "/trilium-media/vgM1Md96FJ5b-960.webp"
             }
           ]
         },
@@ -223,20 +224,20 @@
           "description": "圆环、纸面和边缘构成一组简单几何。把生活照片抽象成点、线和区域，是理解图像结构的第一步。",
           "images": [
             {
-              "src": "/photos/paperGeometry-full.webp",
+              "src": "/trilium-media/EtEKZGn9wR9K.webp",
               "width": 2560,
               "height": 1920,
               "alt": "雨天撑着透明雨伞站在绿地旁的人",
-              "preview": "/photos/paperGeometry-480.webp",
-              "previewLarge": "/photos/paperGeometry-960.webp"
+              "preview": "/trilium-media/EtEKZGn9wR9K-480.webp",
+              "previewLarge": "/trilium-media/EtEKZGn9wR9K-960.webp"
             },
             {
-              "src": "/photos/carWindow-full.webp",
+              "src": "/trilium-media/gw2rYe0OGixC.webp",
               "width": 2560,
               "height": 1920,
               "alt": "夜色中亮起灯光的和平饭店外墙",
-              "preview": "/photos/carWindow-480.webp",
-              "previewLarge": "/photos/carWindow-960.webp"
+              "preview": "/trilium-media/gw2rYe0OGixC-480.webp",
+              "previewLarge": "/trilium-media/gw2rYe0OGixC-960.webp"
             }
           ]
         },
@@ -247,28 +248,28 @@
           "description": "蓝色天空、海面和远处地平线几乎连成一体。这里记录曝光、色阶与渐变如何共同塑造安静的画面。",
           "images": [
             {
-              "src": "/photos/coast-full.webp",
+              "src": "/trilium-media/BCYzP1pBR9WL.webp",
               "width": 1920,
               "height": 2560,
               "alt": "高楼之间的两人合影",
-              "preview": "/photos/coast-480.webp",
-              "previewLarge": "/photos/coast-960.webp"
+              "preview": "/trilium-media/BCYzP1pBR9WL-480.webp",
+              "previewLarge": "/trilium-media/BCYzP1pBR9WL-960.webp"
             },
             {
-              "src": "/photos/nightLights-full.webp",
+              "src": "/trilium-media/wjASPN7JsGKa.webp",
               "width": 1920,
               "height": 2560,
               "alt": "城市街头戴着眼镜的人",
-              "preview": "/photos/nightLights-480.webp",
-              "previewLarge": "/photos/nightLights-960.webp"
+              "preview": "/trilium-media/wjASPN7JsGKa-480.webp",
+              "previewLarge": "/trilium-media/wjASPN7JsGKa-960.webp"
             },
             {
-              "src": "/photos/carWindow-full.webp",
+              "src": "/trilium-media/gw2rYe0OGixC.webp",
               "width": 2560,
               "height": 1920,
               "alt": "夜色中亮起灯光的和平饭店外墙",
-              "preview": "/photos/carWindow-480.webp",
-              "previewLarge": "/photos/carWindow-960.webp"
+              "preview": "/trilium-media/gw2rYe0OGixC-480.webp",
+              "previewLarge": "/trilium-media/gw2rYe0OGixC-960.webp"
             }
           ]
         },
@@ -279,36 +280,36 @@
           "description": "隔着车窗拍摄，反射、速度与远景叠在同一帧里。这是一段关于运动、边界和偶然构图的短分享。",
           "images": [
             {
-              "src": "/photos/carWindow-full.webp",
+              "src": "/trilium-media/gw2rYe0OGixC.webp",
               "width": 2560,
               "height": 1920,
               "alt": "夜色中亮起灯光的和平饭店外墙",
-              "preview": "/photos/carWindow-480.webp",
-              "previewLarge": "/photos/carWindow-960.webp"
+              "preview": "/trilium-media/gw2rYe0OGixC-480.webp",
+              "previewLarge": "/trilium-media/gw2rYe0OGixC-960.webp"
             },
             {
-              "src": "/photos/nightLights-full.webp",
+              "src": "/trilium-media/wjASPN7JsGKa.webp",
               "width": 1920,
               "height": 2560,
               "alt": "城市街头戴着眼镜的人",
-              "preview": "/photos/nightLights-480.webp",
-              "previewLarge": "/photos/nightLights-960.webp"
+              "preview": "/trilium-media/wjASPN7JsGKa-480.webp",
+              "previewLarge": "/trilium-media/wjASPN7JsGKa-960.webp"
             },
             {
-              "src": "/photos/coast-full.webp",
+              "src": "/trilium-media/BCYzP1pBR9WL.webp",
               "width": 1920,
               "height": 2560,
               "alt": "高楼之间的两人合影",
-              "preview": "/photos/coast-480.webp",
-              "previewLarge": "/photos/coast-960.webp"
+              "preview": "/trilium-media/BCYzP1pBR9WL-480.webp",
+              "previewLarge": "/trilium-media/BCYzP1pBR9WL-960.webp"
             },
             {
-              "src": "/photos/caveLight-full.webp",
+              "src": "/trilium-media/YQjo9stzKRQ2.webp",
               "width": 1920,
               "height": 2560,
               "alt": "手中拿着的一杯饮品",
-              "preview": "/photos/caveLight-480.webp",
-              "previewLarge": "/photos/caveLight-960.webp"
+              "preview": "/trilium-media/YQjo9stzKRQ2-480.webp",
+              "previewLarge": "/trilium-media/YQjo9stzKRQ2-960.webp"
             }
           ]
         },
@@ -319,44 +320,44 @@
           "description": "洞穴里的局部照明让轮廓突然清晰。借这组照片聊光照、阴影和空间深度之间的关系。",
           "images": [
             {
-              "src": "/photos/caveLight-full.webp",
+              "src": "/trilium-media/YQjo9stzKRQ2.webp",
               "width": 1920,
               "height": 2560,
               "alt": "手中拿着的一杯饮品",
-              "preview": "/photos/caveLight-480.webp",
-              "previewLarge": "/photos/caveLight-960.webp"
+              "preview": "/trilium-media/YQjo9stzKRQ2-480.webp",
+              "previewLarge": "/trilium-media/YQjo9stzKRQ2-960.webp"
             },
             {
-              "src": "/photos/sunlitWalk-full.webp",
+              "src": "/trilium-media/iQlqXg4gZzaH.webp",
               "width": 2560,
               "height": 1920,
               "alt": "海边栏杆旁的人与远处海岸",
-              "preview": "/photos/sunlitWalk-480.webp",
-              "previewLarge": "/photos/sunlitWalk-960.webp"
+              "preview": "/trilium-media/iQlqXg4gZzaH-480.webp",
+              "previewLarge": "/trilium-media/iQlqXg4gZzaH-960.webp"
             },
             {
-              "src": "/photos/greenObject-full.webp",
+              "src": "/trilium-media/vgM1Md96FJ5b.webp",
               "width": 2560,
               "height": 1920,
               "alt": "电影场记板和胶片装置前的人",
-              "preview": "/photos/greenObject-480.webp",
-              "previewLarge": "/photos/greenObject-960.webp"
+              "preview": "/trilium-media/vgM1Md96FJ5b-480.webp",
+              "previewLarge": "/trilium-media/vgM1Md96FJ5b-960.webp"
             },
             {
-              "src": "/photos/glassCabinet-full.webp",
+              "src": "/trilium-media/BvXTab9QpoCY.webp",
               "width": 1920,
               "height": 2560,
               "alt": "东方明珠塔前的人",
-              "preview": "/photos/glassCabinet-480.webp",
-              "previewLarge": "/photos/glassCabinet-960.webp"
+              "preview": "/trilium-media/BvXTab9QpoCY-480.webp",
+              "previewLarge": "/trilium-media/BvXTab9QpoCY-960.webp"
             },
             {
-              "src": "/photos/paperGeometry-full.webp",
+              "src": "/trilium-media/EtEKZGn9wR9K.webp",
               "width": 2560,
               "height": 1920,
               "alt": "雨天撑着透明雨伞站在绿地旁的人",
-              "preview": "/photos/paperGeometry-480.webp",
-              "previewLarge": "/photos/paperGeometry-960.webp"
+              "preview": "/trilium-media/EtEKZGn9wR9K-480.webp",
+              "previewLarge": "/trilium-media/EtEKZGn9wR9K-960.webp"
             }
           ]
         },
@@ -367,28 +368,28 @@
           "description": "从玻璃柜里的排列，到纸面上的几何，实验常常从一个足够小、能够复查的观察记录开始。",
           "images": [
             {
-              "src": "/photos/glassCabinet-full.webp",
+              "src": "/trilium-media/BvXTab9QpoCY.webp",
               "width": 1920,
               "height": 2560,
               "alt": "东方明珠塔前的人",
-              "preview": "/photos/glassCabinet-480.webp",
-              "previewLarge": "/photos/glassCabinet-960.webp"
+              "preview": "/trilium-media/BvXTab9QpoCY-480.webp",
+              "previewLarge": "/trilium-media/BvXTab9QpoCY-960.webp"
             },
             {
-              "src": "/photos/paperGeometry-full.webp",
+              "src": "/trilium-media/EtEKZGn9wR9K.webp",
               "width": 2560,
               "height": 1920,
               "alt": "雨天撑着透明雨伞站在绿地旁的人",
-              "preview": "/photos/paperGeometry-480.webp",
-              "previewLarge": "/photos/paperGeometry-960.webp"
+              "preview": "/trilium-media/EtEKZGn9wR9K-480.webp",
+              "previewLarge": "/trilium-media/EtEKZGn9wR9K-960.webp"
             },
             {
-              "src": "/photos/greenObject-full.webp",
+              "src": "/trilium-media/vgM1Md96FJ5b.webp",
               "width": 2560,
               "height": 1920,
               "alt": "电影场记板和胶片装置前的人",
-              "preview": "/photos/greenObject-480.webp",
-              "previewLarge": "/photos/greenObject-960.webp"
+              "preview": "/trilium-media/vgM1Md96FJ5b-480.webp",
+              "previewLarge": "/trilium-media/vgM1Md96FJ5b-960.webp"
             }
           ]
         }
@@ -397,114 +398,114 @@
   },
   "photos": {
     "carWindow": {
-      "src": "/photos/carWindow-full.webp",
+      "src": "/trilium-media/gw2rYe0OGixC.webp",
       "width": 2560,
       "height": 1920,
       "alt": "夜色中亮起灯光的和平饭店外墙",
-      "preview": "/photos/carWindow-480.webp",
-      "previewLarge": "/photos/carWindow-960.webp"
+      "preview": "/trilium-media/gw2rYe0OGixC-480.webp",
+      "previewLarge": "/trilium-media/gw2rYe0OGixC-960.webp"
     },
     "caveLight": {
-      "src": "/photos/caveLight-full.webp",
+      "src": "/trilium-media/YQjo9stzKRQ2.webp",
       "width": 1920,
       "height": 2560,
       "alt": "手中拿着的一杯饮品",
-      "preview": "/photos/caveLight-480.webp",
-      "previewLarge": "/photos/caveLight-960.webp"
+      "preview": "/trilium-media/YQjo9stzKRQ2-480.webp",
+      "previewLarge": "/trilium-media/YQjo9stzKRQ2-960.webp"
     },
     "paperGeometry": {
-      "src": "/photos/paperGeometry-full.webp",
+      "src": "/trilium-media/EtEKZGn9wR9K.webp",
       "width": 2560,
       "height": 1920,
       "alt": "雨天撑着透明雨伞站在绿地旁的人",
-      "preview": "/photos/paperGeometry-480.webp",
-      "previewLarge": "/photos/paperGeometry-960.webp"
+      "preview": "/trilium-media/EtEKZGn9wR9K-480.webp",
+      "previewLarge": "/trilium-media/EtEKZGn9wR9K-960.webp"
     },
     "greenObject": {
-      "src": "/photos/greenObject-full.webp",
+      "src": "/trilium-media/vgM1Md96FJ5b.webp",
       "width": 2560,
       "height": 1920,
       "alt": "电影场记板和胶片装置前的人",
-      "preview": "/photos/greenObject-480.webp",
-      "previewLarge": "/photos/greenObject-960.webp"
+      "preview": "/trilium-media/vgM1Md96FJ5b-480.webp",
+      "previewLarge": "/trilium-media/vgM1Md96FJ5b-960.webp"
     },
     "coast": {
-      "src": "/photos/coast-full.webp",
+      "src": "/trilium-media/BCYzP1pBR9WL.webp",
       "width": 1920,
       "height": 2560,
       "alt": "高楼之间的两人合影",
-      "preview": "/photos/coast-480.webp",
-      "previewLarge": "/photos/coast-960.webp"
+      "preview": "/trilium-media/BCYzP1pBR9WL-480.webp",
+      "previewLarge": "/trilium-media/BCYzP1pBR9WL-960.webp"
     },
     "sunlitWalk": {
-      "src": "/photos/sunlitWalk-full.webp",
+      "src": "/trilium-media/iQlqXg4gZzaH.webp",
       "width": 2560,
       "height": 1920,
       "alt": "海边栏杆旁的人与远处海岸",
-      "preview": "/photos/sunlitWalk-480.webp",
-      "previewLarge": "/photos/sunlitWalk-960.webp"
+      "preview": "/trilium-media/iQlqXg4gZzaH-480.webp",
+      "previewLarge": "/trilium-media/iQlqXg4gZzaH-960.webp"
     },
     "glassCabinet": {
-      "src": "/photos/glassCabinet-full.webp",
+      "src": "/trilium-media/BvXTab9QpoCY.webp",
       "width": 1920,
       "height": 2560,
       "alt": "东方明珠塔前的人",
-      "preview": "/photos/glassCabinet-480.webp",
-      "previewLarge": "/photos/glassCabinet-960.webp"
+      "preview": "/trilium-media/BvXTab9QpoCY-480.webp",
+      "previewLarge": "/trilium-media/BvXTab9QpoCY-960.webp"
     },
     "nightLights": {
-      "src": "/photos/nightLights-full.webp",
+      "src": "/trilium-media/wjASPN7JsGKa.webp",
       "width": 1920,
       "height": 2560,
       "alt": "城市街头戴着眼镜的人",
-      "preview": "/photos/nightLights-480.webp",
-      "previewLarge": "/photos/nightLights-960.webp"
+      "preview": "/trilium-media/wjASPN7JsGKa-480.webp",
+      "previewLarge": "/trilium-media/wjASPN7JsGKa-960.webp"
     },
     "mountainView": {
-      "src": "/photos/mountainView-full.webp",
+      "src": "/trilium-media/pWjI6LmFtrK4.webp",
       "width": 2560,
       "height": 1920,
       "alt": "skqfly 摄影作品 9",
-      "preview": "/photos/mountainView-480.webp",
-      "previewLarge": "/photos/mountainView-960.webp"
+      "preview": "/trilium-media/pWjI6LmFtrK4-480.webp",
+      "previewLarge": "/trilium-media/pWjI6LmFtrK4-960.webp"
     },
     "eveningCoast": {
-      "src": "/photos/eveningCoast-full.webp",
+      "src": "/trilium-media/rpejPMhAWMtC.webp",
       "width": 1920,
       "height": 2560,
       "alt": "skqfly 摄影作品 10",
-      "preview": "/photos/eveningCoast-480.webp",
-      "previewLarge": "/photos/eveningCoast-960.webp"
+      "preview": "/trilium-media/rpejPMhAWMtC-480.webp",
+      "previewLarge": "/trilium-media/rpejPMhAWMtC-960.webp"
     },
     "photoEleven": {
-      "src": "/photos/photoEleven-960.webp",
-      "width": 1920,
-      "height": 2560,
+      "src": "/trilium-media/SvJetzfyO5bp.webp",
+      "width": 960,
+      "height": 1280,
       "alt": "skqfly 摄影作品 11",
-      "preview": "/photos/photoEleven-480.webp",
-      "previewLarge": "/photos/photoEleven-960.webp"
+      "preview": "/trilium-media/SvJetzfyO5bp-480.webp",
+      "previewLarge": "/trilium-media/SvJetzfyO5bp-960.webp"
     },
     "photoTwelve": {
-      "src": "/photos/photoTwelve-960.webp",
-      "width": 1920,
-      "height": 2560,
+      "src": "/trilium-media/RxwtxucfrjqE.webp",
+      "width": 960,
+      "height": 1280,
       "alt": "skqfly 摄影作品 12",
-      "preview": "/photos/photoTwelve-480.webp",
-      "previewLarge": "/photos/photoTwelve-960.webp"
+      "preview": "/trilium-media/RxwtxucfrjqE-480.webp",
+      "previewLarge": "/trilium-media/RxwtxucfrjqE-960.webp"
     },
     "drone-green-hills": {
-      "src": "/photos/drone-green-hills-full.webp",
+      "src": "/trilium-media/PPnyu2f2rdIt.webp",
       "width": 2560,
       "height": 1920,
       "alt": "无人机镜头下的绿山与石屋",
-      "preview": "/photos/drone-green-hills-480.webp",
-      "previewLarge": "/photos/drone-green-hills-960.webp"
+      "preview": "/trilium-media/PPnyu2f2rdIt-480.webp",
+      "previewLarge": "/trilium-media/PPnyu2f2rdIt-960.webp"
     }
   },
   "posts": {
     "domain-ssl-cert": {
       "meta": {
-        "title": "Nginx 反向代理与 HTTPS 配置",
+        "title": "Nginx 反向代理与 HTTPS 配置测试",
         "pubDate": "2025-10-09",
         "description": "为本机服务绑定域名，用 Certbot 申请证书并验证自动续期。",
         "author": "skqfly",
@@ -620,7 +621,7 @@
     ]
   },
   "signals": {
-    "JCmMu9kLDQ1H": "w2AtEFTKyOvJ:verification-1792741482256",
+    "JCmMu9kLDQ1H": "w2AtEFTKyOvJ:manager-upgrade-1792769861563",
     "i27QtbMEPCqU": "pANAJ3m3tcB4:",
     "9zAjufOaHWy5": "GSj9eRXCnQVr:",
     "bqL3xyuOJ7u9": "0NrHbZNW9XNi:",
@@ -629,7 +630,7 @@
     "5LmZODWhnQKr": "u4l1jKjExplS:",
     "aWKArbUT2uAL": "h50sSvYFH8DF:",
     "Eo7K06GKjwRk": "3NvUNTXUUKtY:",
-    "R5fTNHnfovQd": "Tz1GFtfjcjXC:",
+    "R5fTNHnfovQd": "Tz1GFtfjcjXC:verification-1792741482257",
     "8tmnRSDCfYbI": "iEdNzaPcVGYW:",
     "1cruNa8wR8v4": "cmMpRGqTpZYS:",
     "wc36wKsWOkKS": "Osl4J1rk0T8v:",
@@ -660,5 +661,103 @@
     "19BRjPjIBweE": "SqevloJ1QlSi:",
     "FZ37ztbeFnbf": "M0xc1a93zNvp:",
     "VVeOusJBW6lP": "gx36ueQ8Vftg:"
+  },
+  "assets": {
+    "gw2rYe0OGixC": {
+      "path": "/trilium-media/gw2rYe0OGixC.webp",
+      "sha256": "ee336a57738ef4e395a22fe241eddefe8e221ce2bcdc2e8590d8372d968d5e9f",
+      "width": 2560,
+      "height": 1920
+    },
+    "YQjo9stzKRQ2": {
+      "path": "/trilium-media/YQjo9stzKRQ2.webp",
+      "sha256": "fc7498bb118ae8f3b930fcb74bb2ace0a089502c22b54b5f4978ea8dac911b3c",
+      "width": 1920,
+      "height": 2560
+    },
+    "EtEKZGn9wR9K": {
+      "path": "/trilium-media/EtEKZGn9wR9K.webp",
+      "sha256": "bdcee265943284b677ad24a15e703e5bee4e372389cb8358299133f04bfb2e6b",
+      "width": 2560,
+      "height": 1920
+    },
+    "vgM1Md96FJ5b": {
+      "path": "/trilium-media/vgM1Md96FJ5b.webp",
+      "sha256": "2f8399b2040f775ff148e05f67aef6fd83e8c57459ffe8bc6d9acf4a1d0138ea",
+      "width": 2560,
+      "height": 1920
+    },
+    "BCYzP1pBR9WL": {
+      "path": "/trilium-media/BCYzP1pBR9WL.webp",
+      "sha256": "87b7e818b6e3e7e4e1c79476a17e95e7ff05c0d46151a09ac49280656a3ac1f9",
+      "width": 1920,
+      "height": 2560
+    },
+    "iQlqXg4gZzaH": {
+      "path": "/trilium-media/iQlqXg4gZzaH.webp",
+      "sha256": "f3e92a5ff51dcc98d96f09099f4c9cc25c9f77df1de7740f6c9b8d5f1209c87c",
+      "width": 2560,
+      "height": 1920
+    },
+    "BvXTab9QpoCY": {
+      "path": "/trilium-media/BvXTab9QpoCY.webp",
+      "sha256": "572854baea1b2250e7335f0ca876a79ea3bbd02a71d016f0594714fe34bbe190",
+      "width": 1920,
+      "height": 2560
+    },
+    "wjASPN7JsGKa": {
+      "path": "/trilium-media/wjASPN7JsGKa.webp",
+      "sha256": "687edfb3ff8f68c3c7cab34d2cc0bf49158eeeed97d2ba5265e62215cf3a29c2",
+      "width": 1920,
+      "height": 2560
+    },
+    "pWjI6LmFtrK4": {
+      "path": "/trilium-media/pWjI6LmFtrK4.webp",
+      "sha256": "300d0616f30915a72356fa6a25456e76d37ea6ec3379a56ec0439fce932a123c",
+      "width": 2560,
+      "height": 1920
+    },
+    "rpejPMhAWMtC": {
+      "path": "/trilium-media/rpejPMhAWMtC.webp",
+      "sha256": "f21e5b5d94735711e141b01d761e40ede0c2458404cd8a3f556f230f5df260ba",
+      "width": 1920,
+      "height": 2560
+    },
+    "SvJetzfyO5bp": {
+      "path": "/trilium-media/SvJetzfyO5bp.webp",
+      "sha256": "2498967f842df12fed2535c50872605df7b3281793a725bfb881ff3332b215d0",
+      "width": 960,
+      "height": 1280
+    },
+    "RxwtxucfrjqE": {
+      "path": "/trilium-media/RxwtxucfrjqE.webp",
+      "sha256": "897dfa65b32e4f8f067825c97ed5fbd070eb189e6f722fe5ea7dacf6c06b13c7",
+      "width": 960,
+      "height": 1280
+    },
+    "PPnyu2f2rdIt": {
+      "path": "/trilium-media/PPnyu2f2rdIt.webp",
+      "sha256": "0d97fe6650c446e2213ed41fccaaea860621e6260eb7cb52851040fdabda728c",
+      "width": 2560,
+      "height": 1920
+    },
+    "snZQtDsA7A4L": {
+      "path": "/trilium-media/snZQtDsA7A4L.webp",
+      "sha256": "d7876c01b3e891a5546125b2067f9fc1e83150c53f89466ff7a20d3858317a8f",
+      "width": 256,
+      "height": 256
+    },
+    "LFlCWvNjemQI": {
+      "path": "/trilium-media/LFlCWvNjemQI.webp",
+      "sha256": "361a2a2eaa8b04b8b63c7a8c1c0d99a512194a5a9da57e7fe98d4d6863dd6dfb",
+      "width": 256,
+      "height": 256
+    },
+    "hsoG3EWvAyqw": {
+      "path": "/trilium-media/hsoG3EWvAyqw.webp",
+      "sha256": "a334b237d1448ba9d52f67079224f7a31bd5f1f2e882c5f708587c92635ce11f",
+      "width": 1080,
+      "height": 1080
+    }
   }
 }

@@ -1,106 +1,106 @@
 {
   "carWindow": {
-    "src": "/photos/carWindow-full.webp",
+    "src": "/trilium-media/gw2rYe0OGixC.webp",
     "width": 2560,
     "height": 1920,
     "alt": "夜色中亮起灯光的和平饭店外墙",
-    "preview": "/photos/carWindow-480.webp",
-    "previewLarge": "/photos/carWindow-960.webp"
+    "preview": "/trilium-media/gw2rYe0OGixC-480.webp",
+    "previewLarge": "/trilium-media/gw2rYe0OGixC-960.webp"
   },
   "caveLight": {
-    "src": "/photos/caveLight-full.webp",
+    "src": "/trilium-media/YQjo9stzKRQ2.webp",
     "width": 1920,
     "height": 2560,
     "alt": "手中拿着的一杯饮品",
-    "preview": "/photos/caveLight-480.webp",
-    "previewLarge": "/photos/caveLight-960.webp"
+    "preview": "/trilium-media/YQjo9stzKRQ2-480.webp",
+    "previewLarge": "/trilium-media/YQjo9stzKRQ2-960.webp"
   },
   "paperGeometry": {
-    "src": "/photos/paperGeometry-full.webp",
+    "src": "/trilium-media/EtEKZGn9wR9K.webp",
     "width": 2560,
     "height": 1920,
     "alt": "雨天撑着透明雨伞站在绿地旁的人",
-    "preview": "/photos/paperGeometry-480.webp",
-    "previewLarge": "/photos/paperGeometry-960.webp"
+    "preview": "/trilium-media/EtEKZGn9wR9K-480.webp",
+    "previewLarge": "/trilium-media/EtEKZGn9wR9K-960.webp"
   },
   "greenObject": {
-    "src": "/photos/greenObject-full.webp",
+    "src": "/trilium-media/vgM1Md96FJ5b.webp",
     "width": 2560,
     "height": 1920,
     "alt": "电影场记板和胶片装置前的人",
-    "preview": "/photos/greenObject-480.webp",
-    "previewLarge": "/photos/greenObject-960.webp"
+    "preview": "/trilium-media/vgM1Md96FJ5b-480.webp",
+    "previewLarge": "/trilium-media/vgM1Md96FJ5b-960.webp"
   },
   "coast": {
-    "src": "/photos/coast-full.webp",
+    "src": "/trilium-media/BCYzP1pBR9WL.webp",
     "width": 1920,
     "height": 2560,
     "alt": "高楼之间的两人合影",
-    "preview": "/photos/coast-480.webp",
-    "previewLarge": "/photos/coast-960.webp"
+    "preview": "/trilium-media/BCYzP1pBR9WL-480.webp",
+    "previewLarge": "/trilium-media/BCYzP1pBR9WL-960.webp"
   },
   "sunlitWalk": {
-    "src": "/photos/sunlitWalk-full.webp",
+    "src": "/trilium-media/iQlqXg4gZzaH.webp",
     "width": 2560,
     "height": 1920,
     "alt": "海边栏杆旁的人与远处海岸",
-    "preview": "/photos/sunlitWalk-480.webp",
-    "previewLarge": "/photos/sunlitWalk-960.webp"
+    "preview": "/trilium-media/iQlqXg4gZzaH-480.webp",
+    "previewLarge": "/trilium-media/iQlqXg4gZzaH-960.webp"
   },
   "glassCabinet": {
-    "src": "/photos/glassCabinet-full.webp",
+    "src": "/trilium-media/BvXTab9QpoCY.webp",
     "width": 1920,
     "height": 2560,
     "alt": "东方明珠塔前的人",
-    "preview": "/photos/glassCabinet-480.webp",
-    "previewLarge": "/photos/glassCabinet-960.webp"
+    "preview": "/trilium-media/BvXTab9QpoCY-480.webp",
+    "previewLarge": "/trilium-media/BvXTab9QpoCY-960.webp"
   },
   "nightLights": {
-    "src": "/photos/nightLights-full.webp",
+    "src": "/trilium-media/wjASPN7JsGKa.webp",
     "width": 1920,
     "height": 2560,
     "alt": "城市街头戴着眼镜的人",
-    "preview": "/photos/nightLights-480.webp",
-    "previewLarge": "/photos/nightLights-960.webp"
+    "preview": "/trilium-media/wjASPN7JsGKa-480.webp",
+    "previewLarge": "/trilium-media/wjASPN7JsGKa-960.webp"
   },
   "mountainView": {
-    "src": "/photos/mountainView-full.webp",
+    "src": "/trilium-media/pWjI6LmFtrK4.webp",
     "width": 2560,
     "height": 1920,
     "alt": "skqfly 摄影作品 9",
-    "preview": "/photos/mountainView-480.webp",
-    "previewLarge": "/photos/mountainView-960.webp"
+    "preview": "/trilium-media/pWjI6LmFtrK4-480.webp",
+    "previewLarge": "/trilium-media/pWjI6LmFtrK4-960.webp"
   },
   "eveningCoast": {
-    "src": "/photos/eveningCoast-full.webp",
+    "src": "/trilium-media/rpejPMhAWMtC.webp",
     "width": 1920,
     "height": 2560,
     "alt": "skqfly 摄影作品 10",
-    "preview": "/photos/eveningCoast-480.webp",
-    "previewLarge": "/photos/eveningCoast-960.webp"
+    "preview": "/trilium-media/rpejPMhAWMtC-480.webp",
+    "previewLarge": "/trilium-media/rpejPMhAWMtC-960.webp"
   },
   "photoEleven": {
-    "src": "/photos/photoEleven-960.webp",
-    "width": 1920,
-    "height": 2560,
+    "src": "/trilium-media/SvJetzfyO5bp.webp",
+    "width": 960,
+    "height": 1280,
     "alt": "skqfly 摄影作品 11",
-    "preview": "/photos/photoEleven-480.webp",
-    "previewLarge": "/photos/photoEleven-960.webp"
+    "preview": "/trilium-media/SvJetzfyO5bp-480.webp",
+    "previewLarge": "/trilium-media/SvJetzfyO5bp-960.webp"
   },
   "photoTwelve": {
-    "src": "/photos/photoTwelve-960.webp",
-    "width": 1920,
-    "height": 2560,
+    "src": "/trilium-media/RxwtxucfrjqE.webp",
+    "width": 960,
+    "height": 1280,
     "alt": "skqfly 摄影作品 12",
-    "preview": "/photos/photoTwelve-480.webp",
-    "previewLarge": "/photos/photoTwelve-960.webp"
+    "preview": "/trilium-media/RxwtxucfrjqE-480.webp",
+    "previewLarge": "/trilium-media/RxwtxucfrjqE-960.webp"
   },
   "drone-green-hills": {
-    "src": "/photos/drone-green-hills-full.webp",
+    "src": "/trilium-media/PPnyu2f2rdIt.webp",
     "width": 2560,
     "height": 1920,
     "alt": "无人机镜头下的绿山与石屋",
-    "preview": "/photos/drone-green-hills-480.webp",
-    "previewLarge": "/photos/drone-green-hills-960.webp"
+    "preview": "/trilium-media/PPnyu2f2rdIt-480.webp",
+    "previewLarge": "/trilium-media/PPnyu2f2rdIt-960.webp"
   }
 }
