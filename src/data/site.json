@@ -198,7 +198,16 @@
         "title": "记录，是计算之外的另一条线索",
         "date": "2026-07-15",
         "description": "在公式、代码和日常照片之间，记录帮助我把模糊的想法整理成一段可以回看、可以继续推进的过程。",
-        "images": []
+        "images": [
+          {
+            "src": "/trilium-media/PPnyu2f2rdIt.webp",
+            "width": 2560,
+            "height": 1920,
+            "alt": "无人机镜头下的绿山与石屋",
+            "preview": "/trilium-media/PPnyu2f2rdIt-480.webp",
+            "previewLarge": "/trilium-media/PPnyu2f2rdIt-960.webp"
+          }
+        ]
       },
       {
         "id": "observing-scale-between-rocks",
