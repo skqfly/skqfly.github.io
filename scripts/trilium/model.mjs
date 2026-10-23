@@ -18,7 +18,7 @@ export const talkSchema = z.object({ id: nonempty, title: nonempty, date, descri
 export const siteSchema = z.object({
   identity: z.object({ name: nonempty, logo: link, email: text.optional() }),
   navBarLinks: z.array(nav), socialLinks: z.array(social),
-  homePageContent: z.object({ seo, role: text, description: text, socialLinks: z.array(social), links: z.array(nav) }),
+  homePageContent: z.object({ seo, role: text, description: text, avatar: z.union([link, z.literal('')]).optional(), socialLinks: z.array(social), links: z.array(nav) }),
   aboutPageContent: z.object({ seo, subtitle: text, about: z.object({ description: text }), work: z.object({ description: text, items: z.array(z.object({ title: nonempty, company, date: nonempty })) }), connect: z.object({ description: text, links: z.array(social) }) }),
   blogPageContent: z.object({ seo }),
   talksPageContent: z.object({ seo, subtitle: text, entries: z.array(talkSchema) }),
@@ -34,6 +34,7 @@ export const validId = id => {
 export function applyRecords(snapshot, records) {
   const result = structuredClone(snapshot);
   const used = new Set();
+  const removedPhotos = new Set(records.filter(r => r.attrs.blogKind === 'photo' && r.attrs.blogDeleted === 'true' && Object.hasOwn(r.attrs, 'publish')).map(r => r.attrs.blogId));
   const collections = { talk: result.site.talksPageContent.entries, friend: result.site.friendsPageContent.friends, project: result.site.projectsPageContent.projects };
   for (const { title, attrs, content } of records) {
     const { blogKind: kind, blogId: id } = attrs;
@@ -44,6 +45,19 @@ export function applyRecords(snapshot, records) {
     used.add(key);
     // Unchecked publish means keep the last published version, never silently delete it.
     if (!Object.hasOwn(attrs, 'publish')) continue;
+    if (attrs.blogDeleted === 'true') {
+      if (kind === 'settings') throw new Error('Site settings cannot be deleted.');
+      if (kind === 'post') delete result.posts[id];
+      else if (kind === 'photo') {
+        const photo = result.photos[id];
+        if (photo) result.site.talksPageContent.entries.forEach(t => { t.images = t.images.filter(p => p.src !== photo.src); });
+        delete result.photos[id];
+      } else {
+        const index = result.ids[kind].indexOf(id);
+        if (index >= 0) { result.ids[kind].splice(index, 1); collections[kind].splice(index, 1); }
+      }
+      continue;
+    }
     if (kind === 'settings') {
       if (!Object.hasOwn(result.site, id)) throw new Error(`Unknown settings section: ${id}`);
       const data = JSON.parse(content);
@@ -57,7 +71,7 @@ export function applyRecords(snapshot, records) {
       result.photos[id] = photoSchema.parse({ src: attrs.src, width: Number(attrs.width), height: Number(attrs.height), alt: content.trim() || title, preview: attrs.preview || attrs.src, previewLarge: attrs.previewLarge || attrs.src });
     } else {
       const data = { id, title, description: content.trim() };
-      if (kind === 'talk') Object.assign(data, { date: attrs.date, images: (attrs.photos || '').split(',').map(s => s.trim()).filter(Boolean).map(photoId => {
+      if (kind === 'talk') Object.assign(data, { date: attrs.date, images: (attrs.photos || '').split(',').map(s => s.trim()).filter(id => id && !removedPhotos.has(id)).map(photoId => {
         const photo = result.photos[photoId];
         if (!photo) throw new Error(`Unknown photo: ${photoId}`);
         return photo;

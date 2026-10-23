@@ -1,9 +1,10 @@
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, unlink } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createClient, labels, setLabel } from './client.mjs';
 import { applyRecords } from './model.mjs';
 import { publicationRequest } from './publication.mjs';
+import { prepareMedia, unusedMedia, mediaPath } from './media.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const json = value => JSON.stringify(value, null, 2) + '\n';
@@ -18,8 +19,13 @@ export async function collect(client, rootId) {
     const note = await client(`notes/${encodeURIComponent(id)}`);
     const attrs = labels(note);
     if (attrs.blogKind) {
-      if (note.type !== 'code' || !['text/markdown', 'application/json', 'text/plain'].includes(note.mime)) throw new Error(`Use a Markdown or JSON code note: ${note.title}`);
-      records.push({ title: note.title, attrs, content: await client(`notes/${id}/content`, { raw: true }), noteId: id });
+      if (attrs.blogKind === 'asset') {
+        if (!['image', 'file'].includes(note.type)) throw new Error(`Invalid media note: ${note.title}`);
+        records.push({ title: note.title, attrs, mime: note.mime, noteId: id });
+      } else {
+        if (note.type !== 'code' || !['text/markdown', 'application/json', 'text/plain'].includes(note.mime)) throw new Error(`Use a Markdown or JSON code note: ${note.title}`);
+        records.push({ title: note.title, attrs, content: await client(`notes/${id}/content`, { raw: true }), noteId: id });
+      }
     }
     for (const child of note.childNoteIds || []) await walk(child, depth + 1);
   }
@@ -57,20 +63,36 @@ export async function run({ dryRun = false } = {}) {
   const snapshot = JSON.parse(await readFile(resolve(root, 'trilium/published.json'), 'utf8'));
   const records = await collect(client, config.rootNoteId);
   if (!records.length) throw new Error('No managed content found; refusing to publish an empty tree.');
-  const updated = applyRecords(snapshot, records);
+  const media = await prepareMedia(client, records, snapshot);
+  const updated = applyRecords(snapshot, media.records);
+  updated.assets = media.assets;
+  const removed = Object.keys(snapshot.posts).filter(id => !Object.hasOwn(updated.posts, id)).map(id => {
+    if (!/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,119}$/.test(id)) throw new Error('Invalid removed post ID.');
+    return `src/content/posts/${id}.md`;
+  });
+  for (const id of unusedMedia(updated)) {
+    delete updated.assets[id];
+    const path = mediaPath(id);
+    for (const suffix of ['', '-480', '-960']) {
+      const file = `public${path.replace('.webp', `${suffix}.webp`)}`;
+      media.files.delete(file);
+      if (snapshot.assets?.[id]) removed.push(file);
+    }
+  }
   updated.signals = signals;
   const changes = [];
-  for (const [path, content] of outputFiles(updated)) {
+  for (const [path, content] of new Map([...outputFiles(updated), ...media.files])) {
     const current = await readFile(resolve(root, path), 'utf8').catch(error => { if (error.code === 'ENOENT') return ''; throw error; });
     if (current !== content) changes.push([path, content]);
   }
-  console.log(JSON.stringify({ managedNotes: records.length, publishedNotes: records.filter(r => Object.hasOwn(r.attrs, 'publish')).length, dryRun, changedFiles: changes.map(([p]) => p) }, null, 2));
+  console.log(JSON.stringify({ managedNotes: records.length, publishedNotes: records.filter(r => Object.hasOwn(r.attrs, 'publish')).length, dryRun, changedFiles: changes.map(([p]) => p), removedFiles: removed }, null, 2));
   if (dryRun) return;
   // Everything has been fetched and validated before the first local write.
   for (const [path, content] of changes) {
     await mkdir(dirname(resolve(root, path)), { recursive: true });
     await writeFile(resolve(root, path), content);
   }
+  for (const path of removed) await unlink(resolve(root, path)).catch(error => { if (error.code !== 'ENOENT') throw error; });
 }
 
 export async function report(status) {

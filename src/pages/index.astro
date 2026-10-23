@@ -12,7 +12,15 @@ import avatar from "../assets/me.webp";
     <h1 class="font-bold text-3xl mb-1">{identity.name}</h1>
     {homePageContent.role && <p class="opacity-60 mb-10">{homePageContent.role}</p>}
     <div class="mb-8">
-      <Image
+      {homePageContent.avatar ? <img
+        src={homePageContent.avatar}
+        alt="skqfly 头像"
+        width={124}
+        height={124}
+        class="home-avatar"
+        loading="eager"
+        decoding="async"
+      /> : <Image
         src={avatar}
         alt="skqfly 头像"
         width={124}
@@ -20,7 +28,7 @@ import avatar from "../assets/me.webp";
         class="home-avatar"
         loading="eager"
         decoding="async"
-      />
+      />}
     </div>
     <p class="home-description max-w-md mb-8">
       {homePageContent.description}

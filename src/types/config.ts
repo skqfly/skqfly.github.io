@@ -27,6 +27,7 @@ export type HomePageContent = {
   seo: SEOInfo;
   role: string;
   description: string;
+  avatar?: string;
   socialLinks: SocialLink[];
   links: {
     title: string;
