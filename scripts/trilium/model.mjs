@@ -88,7 +88,9 @@ export function applyRecords(snapshot, records) {
       else list[index] = kind === 'talk' ? parsed : withoutId;
     }
     } catch (error) {
-      const failure = new Error(`内容「${title}」[${kind}/${id}]：${error.message}`);
+      const aliases = { title: '标题', pubDate: '发布日期', date: '日期', description: '摘要 / 简介', author: '作者', category: '分类', image: '图片', width: '图片宽度', height: '图片高度', url: '链接' };
+      const detail = Array.isArray(error.issues) ? error.issues.map(issue => `${aliases[issue.path[0]] || issue.path.join('.')}（${issue.path.join('.')}）：${issue.message}`).join('\n') : error.message;
+      const failure = new Error(`内容「${title}」[${kind}/${id}]：${detail}`);
       Object.assign(failure, { noteId, noteTitle: title, blogKind: kind, blogId: id });
       throw failure;
     }

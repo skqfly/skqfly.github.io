@@ -1,6 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { renderLog, publishLog } from './log.mjs';
+import { renderLog, publishLog, stageResults } from './log.mjs';
+
+test('step outcomes identify the failed phase without waiting for GitHub API consistency', () => {
+  const rows = stageResults('queue=success,dependencies=success,tests=success,sync=failure,build=skipped,commit=skipped');
+  assert.equal(rows.find(row => row.conclusion === 'failure').name, '读取与校验内容');
+  assert.equal(rows.some(row => row.conclusion === 'in_progress'), false);
+});
 
 test('native log contains stages, specific errors, changed files and direct run links without executable HTML', () => {
   const result = renderLog({ status: 'failure', stage: '读取与校验', startedAt: '2026-10-23T16:00:00Z', updatedAt: '2026-10-23T16:01:00Z', runUrl: 'https://github.com/a/b/actions/runs/123', trigger: 'workflow_dispatch', events: [{ time: '2026-10-23T16:00:00Z', stage: '开始' }], steps: [{ name: 'Fetch and validate', conclusion: 'failure' }], error: '文章<测试> [post/abc]：摘要缺失 <script>alert(1)</script> Bearer secret-token ghp_fakeSecret', plan: { managedNotes: 1, changedFiles: ['src/test.md'], removedFiles: [] } });

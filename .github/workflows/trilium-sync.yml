@@ -43,8 +43,10 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
+        id: dependencies
         if: steps.queue.outputs.pending == 'true'
       - name: Test publishing rules
+        id: tests
         if: steps.queue.outputs.pending == 'true'
         run: npm run trilium:check
       - name: Fetch and validate published content
@@ -57,6 +59,7 @@ jobs:
           TRILIUM_SERVER_URL: ${{ secrets.TRILIUM_SERVER_URL }}
           TRILIUM_ETAPI_TOKEN: ${{ secrets.TRILIUM_ETAPI_TOKEN }}
       - name: Build before pushing
+        id: build
         if: steps.sync.outputs.request != ''
         run: |
           node scripts/trilium/log.mjs stage '构建博客' || true
@@ -65,6 +68,7 @@ jobs:
           TRILIUM_SERVER_URL: ${{ secrets.TRILIUM_SERVER_URL }}
           TRILIUM_ETAPI_TOKEN: ${{ secrets.TRILIUM_ETAPI_TOKEN }}
       - name: Commit content and trigger deployment
+        id: commit
         if: steps.sync.outputs.request != ''
         env:
           GH_TOKEN: ${{ github.token }}
@@ -86,6 +90,7 @@ jobs:
         run: node scripts/trilium/log.mjs finish
         env:
           TRILIUM_RESULT: ${{ job.status }}
+          TRILIUM_STAGE_RESULTS: queue=${{ steps.queue.outcome }},dependencies=${{ steps.dependencies.outcome }},tests=${{ steps.tests.outcome }},sync=${{ steps.sync.outcome }},build=${{ steps.build.outcome }},commit=${{ steps.commit.outcome }}
           GH_TOKEN: ${{ github.token }}
           TRILIUM_REQUEST: ${{ steps.sync.outputs.request }}
           TRILIUM_SERVER_URL: ${{ secrets.TRILIUM_SERVER_URL }}

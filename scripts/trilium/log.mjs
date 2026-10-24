@@ -9,6 +9,10 @@ const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&a
 const localTime = value => new Date(value).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai', hour12: false });
 const safeError = value => String(value ?? '').replace(/Bearer\s+\S+/gi, 'Bearer [已隐藏]').replace(/github_pat_[A-Za-z0-9_]+|gh[pousr]_[A-Za-z0-9_]+/g, '[已隐藏]').slice(0, 5000);
 const statusText = { running: '进行中', success: '同步成功（部署已触发）', failure: '失败', cancelled: '已取消' };
+const stages = { queue: '检查发布队列', dependencies: '安装依赖', tests: '发布规则测试', sync: '读取与校验内容', build: '构建博客', commit: '推送与触发部署' };
+export function stageResults(value) {
+  return String(value || '').split(',').map(part => part.split('=')).filter(([id]) => stages[id]).map(([id, outcome]) => ({ name: stages[id], conclusion: outcome || 'skipped' }));
+}
 
 export function renderLog(state) {
   const status = statusText[state.status] || state.status;
@@ -70,8 +74,10 @@ export async function updateLog(command, stage = '', env = process.env) {
     const error = await jsonFile(env.TRILIUM_ERROR_FILE, {});
     state.error = error.message;
     state.errorNote = error;
-    try { state.steps = await githubSteps(env); } catch { state.steps = []; }
+    if (env.TRILIUM_STAGE_RESULTS) state.steps = stageResults(env.TRILIUM_STAGE_RESULTS);
+    else try { state.steps = await githubSteps(env); } catch { state.steps = []; }
     const failures = state.steps.filter(step => step.conclusion === 'failure');
+    if (failures.length) state.stage = failures[0].name;
     if (state.status !== 'success' && !state.error) state.error = failures.length ? `失败步骤：${failures.map(s => s.name).join('、')}。请打开本次 GitHub 完整日志查看该步骤输出。` : '同步未完成，请查看本次 GitHub 完整日志。';
     const root = await client(`notes/${config.rootNoteId}`);
     await setLabel(client, root, 'blogSyncStatus', `${localTime(now)} ${statusText[state.status] || state.status} ${state.runUrl}`);
