@@ -8,7 +8,7 @@ import { refreshFolderPages } from './install-folders.mjs';
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const localTime = value => new Date(value).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai', hour12: false });
 const safeError = value => String(value ?? '').replace(/Bearer\s+\S+/gi, 'Bearer [已隐藏]').replace(/github_pat_[A-Za-z0-9_]+|gh[pousr]_[A-Za-z0-9_]+/g, '[已隐藏]').slice(0, 5000);
-const statusText = { running: '进行中', success: '同步成功（部署已触发）', failure: '失败', cancelled: '已取消' };
+const statusText = { running: '进行中', success: '同步成功（部署已触发）', failure: '失败', cancelled: '已取消', noop: '未发现待发布内容' };
 const stages = { queue: '检查发布队列', dependencies: '安装依赖', tests: '发布规则测试', sync: '读取与校验内容', build: '构建博客', commit: '推送与触发部署' };
 export function stageResults(value) {
   return String(value || '').split(',').map(part => part.split('=')).filter(([id]) => stages[id]).map(([id, outcome]) => ({ name: stages[id], conclusion: outcome || 'skipped' }));
@@ -21,6 +21,7 @@ export function renderLog(state) {
   const failed = steps.filter(step => step.conclusion === 'failure').map(step => step.name);
   return `<h2>${escape(status)}</h2><p><strong>当前阶段：</strong>${escape(state.stage)}<br><strong>更新时间：</strong>${escape(localTime(state.updatedAt))}（北京时间）<br><strong>开始时间：</strong>${escape(localTime(state.startedAt))}<br><strong>触发方式：</strong>${escape(state.trigger || '手动诊断')}</p>`
     + (state.runUrl ? `<p><a href="${escape(state.runUrl)}">查看 GitHub 本次完整日志</a> · <a href="${escape(state.runUrl)}?check_suite_focus=true">查看步骤和错误</a></p>` : '')
+    + (state.status === 'noop' ? '<p>没有执行构建或部署。请先在内容笔记中打开“提交发布”，或在网页版保存并发布，再重新运行同步。</p>' : '')
     + (failed.length ? `<p><strong>失败步骤：</strong>${escape(failed.join('、'))}</p>` : '')
     + (state.errorNote?.noteId && /^[a-zA-Z0-9_-]+$/.test(state.errorNote.noteId) ? `<p><a href="#root/${state.errorNote.noteId}">定位出错笔记：${escape(state.errorNote.noteTitle || state.errorNote.noteId)}</a></p>` : '')
     + (state.error ? `<h3>具体错误</h3><pre style="white-space:pre-wrap;overflow-wrap:anywhere">${escape(safeError(state.error))}</pre><p>先根据上面的笔记标题、ID 或字段修改，再重新提交。依赖安装、构建或推送错误请打开 GitHub 对应步骤完整日志。</p>` : '')
@@ -71,6 +72,7 @@ export async function updateLog(command, stage = '', env = process.env) {
   state.plan = await jsonFile(env.TRILIUM_PLAN_FILE, state.plan);
   if (command === 'finish') {
     state.status = env.TRILIUM_RESULT || 'failure';
+    if (state.status === 'success' && env.TRILIUM_NO_PENDING === 'true') { state.status = 'noop'; state.stage = '检查发布队列'; }
     const error = await jsonFile(env.TRILIUM_ERROR_FILE, {});
     state.error = error.message;
     state.errorNote = error;
@@ -78,7 +80,7 @@ export async function updateLog(command, stage = '', env = process.env) {
     else try { state.steps = await githubSteps(env); } catch { state.steps = []; }
     const failures = state.steps.filter(step => step.conclusion === 'failure');
     if (failures.length) state.stage = failures[0].name;
-    if (state.status !== 'success' && !state.error) state.error = failures.length ? `失败步骤：${failures.map(s => s.name).join('、')}。请打开本次 GitHub 完整日志查看该步骤输出。` : '同步未完成，请查看本次 GitHub 完整日志。';
+    if (!['success', 'noop'].includes(state.status) && !state.error) state.error = failures.length ? `失败步骤：${failures.map(s => s.name).join('、')}。请打开本次 GitHub 完整日志查看该步骤输出。` : '同步未完成，请查看本次 GitHub 完整日志。';
     const root = await client(`notes/${config.rootNoteId}`);
     await setLabel(client, root, 'blogSyncStatus', `${localTime(now)} ${statusText[state.status] || state.status} ${state.runUrl}`);
     if (state.status === 'success' && env.TRILIUM_REQUEST && labels(root).blogSyncRequest === env.TRILIUM_REQUEST) {

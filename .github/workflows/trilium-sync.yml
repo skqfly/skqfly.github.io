@@ -31,7 +31,7 @@ jobs:
           TRILIUM_SERVER_URL: ${{ secrets.TRILIUM_SERVER_URL }}
           TRILIUM_ETAPI_TOKEN: ${{ secrets.TRILIUM_ETAPI_TOKEN }}
       - name: Start native sync log
-        if: steps.queue.outputs.pending == 'true'
+        if: steps.queue.outputs.pending == 'true' || github.event_name == 'workflow_dispatch'
         continue-on-error: true
         run: node scripts/trilium/log.mjs start
         env:
@@ -85,11 +85,12 @@ jobs:
           fi
           gh workflow run deploy-pages.yml --ref main --field sync_run_id="$GITHUB_RUN_ID"
       - name: Report result to Trilium
-        if: always() && (steps.queue.outputs.pending == 'true' || failure())
+        if: always() && (steps.queue.outputs.pending == 'true' || failure() || github.event_name == 'workflow_dispatch')
         continue-on-error: true
         run: node scripts/trilium/log.mjs finish
         env:
           TRILIUM_RESULT: ${{ job.status }}
+          TRILIUM_NO_PENDING: ${{ steps.queue.outputs.pending != 'true' }}
           TRILIUM_STAGE_RESULTS: queue=${{ steps.queue.outcome }},dependencies=${{ steps.dependencies.outcome }},tests=${{ steps.tests.outcome }},sync=${{ steps.sync.outcome }},build=${{ steps.build.outcome }},commit=${{ steps.commit.outcome }}
           GH_TOKEN: ${{ github.token }}
           TRILIUM_REQUEST: ${{ steps.sync.outputs.request }}

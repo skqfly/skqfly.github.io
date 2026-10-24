@@ -8,6 +8,12 @@ test('step outcomes identify the failed phase without waiting for GitHub API con
   assert.equal(rows.some(row => row.conclusion === 'in_progress'), false);
 });
 
+test('an empty manual run explains that nothing was built or deployed', () => {
+  const html = renderLog({ status: 'noop', stage: '检查发布队列', startedAt: '2026-10-24T00:00:00Z', updatedAt: '2026-10-24T00:00:01Z', events: [] });
+  assert.match(html, /未发现待发布内容/);
+  assert.match(html, /没有执行构建或部署/);
+});
+
 test('native log contains stages, specific errors, changed files and direct run links without executable HTML', () => {
   const result = renderLog({ status: 'failure', stage: '读取与校验', startedAt: '2026-10-23T16:00:00Z', updatedAt: '2026-10-23T16:01:00Z', runUrl: 'https://github.com/a/b/actions/runs/123', trigger: 'workflow_dispatch', events: [{ time: '2026-10-23T16:00:00Z', stage: '开始' }], steps: [{ name: 'Fetch and validate', conclusion: 'failure' }], error: '文章<测试> [post/abc]：摘要缺失 <script>alert(1)</script> Bearer secret-token ghp_fakeSecret', plan: { managedNotes: 1, changedFiles: ['src/test.md'], removedFiles: [] } });
   assert.match(result, /失败步骤/);
