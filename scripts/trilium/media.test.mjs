@@ -8,6 +8,27 @@ const image = () => sharp({ create: { width: 12, height: 8, channels: 4, backgro
 const asset = (noteId = 'image_1', mime = 'image/png') => ({ noteId, mime, attrs: { blogKind: 'asset' }, content: '' });
 const photo = (attrs = {}) => ({ noteId: 'photo_1', title: '测试照片', attrs: { blogKind: 'photo', publish: 'v1', src: 'trilium:image_1', ...attrs }, content: '照片描述' });
 
+test('JPEG images uploaded with image/jpg aliases export successfully', async () => {
+  const jpg = await sharp(await image()).jpeg().toBuffer();
+  for (const mime of ['image/jpg', 'image/jpeg', 'IMAGE/JPG; charset=binary']) {
+    const result = await prepareMedia(async () => jpg, [asset('image_1', mime), photo()], {});
+    const info = await sharp(result.files.get('public/trilium-media/image_1.webp')).metadata();
+    assert.equal(info.format, 'webp');
+    assert.equal(info.width, 12);
+    assert.equal(info.height, 8);
+  }
+});
+
+test('image failures carry a title and note identity for native log navigation', async () => {
+  const broken = { ...asset('image_1', 'image/jpg'), title: '手机照片.jpg' };
+  await assert.rejects(prepareMedia(async () => Buffer.from('not an image'), [broken, photo()], {}), error => {
+    assert.equal(error.noteId, 'image_1');
+    assert.equal(error.noteTitle, '手机照片.jpg');
+    assert.match(error.message, /手机照片\.jpg/);
+    return true;
+  });
+});
+
 test('animated images retain both frames in the full image and previews', async () => {
   const gif = await sharp(Buffer.from([255, 0, 0, 255, 0, 0, 255, 255]), { raw: { width: 1, height: 2, channels: 4, pageHeight: 1 } }).gif({ delay: [100, 100], loop: 0 }).toBuffer();
   const result = await prepareMedia(async () => gif, [asset('image_1', 'image/gif'), photo()], {});

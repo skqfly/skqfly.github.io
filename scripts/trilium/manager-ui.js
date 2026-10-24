@@ -17,7 +17,7 @@ const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&a
 const labels = attrs => Object.fromEntries(attrs.filter(a => a.type === 'label').map(a => [a.name, a.value]));
 const gone = record => record.attrs.blogDeleted === 'true';
 const revision = () => `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
-const imageMimes = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif']);
+const imageMimes = new Set(['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif', 'image/avif']);
 const ui = selector => host.querySelector(selector);
 
 async function request(path, method = 'GET', body) {

@@ -4,6 +4,10 @@ import { createHash } from 'node:crypto';
 const allowedMime = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif']);
 const idPattern = /^[a-zA-Z0-9_-]{1,64}$/;
 const reference = /trilium:([a-zA-Z0-9_-]{1,64})/g;
+const normalizedMime = value => {
+  const mime = String(value || '').split(';')[0].trim().toLowerCase();
+  return mime === 'image/jpg' ? 'image/jpeg' : mime;
+};
 
 export function mediaPath(id) {
   if (!idPattern.test(id)) throw new Error('Invalid image note ID.');
@@ -42,9 +46,10 @@ export async function prepareMedia(client, records, snapshot) {
   const files = new Map();
   for (const id of referenced) {
     const record = assets.find(r => r.noteId === id);
+    try {
     // Every referenced note must remain inside the managed tree, including soft-deleted assets.
     if (!record) throw new Error(`Image ${id} was removed from Trilium. Restore it before publishing.`);
-    if (!allowedMime.has(record.mime)) throw new Error(`Unsupported image type: ${record.mime}`);
+    if (!allowedMime.has(normalizedMime(record.mime))) throw new Error(`Unsupported image type: ${record.mime}`);
     const original = await client(`notes/${id}/content`, { binary: true });
     const sha256 = createHash('sha256').update(original).digest('hex');
     const path = mediaPath(id);
@@ -55,6 +60,11 @@ export async function prepareMedia(client, records, snapshot) {
     Object.assign(published[id], { width: info.width, height: info.pageHeight || info.height });
     files.set(`public${path}`, full);
     for (const width of [480, 960]) files.set(`public${path.replace('.webp', `-${width}.webp`)}`, await sharp(full, { animated: true }).resize({ width, withoutEnlargement: true }).webp({ quality: 78 }).toBuffer());
+    } catch (error) {
+      const failure = new Error(`图片「${record?.title || id}」[asset/${id}]：${error.message}`);
+      Object.assign(failure, { noteId: id, noteTitle: record?.title || id, blogKind: 'asset', blogId: id });
+      throw failure;
+    }
   }
   const resolved = content.map(record => {
     if (!Object.hasOwn(record.attrs, 'publish') || record.attrs.blogDeleted === 'true') return record;

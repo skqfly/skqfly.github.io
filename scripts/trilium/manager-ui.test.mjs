@@ -332,7 +332,7 @@ test('browser workflow: drafts, publication, deletions, images, photos and avata
   });
   await t.test('native template copies and uploaded images remain editable without exposing template sources', async () => {
     make('source-template', '文章模板来源', 'post', { template: '' }, '', 'folder-post');
-    const nativeImage = make('native-image', '原生上传.png', null, {}, '', 'folder-asset', 'image/png'); nativeImage.type = 'image';
+    const nativeImage = make('native-image', '原生上传.jpg', null, {}, '', 'folder-asset', 'image/jpg'); nativeImage.type = 'image';
     const nativePost = make('native-post', 'Trinote 新文章', null, { description: '用户自己的摘要', blogPublishRequested: 'true' }, '# 原生正文', 'folder-post');
     nativePost.inherited = Object.entries({ blogKind: 'post', description: '模板摘要', author: 'skqfly', pubDate: '2026-10-24', category: 'Notes' }).map(([name, value]) => ({ noteId: 'source-template', type: 'label', name, value }));
     nativePost.relations = [{ attributeId: 'native-post--blogImage', noteId: 'native-post', type: 'relation', name: 'blogImage', value: 'native-image' }];
