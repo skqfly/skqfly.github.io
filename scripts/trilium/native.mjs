@@ -88,6 +88,7 @@ export function selectPublicationRecords(records, snapshot) {
     const relations = record.relations || [];
     delete record.relations;
     if (record.attrs.blogKind === 'asset' || !Object.hasOwn(record.attrs, 'publish') || record.attrs.blogDeleted === 'true') continue;
+    try {
     if (record.type && (record.type !== 'code' || !contentMimes.has(record.mime))) throw new Error(`Use a Markdown or JSON code note: ${record.title} (${record.noteId})`);
     const image = relations.find(a => a.name === 'blogImage');
     if (image) record.attrs[record.attrs.blogKind === 'photo' ? 'src' : 'image'] = assetReference(image.value);
@@ -102,6 +103,11 @@ export function selectPublicationRecords(records, snapshot) {
       const data = JSON.parse(record.content);
       data.avatar = assetReference(avatar.value);
       record.content = JSON.stringify(data);
+    }
+    } catch (error) {
+      const failure = new Error(`内容「${record.title}」[${record.attrs.blogKind}/${record.attrs.blogId}]：${error.message}`);
+      Object.assign(failure, { noteId: record.noteId, noteTitle: record.title, blogKind: record.attrs.blogKind, blogId: record.attrs.blogId });
+      throw failure;
     }
   }
   return selectedRecords;
