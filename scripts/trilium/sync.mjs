@@ -5,34 +5,12 @@ import { createClient, labels, setLabel } from './client.mjs';
 import { applyRecords } from './model.mjs';
 import { publicationRequest } from './publication.mjs';
 import { prepareMedia, unusedMedia, mediaPath } from './media.mjs';
+import { collectNative, selectPublicationRecords } from './native.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const json = value => JSON.stringify(value, null, 2) + '\n';
 
-export async function collect(client, rootId) {
-  const records = [];
-  const visited = new Set();
-  async function walk(id, depth = 0) {
-    if (visited.has(id)) return;
-    if (visited.size > 1000 || depth > 8) throw new Error('Blog tree exceeds safety limit.');
-    visited.add(id);
-    const note = await client(`notes/${encodeURIComponent(id)}`);
-    const attrs = labels(note);
-    if (attrs.blogKind) {
-      if (attrs.blogKind === 'asset') {
-        if (!['image', 'file'].includes(note.type)) throw new Error(`Invalid media note: ${note.title}`);
-        records.push({ title: note.title, attrs, mime: note.mime, noteId: id });
-      } else {
-        if (note.type !== 'code' || !['text/markdown', 'application/json', 'text/plain'].includes(note.mime)) throw new Error(`Use a Markdown or JSON code note: ${note.title}`);
-        records.push({ title: note.title, attrs, content: await client(`notes/${id}/content`, { raw: true }), noteId: id });
-      }
-    }
-    for (const child of note.childNoteIds || []) await walk(child, depth + 1);
-  }
-  await walk(rootId);
-  // Photos must be resolved before talks reference them.
-  return records.sort((a, b) => Number(b.attrs.blogKind === 'photo') - Number(a.attrs.blogKind === 'photo'));
-}
+export const collect = collectNative;
 
 export function outputFiles(snapshot) {
   const files = new Map([
@@ -53,7 +31,7 @@ export async function run({ dryRun = false } = {}) {
   const config = JSON.parse(await readFile(resolve(root, 'trilium/config.json'), 'utf8'));
   const client = createClient();
   const note = await client(`notes/${config.rootNoteId}`);
-  const { request, signals } = await publicationRequest(client, config, note);
+  const { request, signals, nativeRequests } = await publicationRequest(client, config, note);
   if (process.argv.includes('--queued') && !request) {
     console.log('No pending publication request.');
     return;
@@ -61,7 +39,8 @@ export async function run({ dryRun = false } = {}) {
   if (request && !/^\d{13}-[a-zA-Z0-9]{8}$/.test(request)) throw new Error('Invalid publication request ID.');
   if (process.env.GITHUB_OUTPUT) await writeFile(process.env.GITHUB_OUTPUT, `request=${request}\n`, { flag: 'a' });
   const snapshot = JSON.parse(await readFile(resolve(root, 'trilium/published.json'), 'utf8'));
-  const records = await collect(client, config.rootNoteId);
+  const allRecords = await collect(client, config.rootNoteId, config);
+  const records = selectPublicationRecords(allRecords, snapshot);
   if (!records.length) throw new Error('No managed content found; refusing to publish an empty tree.');
   const mediaBase = { ...snapshot, assets: { ...snapshot.assets } };
   for (const id of Object.keys(mediaBase.assets)) {
@@ -92,6 +71,7 @@ export async function run({ dryRun = false } = {}) {
     if (Buffer.isBuffer(content) ? !current?.equals(content) : current !== content) changes.push([path, content]);
   }
   console.log(JSON.stringify({ managedNotes: records.length, publishedNotes: records.filter(r => Object.hasOwn(r.attrs, 'publish')).length, dryRun, changedFiles: changes.map(([p]) => p), removedFiles: removed }, null, 2));
+  if (process.env.TRILIUM_PLAN_FILE) await writeFile(process.env.TRILIUM_PLAN_FILE, JSON.stringify({ managedNotes: records.length, changedFiles: changes.map(([path]) => path), removedFiles: removed, nativeRequests }, null, 2));
   if (dryRun) return;
   // Everything has been fetched and validated before the first local write.
   for (const [path, content] of changes) {
@@ -119,5 +99,8 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   try {
     if (process.argv[2] === 'report') await report(process.argv[3]);
     else await run({ dryRun: process.argv.includes('--dry-run') });
-  } catch (error) { console.error(error.message); process.exitCode = 1; }
+  } catch (error) {
+    if (process.env.TRILIUM_ERROR_FILE) await writeFile(process.env.TRILIUM_ERROR_FILE, JSON.stringify({ message: error.message, noteId: error.noteId, noteTitle: error.noteTitle, blogKind: error.blogKind, blogId: error.blogId }));
+    console.error(error.message); process.exitCode = 1;
+  }
 }

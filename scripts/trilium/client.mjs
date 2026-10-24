@@ -29,7 +29,7 @@ export function createClient() {
 export const labels = note => Object.fromEntries(note.attributes.filter(a => a.type === 'label').map(a => [a.name, a.value]));
 
 export async function setLabel(client, note, name, value) {
-  const old = note.attributes.find(a => a.type === 'label' && a.name === name);
+  const old = note.attributes.find(a => a.type === 'label' && a.name === name && (!a.noteId || a.noteId === note.noteId));
   if (old) return client(`attributes/${old.attributeId}`, { method: 'PATCH', body: { value } });
   return client('attributes', { method: 'POST', body: { noteId: note.noteId, type: 'label', name, value } });
 }

@@ -5,6 +5,12 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      sync_run_id:
+        description: Trilium sync run to receive the deployment result
+        required: false
+        type: string
+        default: ''
 
 permissions:
   contents: read
@@ -44,6 +50,7 @@ jobs:
           path: ./dist
 
   deploy:
+    if: always()
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -54,4 +61,22 @@ jobs:
     steps:
       - name: Deploy
         id: deployment
+        if: needs.build.result == 'success'
         uses: actions/deploy-pages@v4
+
+      - name: Checkout deployment reporter
+        if: always() && inputs.sync_run_id != ''
+        continue-on-error: true
+        uses: actions/checkout@v4
+
+      - name: Record deployment result in Trilium
+        if: always() && inputs.sync_run_id != ''
+        continue-on-error: true
+        run: node scripts/trilium/deploy-log.mjs
+        env:
+          TRILIUM_SERVER_URL: ${{ secrets.TRILIUM_SERVER_URL }}
+          TRILIUM_ETAPI_TOKEN: ${{ secrets.TRILIUM_ETAPI_TOKEN }}
+          SYNC_RUN_ID: ${{ inputs.sync_run_id }}
+          DEPLOY_RESULT: ${{ steps.deployment.outcome }}
+          DEPLOY_BUILD_RESULT: ${{ needs.build.result }}
+          DEPLOY_URL: ${{ steps.deployment.outputs.page_url }}

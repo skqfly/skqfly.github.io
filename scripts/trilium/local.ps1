@@ -1,4 +1,4 @@
-param([ValidateSet('seed', 'install-controls', 'install-manager', 'import-media', 'preview', 'sync', 'queue')][string]$Action = 'preview')
+param([ValidateSet('seed', 'install-controls', 'install-manager', 'install-folders', 'import-media', 'preview', 'sync', 'queue')][string]$Action = 'preview')
 $ErrorActionPreference = 'Stop'
 # Reuse the locally configured credential without writing another token file.
 $configPath = Join-Path $env:USERPROFILE '.codex\config.toml'

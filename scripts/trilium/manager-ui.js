@@ -6,6 +6,7 @@
 await (async () => {
 const rootId = '__ROOT__';
 const settingsId = '__SETTINGS__';
+const logId = '__LOG__';
 const publicOrigin = 'https://mmddskq.top';
 const host = api.$container.find('.blog-manager')[0];
 if (!host) throw new Error('博客管理界面未加载，请重新打开此笔记。');
@@ -79,6 +80,21 @@ async function notifyPublication(prefix) {
     link.href = result.runUrl; link.target = '_blank'; link.rel = 'noopener'; link.textContent = '打开本次同步 ↗';
     ui('.bm-status').append(document.createTextNode(' '), link);
   }
+  if (!await recordPublication(result)) ui('.bm-status').append(document.createTextNode(' 同步日志暂未写入，请在 GitHub 查看执行结果。'));
+}
+
+async function recordPublication(result) {
+  try {
+    const time = new Date().toISOString();
+    const outcome = result.triggered ? '已触发 GitHub 同步' : '已排队，尚未触发 GitHub';
+    const run = result.runUrl ? `<p><a href="${escape(result.runUrl)}">查看本次 GitHub 同步</a></p>` : '';
+    const event = `<h2>发布触发记录</h2><p><strong>时间：</strong>${escape(time)}</p><p><strong>状态：</strong>${outcome}</p>${result.reason ? `<p><strong>原因：</strong>${escape(result.reason)}</p>` : ''}${run}<p>触发成功表示 GitHub 已接收请求。读取内容、校验、构建、推送和部署结果将在同步日志中继续记录。</p>`;
+    const { note } = await api.createNote(logId, { title: `${outcome} · ${time}`, type: 'text', content: event, activate: false });
+    if (!note || !/^[a-zA-Z0-9_-]+$/.test(note.noteId)) return false;
+    await request(`notes/${logId}/data`, 'PUT', { content: `${event}<p><a class="reference-link" href="#root/${note.noteId}">打开这条触发记录</a></p><p>历史明细保留为本笔记的子笔记。GitHub 工作流运行后会更新读取、构建、推送和部署阶段。</p>` });
+    await request(`notes/${logId}/set-attribute`, 'PUT', { type: 'label', name: 'blogLogRun', value: result.runUrl?.match(/\/runs\/(\d+)$/)?.[1] || `client-${Date.now()}`, isInheritable: false });
+    return true;
+  } catch { return false; }
 }
 
 async function action(work) {
@@ -92,20 +108,31 @@ async function action(work) {
 
 async function getRecord(noteId) {
   const [note, attributes] = await Promise.all([request(`notes/${noteId}`), request(`notes/${noteId}/attributes`)]);
-  return { ...note, attributes: attributes.filter(a => a.noteId === noteId), attrs: labels(attributes.filter(a => a.noteId === noteId)) };
+  const attrs = { ...labels(attributes), ...labels(attributes.filter(a => a.noteId === noteId)) };
+  if (!attrs.blogKind && ['image', 'file'].includes(note.type) && imageMimes.has(note.mime)) attrs.blogKind = 'asset';
+  attrs.blogId ||= noteId;
+  const image = attributes.find(attr => attr.type === 'relation' && attr.name === 'blogImage');
+  if (image && ['post', 'project', 'friend', 'photo'].includes(attrs.blogKind)) attrs[attrs.blogKind === 'photo' ? 'src' : 'image'] = `trilium:${image.value}`;
+  return { ...note, attributes: attributes.filter(a => a.noteId === noteId), attrs };
 }
 
 async function reload() {
-  const [ids, rootAttributes] = await Promise.all([
+  const [managedIds, imageIds, rootAttributes] = await Promise.all([
     request(`search/${encodeURIComponent('#blogKind')}?ancestorNoteId=${encodeURIComponent(rootId)}`),
+    request(`search/${encodeURIComponent('note.type = image OR note.type = file')}?ancestorNoteId=${encodeURIComponent(rootId)}`),
     request(`notes/${rootId}/attributes`),
   ]);
+  const ids = [...new Set([...managedIds, ...imageIds])];
   state.syncStatus = labels(rootAttributes).blogSyncStatus || '';
   ui('.bm-last-sync').textContent = state.syncStatus ? `上次同步结果：${state.syncStatus}` : '尚无同步结果。';
   const records = [];
   // Keep concurrency modest for self-hosted instances with large photo libraries.
   for (let i = 0; i < ids.length; i += 6) records.push(...await Promise.all(ids.slice(i, i + 6).map(getRecord)));
-  state.records = records.filter(record => ['post', 'talk', 'photo', 'project', 'friend', 'settings', 'asset'].includes(record.attrs.blogKind));
+  state.records = records.filter(record => !Object.hasOwn(record.attrs, 'template') && ['post', 'talk', 'photo', 'project', 'friend', 'settings', 'asset'].includes(record.attrs.blogKind));
+  for (const record of state.records.filter(record => record.attrs.blogKind === 'talk')) {
+    const photoRelations = record.attributes.filter(attr => attr.type === 'relation' && attr.name === 'blogPhotos');
+    if (photoRelations.length) record.attrs.photos = photoRelations.map(attr => state.records.find(photo => photo.noteId === attr.value)?.attrs.blogId).filter(Boolean).join(',');
+  }
   if (state.selected && !state.records.some(record => record.noteId === state.selected)) state.selected = null;
 }
 
@@ -125,6 +152,14 @@ async function unpublish(record) {
     await request(`notes/${record.noteId}/attributes/${attr.attributeId}`, 'DELETE');
   }
   delete record.attrs.publish;
+  if (record.attrs.blogPublishRequested === 'true') await label(record, 'blogPublishRequested', 'false');
+}
+
+async function clearNativeRelation(record, name) {
+  const attrs = await request(`notes/${record.noteId}/attributes`);
+  for (const attr of attrs.filter(a => a.noteId === record.noteId && a.type === 'relation' && a.name === name)) {
+    await request(`notes/${record.noteId}/attributes/${attr.attributeId}`, 'DELETE');
+  }
 }
 
 function imageUrl(value) {
@@ -296,6 +331,8 @@ async function renderAvatar() {
   if (!record) throw new Error('找不到首页设置笔记。');
   state.selected = record.noteId;
   const data = JSON.parse(await content(record));
+  const nativeAvatar = record.attributes.find(attr => attr.type === 'relation' && attr.name === 'blogAvatar');
+  if (nativeAvatar) data.avatar = `trilium:${nativeAvatar.value}`;
   ui('.bm-workspace').innerHTML = `<form class="bm-avatar-form"><h2>博客头像</h2><p class="bm-muted">导入本地图片或从图片库选择。移除图片会恢复博客默认头像。</p>${imageTools('avatar', '首页头像', data.avatar || '')}<div class="bm-actions"><button type="button" class="bm-primary" data-action="publish-avatar">保存并发布头像</button><button type="button" data-action="save-avatar">保存草稿</button></div></form>`;
   ui('.bm-avatar-form').addEventListener('submit', e => e.preventDefault());
 }
@@ -319,6 +356,9 @@ async function save(record, publish, avatar = false) {
   for (const name of names) await label(record, name, data.get(name) || '');
   if (kind === 'photo') { await label(record, 'preview', data.get('src')); await label(record, 'previewLarge', data.get('src')); }
   if (kind === 'talk') await label(record, 'photos', data.getAll('talkPhoto').join(','));
+  if (avatar) await clearNativeRelation(record, 'blogAvatar');
+  else if (['post', 'project', 'friend', 'photo'].includes(kind)) await clearNativeRelation(record, 'blogImage');
+  else if (kind === 'talk') await clearNativeRelation(record, 'blogPhotos');
   if (publish) await label(record, 'publish', revision());
   state.dirty = false;
   if (publish) await notifyPublication('已提交发布。');
@@ -405,6 +445,8 @@ host.addEventListener('click', event => {
     if (command === 'refresh') {
       if (!mayLeave()) return;
       state.dirty = false; status('正在刷新…'); await reload(); await render(); status('已刷新。');
+    } else if (command === 'logs') {
+      if (mayLeave()) { state.dirty = false; await api.activateNote(logId); }
     } else if (command === 'new') {
       if (!mayLeave()) return;
       const today = new Date().toLocaleDateString('sv-SE');

@@ -66,7 +66,7 @@ test('tag polling detects new publish signals and ignores unchanged or removed t
     return { noteId, attributes: [{ type: 'label', name: 'blogKind', value: 'post' }, { type: 'label', name: 'publish', attributeId: signal.slice(0, colon), value: signal.slice(colon + 1) }] };
   });
   const root = notes.find(n => n.noteId === config.rootNoteId) || { noteId: config.rootNoteId, attributes: [] };
-  const client = async () => ({ results: notes });
+  const client = async path => ({ results: path.includes(encodeURIComponent('#blogPublishRequested = true')) ? [] : notes });
   assert.equal((await publicationRequest(client, config, root)).request, '');
   notes.push({ noteId: 'newNote', attributes: [{ type: 'label', name: 'blogKind', value: 'post' }, { type: 'label', name: 'publish', attributeId: 'newSignal', value: 'v1' }] });
   assert.match((await publicationRequest(client, config, root)).request, /^\d{13}-[a-f0-9]{8}$/);

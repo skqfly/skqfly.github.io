@@ -36,8 +36,9 @@ export function applyRecords(snapshot, records) {
   const used = new Set();
   const removedPhotos = new Set(records.filter(r => r.attrs.blogKind === 'photo' && r.attrs.blogDeleted === 'true' && Object.hasOwn(r.attrs, 'publish')).map(r => r.attrs.blogId));
   const collections = { talk: result.site.talksPageContent.entries, friend: result.site.friendsPageContent.friends, project: result.site.projectsPageContent.projects };
-  for (const { title, attrs, content } of records) {
+  for (const { title, attrs, content, noteId } of records) {
     const { blogKind: kind, blogId: id } = attrs;
+    try {
     if (!['post', 'talk', 'photo', 'friend', 'project', 'settings'].includes(kind)) throw new Error(`Unknown blogKind: ${kind}`);
     validId(id);
     const key = `${kind}/${id}`;
@@ -85,6 +86,11 @@ export function applyRecords(snapshot, records) {
       const { id: _, ...withoutId } = parsed;
       if (index < 0) { result.ids[kind].push(id); list.push(kind === 'talk' ? parsed : withoutId); }
       else list[index] = kind === 'talk' ? parsed : withoutId;
+    }
+    } catch (error) {
+      const failure = new Error(`内容「${title}」[${kind}/${id}]：${error.message}`);
+      Object.assign(failure, { noteId, noteTitle: title, blogKind: kind, blogId: id });
+      throw failure;
     }
   }
   result.site.talksPageContent.entries.forEach(talk => {

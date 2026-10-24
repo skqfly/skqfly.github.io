@@ -18,7 +18,7 @@ test('installer updates only the existing render panel and preserves its activat
     reads.push(path);
     return notes[path.split('/')[1]];
   };
-  const result = await installManager(client, { rootNoteId: 'blog-root', controls: { panel: 'panel', settings: 'private-settings' } });
+  const result = await installManager(client, { rootNoteId: 'blog-root', controls: { panel: 'panel', settings: 'private-settings', log: 'sync-log' } });
   assert.equal(result.backendScriptingRequired, false);
   assert.equal(writes.filter(write => write.path.endsWith('/content')).length, 2);
   assert.equal(writes.some(write => write.path === 'create-note'), false);
@@ -26,7 +26,8 @@ test('installer updates only the existing render panel and preserves its activat
   const installedSource = writes.find(write => write.path === 'notes/frontend/content').body;
   assert.match(installedSource, /const rootId = 'blog-root'/);
   assert.match(installedSource, /const settingsId = 'private-settings'/);
-  assert.doesNotMatch(installedSource, /fixture-private-token|ETAPI_TOKEN|runOnBackend|__SETTINGS__/);
+  assert.match(installedSource, /const logId = 'sync-log'/);
+  assert.doesNotMatch(installedSource, /fixture-private-token|ETAPI_TOKEN|runOnBackend|__SETTINGS__|__LOG__/);
   assert.equal(reads.some(path => path.includes('private-settings')), false);
 });
 
@@ -51,6 +52,7 @@ test('browser workflow: drafts, publication, deletions, images, photos and avata
   };
   make(rootId, '博客管理', null, { blogSyncStatus: '同步成功 · 已发布' });
   make('private-settings', '即时发布配置（私有）', null, {}, JSON.stringify({ githubToken: fixtureToken }));
+  make('sync-log', '同步日志', null, {}, '<h2>同步日志</h2>');
   for (const [kind, title] of Object.entries({ post: '文章 Posts', talk: '动态 Talks', photo: '照片 Photos', friend: '友链 Friends', project: '项目 Projects', settings: '站点设置', asset: '图片素材 Media' })) make(`folder-${kind}`, title, null);
   const article = make('post1', '第一篇文章', 'post', { publish: 'initial', pubDate: '2026-10-23', author: 'skqfly', description: '文章摘要', category: 'Notes', image: 'trilium:asset1', imageAlt: '' }, '# 原有正文', 'folder-post');
   make('photo1', '原有照片', 'photo', { publish: 'initial', src: 'trilium:asset1', preview: 'trilium:asset1', previewLarge: 'trilium:asset1', width: '320', height: '180' }, '原有照片说明', 'folder-photo');
@@ -59,7 +61,7 @@ test('browser workflow: drafts, publication, deletions, images, photos and avata
   make('project1', '示例项目', 'project', { publish: 'initial', url: 'https://example.com', image: 'trilium:asset1', categories: 'Projects', tags: 'web' }, '项目简介', 'folder-project');
   make('home', 'homePageContent', 'settings', { publish: 'initial', blogId: 'homePageContent' }, JSON.stringify({ avatar: 'trilium:asset1', role: '研究与开发', seo: { title: '首页' } }), 'folder-settings', 'application/json');
   make('asset1', '测试图片.png', 'asset', {}, '', 'folder-asset');
-  const attributes = record => Object.entries(record.attrs).map(([name, value]) => ({ attributeId: `${record.noteId}--${name}`, noteId: record.noteId, type: 'label', name, value, isInheritable: false }));
+  const attributes = record => [...Object.entries(record.attrs).map(([name, value]) => ({ attributeId: `${record.noteId}--${name}`, noteId: record.noteId, type: 'label', name, value, isInheritable: false })), ...(record.inherited || []), ...(record.relations || [])];
   const metadata = record => ({ noteId: record.noteId, title: record.title, type: record.type, mime: record.mime });
   const browser = await chromium.launch({ headless: true, ...(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE } : {}) });
   t.after(() => browser.close());
@@ -90,7 +92,7 @@ test('browser workflow: drafts, publication, deletions, images, photos and avata
     if (url.hostname !== 'trilium.test' || req.resourceType() === 'image') return route.fulfill({ status: 200, contentType: 'image/png', body: png });
     if (path === '/') return route.fulfill({ status: 200, contentType: 'text/html', body: '<!doctype html><html><head><meta charset="utf-8"></head><body></body></html>' });
     if (path.startsWith('/api/fixture-children/')) return json([...notes.values()].filter(n => n.parent === path.split('/').at(-1)).map(metadata));
-    if (path.startsWith('/api/search/')) return json([...notes.values()].filter(n => n.attrs.blogKind).map(n => n.noteId));
+    if (path.startsWith('/api/search/')) return json([...notes.values()].filter(n => path.includes('note.type') ? ['image', 'file'].includes(n.type) : n.attrs.blogKind || n.inherited?.some(attr => attr.name === 'blogKind')).map(n => n.noteId));
     const parts = path.split('/').filter(Boolean);
     if (parts[0] !== 'api' || parts[1] !== 'notes') throw new Error(`Unhandled ${method} ${path}`);
     const id = parts[2];
@@ -104,6 +106,7 @@ test('browser workflow: drafts, publication, deletions, images, photos and avata
       assert.equal(url.searchParams.get('target'), 'into');
       const data = req.postDataJSON();
       const created = make(`new${serial++}`, data.title, null, Object.fromEntries((data.attributes || []).map(a => [a.name, a.value])), data.content || '', id, data.mime);
+      created.type = data.type || 'code';
       return json({ note: metadata(created), branch: { noteId: created.noteId } });
     }
     if (endpoint === 'notes-import') {
@@ -117,7 +120,7 @@ test('browser workflow: drafts, publication, deletions, images, photos and avata
     }
     if (!record) throw new Error(`Missing fixture ${id}`);
     if (endpoint === 'attributes' && method === 'GET') return json(attributes(record));
-    if (endpoint === 'attributes' && method === 'DELETE') { delete record.attrs[parts[4].split('--')[1]]; return empty(); }
+    if (endpoint === 'attributes' && method === 'DELETE') { delete record.attrs[parts[4].split('--')[1]]; record.relations = record.relations?.filter(attr => attr.attributeId !== parts[4]); return empty(); }
     if (endpoint === 'set-attribute') { const { name, value } = req.postDataJSON(); record.attrs[name] = value; return empty(); }
     if (endpoint === 'blob') { if (id === 'private-settings') privateReads++; return json({ content: record.content }); }
     if (endpoint === 'title') { record.title = req.postDataJSON().title; return json(metadata(record)); }
@@ -137,7 +140,7 @@ test('browser workflow: drafts, publication, deletions, images, photos and avata
       activateNote: async id => { window.lastActivated = id; },
     };
   });
-  const source = (await readFile(new URL('./manager-ui.js', import.meta.url), 'utf8')).replaceAll('__ROOT__', rootId).replaceAll('__SETTINGS__', 'private-settings');
+  const source = (await readFile(new URL('./manager-ui.js', import.meta.url), 'utf8')).replaceAll('__ROOT__', rootId).replaceAll('__SETTINGS__', 'private-settings').replaceAll('__LOG__', 'sync-log');
   await page.evaluate(code => new Function('api', `return (async () => {${code}\n})();`)(window.api), source);
   const waitStatus = async text => {
     await page.locator('.bm-status').filter({ hasText: text }).waitFor();
@@ -175,7 +178,7 @@ test('browser workflow: drafts, publication, deletions, images, photos and avata
     const before = dispatches.length;
     await page.locator('[name="description"]').fill('更新摘要');
     await click('publish'); await waitStatus('已触发 GitHub 同步');
-    const writes = operations.slice(start);
+    const writes = operations.slice(start).filter(write => write.id === article.noteId);
     assert.equal(writes.at(-1).body.name, 'publish');
     assert.equal(article.attrs.description, '更新摘要');
     assert.ok(article.attrs.publish);
@@ -186,6 +189,12 @@ test('browser workflow: drafts, publication, deletions, images, photos and avata
     assert.equal(await page.locator('.bm-status a').getAttribute('href'), 'https://github.com/skqfly/skqfly.github.io/actions/runs/123456789');
     assert.equal((await page.content()).includes(fixtureToken), false);
     assert.equal(await page.evaluate(token => JSON.stringify({ local: localStorage, session: sessionStorage }).includes(token), fixtureToken), false);
+    const entry = [...notes.values()].find(note => note.parent === 'sync-log');
+    assert.equal(entry.type, 'text');
+    assert.match(entry.content, /已触发 GitHub 同步/);
+    assert.match(entry.content, /actions\/runs\/123456789/);
+    assert.equal(entry.content.includes(fixtureToken), false);
+    assert.match(notes.get('sync-log').content, new RegExp(`#root/${entry.noteId}`));
   });
   await t.test('deletion queues removal and restore returns to an unpublished draft', async () => {
     await click('delete'); await waitStatus('已触发 GitHub 同步');
@@ -294,8 +303,11 @@ test('browser workflow: drafts, publication, deletions, images, photos and avata
       assert.ok(article.attrs.publish);
       assert.match(await page.locator('.bm-status').innerText(), /已排队，尚未触发 GitHub/);
       assert.doesNotMatch(await page.locator('.bm-status').innerText(), /已触发 GitHub/);
-      assert.equal(operations.slice(beforeWrites).some(write => write.id !== article.noteId), false);
+      assert.equal(operations.slice(beforeWrites).some(write => ![article.noteId, 'sync-log'].includes(write.id)), false);
       assert.equal((await page.content()).includes(fixtureToken), false);
+      const latestLog = [...notes.values()].filter(note => note.parent === 'sync-log').at(-1);
+      assert.match(latestLog.content, /尚未触发 GitHub/);
+      assert.equal(latestLog.content.includes(fixtureToken), false);
     });
   }
   await t.test('legacy GitHub 204 acknowledgement is treated as a successful trigger', async () => {
@@ -309,9 +321,33 @@ test('browser workflow: drafts, publication, deletions, images, photos and avata
   await t.test('publish-all requires a confirmation and queues the root after record updates', async () => {
     const before = dispatches.length;
     await click('publish-all'); await waitStatus('所有内容已提交发布。已触发 GitHub');
-    assert.equal(operations.at(-1).id, rootId); assert.equal(operations.at(-1).body.name, 'publish');
+    assert.equal(dispatches.at(-1).precedingOperation.id, rootId); assert.equal(dispatches.at(-1).precedingOperation.body.name, 'publish');
     assert.equal(dispatches.length, before + 1);
     assert.equal(dispatches.at(-1).precedingOperation.id, rootId);
+  });
+  await t.test('sync-log button opens the dedicated native log note', async () => {
+    await click('logs');
+    assert.equal(await page.evaluate(() => window.lastActivated), 'sync-log');
+    assert.equal([...notes.values()].some(note => note.parent === 'sync-log' && note.content.includes(fixtureToken)), false);
+  });
+  await t.test('native template copies and uploaded images remain editable without exposing template sources', async () => {
+    make('source-template', '文章模板来源', 'post', { template: '' }, '', 'folder-post');
+    const nativeImage = make('native-image', '原生上传.png', null, {}, '', 'folder-asset', 'image/png'); nativeImage.type = 'image';
+    const nativePost = make('native-post', 'Trinote 新文章', null, { description: '用户自己的摘要', blogPublishRequested: 'true' }, '# 原生正文', 'folder-post');
+    nativePost.inherited = Object.entries({ blogKind: 'post', description: '模板摘要', author: 'skqfly', pubDate: '2026-10-24', category: 'Notes' }).map(([name, value]) => ({ noteId: 'source-template', type: 'label', name, value }));
+    nativePost.relations = [{ attributeId: 'native-post--blogImage', noteId: 'native-post', type: 'relation', name: 'blogImage', value: 'native-image' }];
+    await click('refresh'); await waitStatus('已刷新'); await tab('post');
+    assert.equal(await page.locator('[data-select="source-template"]').count(), 0);
+    await page.locator('[data-select="native-post"]').click();
+    assert.equal(await page.locator('[name="description"]').inputValue(), '用户自己的摘要');
+    assert.equal(await page.locator('[name="image"]').inputValue(), 'trilium:native-image');
+    const beforeDispatch = dispatches.length;
+    await click('save'); await waitStatus('草稿已保存');
+    assert.equal(nativePost.attrs.blogPublishRequested, 'false');
+    assert.equal(nativePost.attrs.image, 'trilium:native-image');
+    assert.equal(nativePost.relations.length, 0);
+    assert.equal(dispatches.length, beforeDispatch);
+    await tab('asset'); assert.equal(await page.locator('[data-export-asset="native-image"]').count(), 1);
   });
   await tab('photo');
   await page.locator('[data-action="publish"]').waitFor();

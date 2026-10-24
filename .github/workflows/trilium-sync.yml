@@ -16,6 +16,10 @@ concurrency:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    env:
+      TRILIUM_LOG_STATE: /tmp/trilium-log-${{ github.run_id }}.json
+      TRILIUM_PLAN_FILE: /tmp/trilium-plan-${{ github.run_id }}.json
+      TRILIUM_ERROR_FILE: /tmp/trilium-error-${{ github.run_id }}.json
     steps:
       - uses: actions/checkout@v4
         with:
@@ -23,6 +27,13 @@ jobs:
       - name: Check publication queue
         id: queue
         run: node scripts/trilium/queue.mjs
+        env:
+          TRILIUM_SERVER_URL: ${{ secrets.TRILIUM_SERVER_URL }}
+          TRILIUM_ETAPI_TOKEN: ${{ secrets.TRILIUM_ETAPI_TOKEN }}
+      - name: Start native sync log
+        if: steps.queue.outputs.pending == 'true'
+        continue-on-error: true
+        run: node scripts/trilium/log.mjs start
         env:
           TRILIUM_SERVER_URL: ${{ secrets.TRILIUM_SERVER_URL }}
           TRILIUM_ETAPI_TOKEN: ${{ secrets.TRILIUM_ETAPI_TOKEN }}
@@ -39,18 +50,28 @@ jobs:
       - name: Fetch and validate published content
         id: sync
         if: steps.queue.outputs.pending == 'true'
-        run: node scripts/trilium/sync.mjs --queued
+        run: |
+          node scripts/trilium/log.mjs stage '读取与校验内容' || true
+          node scripts/trilium/sync.mjs --queued
         env:
           TRILIUM_SERVER_URL: ${{ secrets.TRILIUM_SERVER_URL }}
           TRILIUM_ETAPI_TOKEN: ${{ secrets.TRILIUM_ETAPI_TOKEN }}
       - name: Build before pushing
         if: steps.sync.outputs.request != ''
-        run: npm run build
+        run: |
+          node scripts/trilium/log.mjs stage '构建博客' || true
+          npm run build
+        env:
+          TRILIUM_SERVER_URL: ${{ secrets.TRILIUM_SERVER_URL }}
+          TRILIUM_ETAPI_TOKEN: ${{ secrets.TRILIUM_ETAPI_TOKEN }}
       - name: Commit content and trigger deployment
         if: steps.sync.outputs.request != ''
         env:
           GH_TOKEN: ${{ github.token }}
+          TRILIUM_SERVER_URL: ${{ secrets.TRILIUM_SERVER_URL }}
+          TRILIUM_ETAPI_TOKEN: ${{ secrets.TRILIUM_ETAPI_TOKEN }}
         run: |
+          node scripts/trilium/log.mjs stage '提交内容与触发部署' || true
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A -- src/data/site.json src/data/photo-library.json src/content/posts trilium/published.json trilium/signals.json public/trilium-media
@@ -58,12 +79,14 @@ jobs:
             git commit -m 'Update blog content from Trilium'
             git push origin HEAD:main
           fi
-          gh workflow run deploy-pages.yml --ref main
+          gh workflow run deploy-pages.yml --ref main --field sync_run_id="$GITHUB_RUN_ID"
       - name: Report result to Trilium
-        if: always() && steps.sync.outputs.request != ''
-        run: node scripts/trilium/sync.mjs report "$RESULT"
+        if: always() && (steps.queue.outputs.pending == 'true' || failure())
+        continue-on-error: true
+        run: node scripts/trilium/log.mjs finish
         env:
-          RESULT: ${{ job.status }}
+          TRILIUM_RESULT: ${{ job.status }}
+          GH_TOKEN: ${{ github.token }}
           TRILIUM_REQUEST: ${{ steps.sync.outputs.request }}
           TRILIUM_SERVER_URL: ${{ secrets.TRILIUM_SERVER_URL }}
           TRILIUM_ETAPI_TOKEN: ${{ secrets.TRILIUM_ETAPI_TOKEN }}
