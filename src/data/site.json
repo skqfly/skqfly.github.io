@@ -432,6 +432,22 @@
             "previewLarge": "/trilium-media/BvrFPgrwsdUE-960.webp"
           }
         ]
+      },
+      {
+        "id": "talk-1792853864286-qkeju",
+        "title": "飞牛同步",
+        "date": "2026-10-24",
+        "description": "第二次测试",
+        "images": [
+          {
+            "src": "/trilium-media/XfLvZ9aP6Xgd.webp",
+            "width": 1254,
+            "height": 1254,
+            "alt": "飞牛同步",
+            "preview": "/trilium-media/XfLvZ9aP6Xgd-480.webp",
+            "previewLarge": "/trilium-media/XfLvZ9aP6Xgd-960.webp"
+          }
+        ]
       }
     ]
   }
