@@ -416,6 +416,22 @@
             "previewLarge": "/trilium-media/vgM1Md96FJ5b-960.webp"
           }
         ]
+      },
+      {
+        "id": "talk-1792853055507-y7del",
+        "title": "第一次测试",
+        "date": "2026-10-24",
+        "description": "日照金山",
+        "images": [
+          {
+            "src": "/trilium-media/BvrFPgrwsdUE.webp",
+            "width": 4096,
+            "height": 2621,
+            "alt": "雪山日照金山",
+            "preview": "/trilium-media/BvrFPgrwsdUE-480.webp",
+            "previewLarge": "/trilium-media/BvrFPgrwsdUE-960.webp"
+          }
+        ]
       }
     ]
   }
