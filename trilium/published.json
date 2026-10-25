@@ -417,38 +417,6 @@
               "previewLarge": "/trilium-media/vgM1Md96FJ5b-960.webp"
             }
           ]
-        },
-        {
-          "id": "talk-1792853055507-y7del",
-          "title": "第一次测试",
-          "date": "2026-10-24",
-          "description": "日照金山",
-          "images": [
-            {
-              "src": "/trilium-media/BvrFPgrwsdUE.webp",
-              "width": 4096,
-              "height": 2621,
-              "alt": "雪山日照金山",
-              "preview": "/trilium-media/BvrFPgrwsdUE-480.webp",
-              "previewLarge": "/trilium-media/BvrFPgrwsdUE-960.webp"
-            }
-          ]
-        },
-        {
-          "id": "talk-1792853864286-qkeju",
-          "title": "飞牛同步",
-          "date": "2026-10-24",
-          "description": "第二次测试",
-          "images": [
-            {
-              "src": "/trilium-media/XfLvZ9aP6Xgd.webp",
-              "width": 1254,
-              "height": 1254,
-              "alt": "飞牛同步",
-              "preview": "/trilium-media/XfLvZ9aP6Xgd-480.webp",
-              "previewLarge": "/trilium-media/XfLvZ9aP6Xgd-960.webp"
-            }
-          ]
         }
       ]
     }
@@ -573,14 +541,6 @@
       "alt": "雪山日照金山",
       "preview": "/trilium-media/BvrFPgrwsdUE-480.webp",
       "previewLarge": "/trilium-media/BvrFPgrwsdUE-960.webp"
-    },
-    "photo-1792853820645-dedow": {
-      "src": "/trilium-media/XfLvZ9aP6Xgd.webp",
-      "width": 1254,
-      "height": 1254,
-      "alt": "飞牛同步",
-      "preview": "/trilium-media/XfLvZ9aP6Xgd-480.webp",
-      "previewLarge": "/trilium-media/XfLvZ9aP6Xgd-960.webp"
     }
   },
   "posts": {
@@ -691,9 +651,7 @@
       "blue-hour-by-the-coast",
       "framing-through-a-car-window",
       "how-light-changes-space",
-      "organizing-an-experiment-from-objects",
-      "talk-1792853055507-y7del",
-      "talk-1792853864286-qkeju"
+      "organizing-an-experiment-from-objects"
     ],
     "project": [
       "project-1",
@@ -712,10 +670,10 @@
     "kuoss7f5hHEZ": "jcWiGsMnAhTh:1792853964605-b7lby",
     "kSpFfU2api3K": "B1HDT9Mku9cS:1792853964605-b7lby",
     "f8vXu6T6pwSy": "gArHN3ZmjlIA:1792853964605-b7lby",
-    "kGw5Wl0QUEvB": "1JRaoFM1a6tr:1792853964605-b7lby",
+    "kGw5Wl0QUEvB": "mfyXaTbP3RsD:1792915281517-kxlf8",
     "5LmZODWhnQKr": "hqHQgosSjzEB:1792853964605-b7lby",
     "aWKArbUT2uAL": "h50sSvYFH8DF:1792853964605-b7lby",
-    "2lmkqSXl8ZZo": "hKssn8PT3eO2:1792853964605-b7lby",
+    "2lmkqSXl8ZZo": "K2cbLVhcQQSR:1792915289365-jgldd",
     "Eo7K06GKjwRk": "3NvUNTXUUKtY:1792853964605-b7lby",
     "R5fTNHnfovQd": "Tz1GFtfjcjXC:1792853964605-b7lby",
     "8tmnRSDCfYbI": "iEdNzaPcVGYW:1792853964605-b7lby",
@@ -724,7 +682,7 @@
     "Ks0kAztep493": "7NQXDK9gqv03:1792853964605-b7lby",
     "OWljl5wXqSKF": "dIZAeunEtME5:1792853964605-b7lby",
     "5bWHqfZxPSwa": "AGW3eRBUgV9i:1792853964605-b7lby",
-    "q9fOWuwmZApz": "WZgRQOqQoPqX:1792853964605-b7lby",
+    "q9fOWuwmZApz": "sP8GXs8frT0x:1792915316698-c7phv",
     "zTi5LIwYHmta": "yNcyg8e9ZdkH:1792853964605-b7lby",
     "jI25BaWHWmMI": "79rWLh5EGqsr:1792853964605-b7lby",
     "teAmeld70bQS": "YHmpufk87L79:1792853964605-b7lby",
@@ -861,12 +819,6 @@
       "sha256": "52be575de9a0289c04fad2bb419a51146bbad7f20569bb810c200a052f0c5963",
       "width": 4096,
       "height": 2621
-    },
-    "XfLvZ9aP6Xgd": {
-      "path": "/trilium-media/XfLvZ9aP6Xgd.webp",
-      "sha256": "7fdd123a51a5076769814dbe6489cfc52328dee16be2916eec800797fb9422df",
-      "width": 1254,
-      "height": 1254
     }
   }
 }
