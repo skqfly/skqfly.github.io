@@ -1,5 +1,5 @@
 ---
-title: "从这里开始：记录与计算"
+title: "从这里开始：记录与计算第一次测试"
 pubDate: 2026-07-15
 description: "关于这个网站，以及我想持续记录的事。"
 author: "skqfly"
