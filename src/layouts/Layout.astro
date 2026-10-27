@@ -133,9 +133,9 @@ const imageURL = new URL(seo.image, Astro.site);
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <!-- Prevent background flash: match system scheme immediately -->
     <style>
-      :root { background-color: #121212; }
+      :root { background-color: #181715; }
       @media (prefers-color-scheme: light) {
-        :root { background-color: #fafafa; }
+        :root { background-color: #faf9f5; }
       }
     </style>
     <link
@@ -147,7 +147,7 @@ const imageURL = new URL(seo.image, Astro.site);
     />
     <link rel="alternate" type="application/rss+xml" title="skqfly RSS" href="/feed.xml" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#121212" />
+    <meta name="theme-color" content="#181715" />
     <title>{seo.title}</title>
     <meta name="description" content={seo.description} />
     <meta property="og:title" content={seo.title} />
@@ -166,7 +166,7 @@ const imageURL = new URL(seo.image, Astro.site);
           // Keep the system preference when storage is unavailable.
         }
         document.documentElement.dataset.theme = theme;
-        const background = theme === "dark" ? "#121212" : "#fafafa";
+        const background = theme === "dark" ? "#181715" : "#faf9f5";
         document.documentElement.style.backgroundColor = background;
         document.querySelector('meta[name="theme-color"]').content = background;
       })();
@@ -394,34 +394,34 @@ const imageURL = new URL(seo.image, Astro.site);
 
   :root,
   html[data-theme="dark"] {
-    --background: #121212;
-    --foreground: #f7f7f7;
-    --surface: #181818;
-    --surface-hover: #262626;
-    --surface-subtle: rgba(255, 255, 255, 0.035);
-    --border: rgba(255, 255, 255, 0.15);
-    --focus: #ffffff;
-    --logo-color: #f7f7f7;
-    --article-body: #b8b8b8;
-    --article-link: #93c5fd;
-    --skip-background: #ffffff;
-    --skip-foreground: #000000;
+    --background: #181715;
+    --foreground: #faf9f5;
+    --surface: #1f1e1b;
+    --surface-hover: #252320;
+    --surface-subtle: rgba(250, 249, 245, 0.035);
+    --border: rgba(250, 249, 245, 0.15);
+    --focus: #cc785c;
+    --logo-color: #faf9f5;
+    --article-body: #a09d96;
+    --article-link: #cc785c;
+    --skip-background: #faf9f5;
+    --skip-foreground: #181715;
     color-scheme: dark;
   }
 
   html[data-theme="light"] {
-    --background: #fafafa;
-    --foreground: #24211f;
-    --surface: #f3f3f3;
-    --surface-hover: #ececec;
-    --surface-subtle: rgba(36, 33, 31, 0.025);
-    --border: rgba(36, 33, 31, 0.16);
-    --focus: #24211f;
-    --logo-color: #24211f;
-    --article-body: #514d49;
-    --article-link: #1d4ed8;
-    --skip-background: #24211f;
-    --skip-foreground: #ffffff;
+    --background: #faf9f5;
+    --foreground: #141413;
+    --surface: #f5f0e8;
+    --surface-hover: #efe9de;
+    --surface-subtle: rgba(20, 20, 19, 0.025);
+    --border: #e6dfd8;
+    --focus: #a9583e;
+    --logo-color: #141413;
+    --article-body: #3d3d3a;
+    --article-link: #a9583e;
+    --skip-background: #141413;
+    --skip-foreground: #faf9f5;
     color-scheme: light;
   }
 
