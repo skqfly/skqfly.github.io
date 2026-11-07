@@ -15,7 +15,7 @@ const escapeXml = (value: string) =>
   });
 
 export const GET: APIRoute = async ({ url }) => {
-  const posts = await getCollection("posts");
+  const posts = await getCollection("posts", ({ data }) => !data.draft);
   posts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 
   const origin = url.origin;

@@ -4,7 +4,7 @@ import BlogSectionNav from "../../components/BlogSectionNav.astro";
 import Layout from "../../layouts/Layout.astro";
 import { identity } from "../../config";
 
-const posts = await getCollection("posts");
+const posts = await getCollection("posts", ({ data }) => !data.draft);
 const categoryCounts = new Map<string, number>();
 
 for (const post of posts) {

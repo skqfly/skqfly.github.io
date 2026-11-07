@@ -2,10 +2,11 @@ import { readFile, writeFile, mkdir, unlink, access } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createClient, labels, setLabel } from './client.mjs';
-import { applyBlogRecords } from './model.mjs';
+import { applyBlogRecords, validId } from './model.mjs';
 import { publicationRequest } from './publication.mjs';
 import { prepareMedia, mediaPath } from './media.mjs';
 import { collectNative, selectPublicationRecords } from './native.mjs';
+import { frontmatter, postsIndex, indexPath } from '../posts-index.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const json = value => JSON.stringify(value, null, 2) + '\n';
@@ -18,11 +19,27 @@ export function outputFiles(snapshot) {
     ['trilium/signals.json', json(snapshot.signals || {})],
   ]);
   for (const [id, post] of Object.entries(snapshot.posts)) {
+    validId(id);
     // JSON is valid YAML; quoting every string keeps frontmatter values unambiguous.
     const meta = Object.entries(post.meta).map(([key, value]) => `${key}: ${key === 'pubDate' ? value : JSON.stringify(value)}`).join('\n');
     files.set(`src/content/posts/${id}.md`, `---\n${meta}\n---\n\n${post.content.replace(/^\n+/, '')}`);
   }
   return files;
+}
+
+export async function publicationFiles(snapshot, records, directory = root) {
+  const posts = {};
+  for (const record of records) {
+    const id = record.attrs.blogId;
+    if (record.attrs.blogKind !== 'post' || !Object.hasOwn(record.attrs, 'publish') || !snapshot.posts[id]) continue;
+    validId(id);
+    const post = snapshot.posts[id];
+    const path = `src/content/posts/${id}.md`;
+    const existing = await readFile(resolve(directory, path), 'utf8').catch(error => { if (error.code !== 'ENOENT') throw error; });
+    // Preserve GitHub-only fields (especially draft) while updating published fields.
+    posts[id] = { ...post, meta: { ...(existing === undefined ? {} : frontmatter(existing, path)), ...post.meta } };
+  }
+  return outputFiles({ ...snapshot, posts });
 }
 
 export async function run({ dryRun = false } = {}) {
@@ -56,8 +73,10 @@ export async function run({ dryRun = false } = {}) {
   // Media URLs are also used by GitHub/App-managed content. This sync cannot
   // determine all consumers, so it never garbage-collects shared media.
   updated.signals = signals;
+  const files = new Map([...await publicationFiles(updated, media.records), ...media.files]);
+  files.set(indexPath, await postsIndex(root, files, removed));
   const changes = [];
-  for (const [path, content] of new Map([...outputFiles(updated), ...media.files])) {
+  for (const [path, content] of files) {
     const current = await readFile(resolve(root, path), Buffer.isBuffer(content) ? undefined : 'utf8').catch(error => { if (error.code === 'ENOENT') return undefined; throw error; });
     if (Buffer.isBuffer(content) ? !current?.equals(content) : current !== content) changes.push([path, content]);
   }
