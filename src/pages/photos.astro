@@ -52,7 +52,7 @@ const seo = {
               aria-haspopup="dialog"
               aria-controls="image-lightbox"
               aria-expanded="false"
-              aria-label={`查看大图：${photo.alt}`}
+              aria-label="查看照片"
             >
               <img
                 draggable="false"
@@ -61,7 +61,7 @@ const seo = {
                 sizes="(min-width: 768px) 25vw, (min-width: 640px) 50vw, 100vw"
                 width={photo.width}
                 height={photo.height}
-                alt={photo.alt}
+                alt=""
                 loading={index === 0 ? "eager" : "lazy"}
                 fetchpriority={index === 0 ? "high" : "auto"}
                 decoding="async"

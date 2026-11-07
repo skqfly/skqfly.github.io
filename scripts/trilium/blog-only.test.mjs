@@ -79,9 +79,9 @@ test('sync does not stage site data or collect shared media garbage', async () =
   assert.doesNotMatch(workflow.split('\n').find(line => line.includes('git add')), /src\/data/);
   const gallery = await readFile(new URL('../../src/pages/photos.astro', import.meta.url), 'utf8');
   const lightbox = await readFile(new URL('../../src/components/ImageLightbox.astro', import.meta.url), 'utf8');
-  assert.doesNotMatch(gallery + lightbox, /<figcaption|class=["'][^"']*caption/);
-  assert.match(gallery, /alt=\{photo\.alt\}/);
-  assert.match(lightbox, /image.alt = photo.alt/);
+  assert.doesNotMatch(gallery + lightbox, /<figcaption|class=["'][^"']*caption|photo\.alt/);
+  assert.match(gallery, /alt=""/);
+  assert.match(lightbox, /image\.alt = ""/);
 });
 
 test('legacy config ignores retired folders and retains explicit root publication requests', async () => {
