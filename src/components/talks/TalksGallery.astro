@@ -13,7 +13,9 @@ interface Talk {
 
 interface Props { entries: Talk[] }
 
-const sortedEntries = [...Astro.props.entries].sort((a, b) => b.date.localeCompare(a.date));
+// site.json is newest-first. Sorting by date alone placed a later talk behind
+// an earlier talk published on the same day.
+const sortedEntries = Astro.props.entries;
 const monthFormatter = new Intl.DateTimeFormat("en", { month: "short", timeZone: "UTC" });
 ---
 
@@ -23,7 +25,7 @@ const monthFormatter = new Intl.DateTimeFormat("en", { month: "short", timeZone:
       {sortedEntries.map((talk, index) => {
         const [year, month, day] = talk.date.split("-");
         const imageCount = talk.images.length;
-        const content = `${talk.title}。${talk.description}`;
+        const content = [talk.title, talk.description].filter(Boolean).join("。");
         const visibleImages = talk.images.slice(0, 4);
         const extraImages = imageCount - visibleImages.length;
         const Card = imageCount > 0 ? "button" : "div";
