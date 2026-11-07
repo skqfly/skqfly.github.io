@@ -1,4 +1,4 @@
-import library from "./photo-library.json" with { type: "json" };
+import rawLibrary from "./photo-library.json" with { type: "json" };
 
 export interface Photo {
   src: string;
@@ -7,20 +7,20 @@ export interface Photo {
   alt: string;
   preview: string;
   previewLarge: string;
-  publishedAt?: string;
 }
 
-export const photoLibrary = library satisfies Record<string, Photo>;
+const source = rawLibrary as Record<string, Photo & { publishedAt?: string }>;
+export const photoLibrary: Record<string, Photo> = source;
 
 // Newest upload first. Photos published before timestamps existed keep their
 // previous wall order and always follow timestamped uploads.
-const ranked = Object.values(photoLibrary).map((photo, index) => ({ photo, index }));
+const ranked = Object.entries(source).map(([id, photo], index) => ({ id, photo, index }));
 ranked.sort((a, b) => {
-  if (a.photo.publishedAt && b.photo.publishedAt) {
-    return b.photo.publishedAt.localeCompare(a.photo.publishedAt) || a.index - b.index;
-  }
-  if (a.photo.publishedAt) return -1;
-  if (b.photo.publishedAt) return 1;
+  const left = a.photo.publishedAt;
+  const right = b.photo.publishedAt;
+  if (left && right) return right.localeCompare(left) || a.index - b.index;
+  if (left) return -1;
+  if (right) return 1;
   return a.index - b.index;
 });
 export const photos = ranked.map(({ photo }) => photo);

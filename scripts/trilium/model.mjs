@@ -11,7 +11,7 @@ const date = text.regex(/^\d{4}-\d{2}-\d{2}$/).refine(value => {
   return !Number.isNaN(parsed.valueOf()) && parsed.toISOString().slice(0, 10) === value;
 }, 'Use a real calendar date (YYYY-MM-DD)');
 const company = z.object({ name: nonempty, image: link, url: link });
-export const photoSchema = z.object({ src: link, width: z.number().int().positive(), height: z.number().int().positive(), alt: nonempty, preview: link, previewLarge: link, publishedAt: text.datetime({ offset: true }).optional() });
+export const photoSchema = z.object({ src: link, width: z.number().int().positive(), height: z.number().int().positive(), alt: nonempty, preview: link, previewLarge: link, publishedAt: text.regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/).optional() });
 export const friendSchema = z.object({ id: nonempty, title: nonempty, description: text, url: z.url().refine(v => /^https?:/.test(v)), domain: nonempty, image: link });
 export const projectSchema = z.object({ id: nonempty, title: nonempty, description: text, image: link, categories: z.array(nonempty), tags: z.array(nonempty), url: link });
 export const talkSchema = z.object({ id: nonempty, title: nonempty, date, description: text, images: z.array(photoSchema) });
