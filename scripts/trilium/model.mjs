@@ -31,6 +31,30 @@ export const validId = id => {
   return id;
 };
 
+// Blog sync owns articles only. Legacy multi-section helpers below remain for migration tools.
+export function applyBlogRecords(snapshot, records) {
+  const result = structuredClone(snapshot);
+  const used = new Set();
+  for (const { title, attrs, content, noteId } of records) {
+    if (attrs.blogKind !== 'post') continue;
+    const id = attrs.blogId;
+    try {
+      validId(id);
+      if (used.has(id)) throw new Error(`Duplicate post/${id}`);
+      used.add(id);
+      if (!Object.hasOwn(attrs, 'publish')) continue;
+      if (attrs.blogDeleted === 'true') { delete result.posts[id]; continue; }
+      const meta = postSchema.parse({ title, pubDate: attrs.pubDate, description: attrs.description, author: attrs.author, category: attrs.category || 'Notes', image: { url: attrs.image || '/logo.svg', alt: attrs.imageAlt || '' } });
+      result.posts[id] = { meta: { ...meta, pubDate: meta.pubDate.toISOString().slice(0, 10) }, content };
+    } catch (error) {
+      const failure = new Error(`文章「${title}」[post/${id}]：${error.message}`);
+      Object.assign(failure, { noteId, noteTitle: title, blogKind: 'post', blogId: id });
+      throw failure;
+    }
+  }
+  return result;
+}
+
 export function applyRecords(snapshot, records) {
   const result = structuredClone(snapshot);
   const used = new Set();

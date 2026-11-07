@@ -43,13 +43,13 @@ test('native collection supports folder IDs from config and all Markdown MIME va
   assert.deepEqual((await collectNative(client, 'root', { folders: { post: 'category' } })).map(r => r.attrs.blogKind), ['post', 'post', 'post']);
 });
 
-test('native image, photo and avatar relations resolve only within the managed tree', async () => {
+test('native article image relations resolve only within the managed tree', async () => {
   const notes = {
     root: note('root', {}, ['assets', 'photos', 'talk', 'home']),
     assets: note('assets', { blogFolder: 'asset' }, ['image']),
     image: note('image', {}, [], 'image/png', 'image'),
-    photos: note('photos', { blogFolder: 'photo' }, ['photo']),
-    photo: note('photo', { blogId: 'photo-slug', blogPublishRequested: 'true' }),
+    photos: note('photos', { blogFolder: 'post' }, ['photo']),
+    photo: note('photo', { blogKind: 'post', blogId: 'post-slug', blogPublishRequested: 'true' }),
     talk: note('talk', { blogKind: 'talk', blogPublishRequested: 'true' }),
     home: note('home', { blogKind: 'settings', blogId: 'homePageContent', blogPublishRequested: 'true' }, [], 'application/json'),
   };
@@ -58,10 +58,8 @@ test('native image, photo and avatar relations resolve only within the managed t
   notes.home.attributes.push(attribute('home', 'blogAvatar', 'image', 'relation'));
   const { client } = fakeClient(notes, { home: '{"role":"研究生"}' });
   const records = selectPublicationRecords(await collectNative(client, 'root'), {});
-  assert.equal(records[0].noteId, 'photo');
-  assert.equal(records.find(r => r.noteId === 'photo').attrs.src, 'trilium:image');
-  assert.equal(records.find(r => r.noteId === 'talk').attrs.photos, 'photo-slug');
-  assert.equal(JSON.parse(records.find(r => r.noteId === 'home').content).avatar, 'trilium:image');
+  assert.equal(records.find(r => r.noteId === 'photo').attrs.image, 'trilium:image');
+  assert.ok(!records.some(r => ['talk', 'home'].includes(r.noteId)));
   notes.photo.attributes.find(a => a.name === 'blogImage').value = 'private-image';
   assert.throws(() => selectPublicationRecords(records.map(r => r.noteId === 'photo' ? { ...r, relations: [attribute('photo', 'blogImage', 'private-image', 'relation')] } : r), {}), /outside the managed/);
 });
@@ -79,7 +77,7 @@ test('invalid relations, JSON and MIME in unsubmitted drafts cannot block anothe
   const records = await collectNative(client, 'root');
   const selected = selectPublicationRecords(records, { signals: { draft: 'draft-publish:v1' } });
   assert.equal(Object.hasOwn(selected.find(r => r.noteId === 'draft').attrs, 'publish'), false);
-  assert.equal(Object.hasOwn(selected.find(r => r.noteId === 'home').attrs, 'publish'), false);
+  assert.equal(selected.find(r => r.noteId === 'home'), undefined);
   assert.equal(selected.find(r => r.noteId === 'ready').attrs.publish, 'native');
   records.find(r => r.noteId === 'draft').nativeRequested = true;
   assert.throws(() => selectPublicationRecords(records, {}), /Use a Markdown or JSON code note: draft \(draft\)/);

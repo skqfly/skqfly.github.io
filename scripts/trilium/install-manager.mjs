@@ -4,6 +4,7 @@ import { createClient, setLabel } from './client.mjs';
 
 export async function installManager(client = createClient(), config) {
   config ||= JSON.parse(await readFile(new URL('../../trilium/config.json', import.meta.url), 'utf8'));
+  if (config.scope === 'blog-only') throw new Error('Legacy site panel is retired. Use native article folders and sync logs.');
   if (!config.controls?.panel) throw new Error('Missing existing render panel; install publication controls first.');
   if (!config.controls.settings) throw new Error('Missing private publication settings note.');
   if (!config.controls.log) throw new Error('Missing native sync-log note.');

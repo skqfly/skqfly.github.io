@@ -10,7 +10,7 @@ export const folderSpecs = {
   friend: { title: '友链 Friends', name: '友链 Friends', template: '友链模板', summary: '正文填写朋友简介，链接和域名在标题下方填写，头像从图片素材中选择。', fields: { url: ['网站链接', 'text'], domain: ['域名', 'text'] } },
   project: { title: '项目 Projects', name: '项目 Projects', template: '项目模板', summary: '正文填写项目简介，填写项目链接、分类和标签，再选择项目图片。', fields: { url: ['项目链接', 'text'], categories: ['分类（英文逗号分隔）', 'text'], tags: ['标签（英文逗号分隔）', 'text'] } },
   settings: { title: '站点设置', name: '站点设置', summary: '首页、导航、关于页面和其他站点信息按配置条目分别管理；请保留已有 JSON 字段。', fields: {} },
-  asset: { title: '图片素材 Media', name: '图片素材', summary: '使用客户端的导入图片功能，把原图保存在这里。文章、照片、友链和项目通过“选择图片”关联这些原图。', fields: {} },
+  asset: { title: '图片素材 Media', name: '图片素材', summary: '使用客户端的导入图片功能，把原图保存在这里。博客文章通过“选择图片”关联这些原图。既有共享图片请保留，其他站点内容也可能引用它们。', fields: {} },
 };
 
 const html = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -32,8 +32,8 @@ function picture(value, title) {
 }
 
 export function rootPage(config) {
-  const sections = Object.entries(folderSpecs).filter(([kind]) => config.folders?.[kind]).map(([kind, spec]) => `<li><strong>${noteLink(config.folders[kind], spec.name)}</strong><br>${html(spec.summary)}</li>`).join('');
-  return `<h2>博客管理</h2><p>在 Trinote 中直接打开分类、编辑原笔记、选择图片并提交发布。</p><p><strong>${noteLink(config.controls?.log, '同步日志：查看进度与失败原因')}</strong></p><h3>内容分类</h3><ul>${sections}</ul><h3>日常使用</h3><ol><li><strong>新增：</strong>进入对应分类，点客户端“＋ / 新建子笔记”，选择文章、动态、照片、友链或项目模板。</li><li><strong>修改：</strong>正文在原生编辑器中编辑；日期、摘要、链接和图片选择在条目标题下方填写。</li><li><strong>提交：</strong>保存修改后打开<strong>提交发布</strong>开关。处理成功后自动复位，下次修改后再次提交。</li><li><strong>立即同步：</strong>打开 <a href="https://github.com/skqfly/skqfly.github.io/actions/workflows/trilium-sync.yml">GitHub 同步工作流</a>，点击 <strong>Run workflow → Run workflow</strong>。也可以等待自动检查，GitHub 调度可能延迟。</li><li><strong>下架：</strong>在条目中打开<strong>从网站下架</strong>，再提交发布；关闭下架开关并重新提交可恢复。</li></ol><p>每个分类顶部都有内容链接、图片预览与专用操作说明。同步日志记录读取、校验、构建、推送、部署和错误详情。</p><h3>浏览器管理面板</h3><p><strong>Trinote 不支持 Trilium 的脚本面板。</strong>需要桌面网页管理界面时，请使用浏览器访问 <a href="https://note.mmddskq.top/">Trilium 网页</a>，再打开“博客管理面板 · 编辑与发布”。在 Trinote 中使用上面的原生分类和字段即可。</p>`;
+  const sections = Object.entries(folderSpecs).filter(([kind]) => ['post', 'asset'].includes(kind) && config.folders?.[kind]).map(([kind, spec]) => `<li><strong>${noteLink(config.folders[kind], spec.name)}</strong><br>${html(spec.summary)}</li>`).join('');
+  return `<h2>博客文章管理</h2><p>在 Trinote 中直接打开分类、编辑原笔记、选择图片并提交发布。</p><p><strong>${noteLink(config.controls?.log, '同步日志：查看进度与失败原因')}</strong></p><h3>内容分类</h3><ul>${sections}</ul><h3>日常使用</h3><ol><li><strong>新增：</strong>进入对应分类，点客户端“＋ / 新建子笔记”，选择文章模板。</li><li><strong>修改：</strong>正文在原生编辑器中编辑；日期、摘要、链接和图片选择在条目标题下方填写。</li><li><strong>提交：</strong>保存修改后打开<strong>提交发布</strong>开关。处理成功后自动复位，下次修改后再次提交。</li><li><strong>立即同步：</strong>打开 <a href="https://github.com/skqfly/skqfly.github.io/actions/workflows/trilium-sync.yml">GitHub 同步工作流</a>，点击 <strong>Run workflow → Run workflow</strong>。也可以等待自动检查，GitHub 调度可能延迟。</li><li><strong>下架：</strong>在条目中打开<strong>从网站下架</strong>，再提交发布；关闭下架开关并重新提交可恢复。</li></ol><p>每个分类顶部都有内容链接、图片预览与专用操作说明。同步日志记录读取、校验、构建、推送、部署和错误详情。</p><p>Trilium 仅管理博客文章及文章图片。动态、相册、友链、项目和站点设置由 GitHub / App 管理，旧全站管理面板已停用。</p>`;
 }
 
 export function folderPage(kind, records, config, templateId, photoRecords = []) {
@@ -50,7 +50,7 @@ export function folderPage(kind, records, config, templateId, photoRecords = [])
     : kind === 'settings' ? '<li><strong>修改：</strong>打开下方已有设置条目，使用编辑器修改对应内容。站点设置不需要新增空白条目。</li>'
       : '<li><strong>导入：</strong>打开本分类的详情（Note details）→ 附件（Attachments）→ 上传（Upload），选择相册或文件。上传后长按附件，选择<strong>转换为笔记（Convert to note）</strong>。原图会成为本分类的子笔记，可预览、分享和导出。</li>';
   const publishingGuide = kind === 'asset'
-    ? '<li><strong>使用：</strong>回到文章、照片、友链或项目，在标题下方的“选择图片”中选择刚导入的图片笔记；随后提交对应内容发布。</li><li><strong>移除：</strong>先解除其他内容对该图片的引用，再使用客户端删除图片。正在使用的图片请先保留。</li>'
+    ? '<li><strong>使用：</strong>回到博客文章，在标题下方的“选择图片”中选择刚导入的图片笔记；随后提交对应内容发布。</li><li><strong>移除：</strong>先解除其他内容对该图片的引用，再使用客户端删除图片。正在使用的图片请先保留。</li>'
     : '<li><strong>编辑：</strong>点下方条目，在原生编辑器修改正文；日期、摘要、链接和图片关系在标题下方填写。Markdown 正文可切换“源码”编辑。</li><li><strong>发布：</strong>保存修改后，打开标题下方的<strong>提交发布</strong>开关。同步成功后此开关会自动复位；下次修改后再次打开即可。</li><li><strong>立即处理：</strong>打开 <a href="https://github.com/skqfly/skqfly.github.io/actions/workflows/trilium-sync.yml">GitHub 同步工作流</a>，点击 <strong>Run workflow → Run workflow</strong>（需登录 GitHub）。也可以等待自动检查；GitHub 定时任务可能延迟。</li>';
   const removalGuide = !['settings', 'asset'].includes(kind) ? '<li><strong>下架 / 恢复：</strong>打开或关闭<strong>从网站下架</strong>，再打开<strong>提交发布</strong>。下架保留原笔记，恢复时无需重建。</li>' : '';
   const extraGuide = kind === 'photo' ? '<p><strong>照片尺寸：</strong>标题下方填写原图宽高。已有照片尺寸可以直接保留；替换图片后请按新图尺寸填写。</p>'
@@ -112,6 +112,7 @@ async function discover(client, config) {
   const children = await Promise.all((root.childNoteIds || []).map(id => client(`notes/${id}`)));
   const folders = {};
   for (const [kind, spec] of Object.entries(folderSpecs)) {
+    if (!['post', 'asset'].includes(kind)) continue;
     const match = children.find(note => note.noteId === config.folders?.[kind] || labels(note).blogFolder === kind || note.title === spec.title);
     if (match) folders[kind] = match;
   }
@@ -141,7 +142,7 @@ export async function installFolders(client = createClient(), config) {
   config ||= JSON.parse(await readFile(new URL('../../trilium/config.json', import.meta.url), 'utf8'));
   if (!config.controls?.log) throw new Error('Create the native sync-log note before installing folder pages.');
   const folders = await discover(client, config);
-  for (const kind of Object.keys(folderSpecs)) if (!folders[kind]) throw new Error(`Missing existing folder: ${folderSpecs[kind].title}`);
+  for (const kind of ['post', 'asset']) if (!folders[kind]) throw new Error(`Missing existing folder: ${folderSpecs[kind].title}`);
   config.folders = Object.fromEntries(Object.entries(folders).map(([kind, note]) => [kind, note.noteId]));
   config.templates ||= {};
   await client(`notes/${config.rootNoteId}`, { method: 'PATCH', body: { type: 'text', mime: 'text/html' } });
@@ -164,11 +165,6 @@ export async function installFolders(client = createClient(), config) {
       await client('attributes', { method: 'POST', body: { noteId: template.noteId, type: 'relation', name: 'template:newNoteDefaultParent', value: folder.noteId, isInheritable: false } });
     }
     config.templates[kind] = template.noteId;
-  }
-  const settings = folders.settings;
-  for (const id of settings.childNoteIds || []) {
-    const note = await client(`notes/${id}`);
-    if (labels(note).blogId === 'homePageContent') await ownLabel(client, note, 'relation:blogAvatar', 'promoted,alias=博客头像,single');
   }
   return refreshFolderPages(client, config);
 }

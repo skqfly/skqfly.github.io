@@ -3,6 +3,7 @@ import { createClient } from './client.mjs';
 
 const configUrl = new URL('../../trilium/config.json', import.meta.url);
 const config = JSON.parse(await readFile(configUrl, 'utf8'));
+if (config.scope === 'blog-only') throw new Error('Legacy site panel installation is retired. Use native article folders; keep existing blog controls and logs.');
 const client = createClient();
 async function create(title, content, mime, attributes = [], parentNoteId = config.rootNoteId) {
   const parent = await client(`notes/${parentNoteId}`);

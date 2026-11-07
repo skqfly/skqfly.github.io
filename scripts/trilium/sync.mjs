@@ -2,9 +2,9 @@ import { readFile, writeFile, mkdir, unlink, access } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createClient, labels, setLabel } from './client.mjs';
-import { applyRecords } from './model.mjs';
+import { applyBlogRecords } from './model.mjs';
 import { publicationRequest } from './publication.mjs';
-import { prepareMedia, unusedMedia, mediaPath } from './media.mjs';
+import { prepareMedia, mediaPath } from './media.mjs';
 import { collectNative, selectPublicationRecords } from './native.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
@@ -14,8 +14,6 @@ export const collect = collectNative;
 
 export function outputFiles(snapshot) {
   const files = new Map([
-    ['src/data/site.json', json(snapshot.site)],
-    ['src/data/photo-library.json', json(snapshot.photos)],
     ['trilium/published.json', json(snapshot)],
     ['trilium/signals.json', json(snapshot.signals || {})],
   ]);
@@ -41,7 +39,7 @@ export async function run({ dryRun = false } = {}) {
   const snapshot = JSON.parse(await readFile(resolve(root, 'trilium/published.json'), 'utf8'));
   const allRecords = await collect(client, config.rootNoteId, config);
   const records = selectPublicationRecords(allRecords, snapshot);
-  if (!records.length) throw new Error('No managed content found; refusing to publish an empty tree.');
+  // Missing/retired sections never imply deletion; only explicit post tombstones do.
   const mediaBase = { ...snapshot, assets: { ...snapshot.assets } };
   for (const id of Object.keys(mediaBase.assets)) {
     const path = mediaPath(id);
@@ -49,21 +47,14 @@ export async function run({ dryRun = false } = {}) {
     catch (error) { if (error.code === 'ENOENT') delete mediaBase.assets[id]; else throw error; }
   }
   const media = await prepareMedia(client, records, mediaBase);
-  const updated = applyRecords(snapshot, media.records);
+  const updated = applyBlogRecords(snapshot, media.records);
   updated.assets = media.assets;
   const removed = Object.keys(snapshot.posts).filter(id => !Object.hasOwn(updated.posts, id)).map(id => {
     if (!/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,119}$/.test(id)) throw new Error('Invalid removed post ID.');
     return `src/content/posts/${id}.md`;
   });
-  for (const id of unusedMedia(updated)) {
-    delete updated.assets[id];
-    const path = mediaPath(id);
-    for (const suffix of ['', '-480', '-960']) {
-      const file = `public${path.replace('.webp', `${suffix}.webp`)}`;
-      media.files.delete(file);
-      if (snapshot.assets?.[id]) removed.push(file);
-    }
-  }
+  // Media URLs are also used by GitHub/App-managed content. This sync cannot
+  // determine all consumers, so it never garbage-collects shared media.
   updated.signals = signals;
   const changes = [];
   for (const [path, content] of new Map([...outputFiles(updated), ...media.files])) {

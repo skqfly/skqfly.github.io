@@ -54,24 +54,19 @@ npm run preview
 
 ## 内容管理
 
-### Trilium 编辑与发布
+### Trilium 仅发布博客文章
 
-Trinote 手机客户端请直接使用原生“博客管理”和各分类文件夹。入口提供内容链接、图片预览、新建模板、标题下方的提交/下架开关和图片关系字段。它不执行网页管理面板脚本；勾选“提交发布”后可从文件夹链接打开 GitHub 并 Run workflow，或在手机浏览器管理面板即时发布。同步成功会自动复位请求，未提交的原生修改不会随其他条目发布。
+Trilium / Trinote 保留原生文章编辑、文章模板、封面及正文图片、提交 / 下架开关、发布按钮和同步日志。动态、相册、友链、项目及站点设置改由 GitHub / App 管理，旧网页全站面板停用。保存文章后打开“提交发布”，再运行 `trilium-sync.yml`，或等待定时检查；未提交的编辑不会夹带发布。
 
-“同步日志”是原生富文本笔记，分类页和桌面面板均可打开。它记录阶段、具体条目/字段错误、文件变化、GitHub 步骤及部署结果；历史明细保存在子笔记中。工作流的日志回写失败不会覆盖原构建/发布结果。
+同步仅写 `src/content/posts/*.md`、`public/trilium-media/` 中文章引用的图片、`trilium/published.json` 与 `trilium/signals.json`。它不再写 `src/data/site.json`、`src/data/photo-library.json` 或 `public/photos/`，不会自动清理共享媒体。已有照片、动态、文章和媒体原样保留。`published.json` 的旧 `site` / `photos` / `ids` 是迁移历史，不能用于恢复或覆盖 App 内容。
 
-现有内容和图片已导入 Trilium 的“博客管理 · skqfly”目录。打开“博客管理面板 · 编辑与发布”，通过表单和按钮新增、编辑、保存草稿、发布、下架、恢复、导入图片和导出原图。无需手填标签或启用后端脚本；即时触发使用 Trilium 私有配置中保存的 GitHub 发布令牌。
+- `npm run trilium:check`：发布与迁移边界测试。
+- `npm run trilium:preview`：只读远端预览；`npm run trilium:sync`：写本地文章，不自动提交或推送。
+- CLI / GitHub Secrets 使用 `TRILIUM_SERVER_URL`、`TRILIUM_ETAPI_TOKEN`；不要把令牌写入源码。
+- 文章同步通过显式 dispatch 触发 Pages 部署并记录回执；App 的 GitHub OAuth 提交通过既有 push 工作流部署。
+- 旧面板与多分类辅助代码保持休眠；`scope=blog-only` 阻止重装旧面板，原生目录安装器仅维护文章和 Media。
 
-使用方法见 [Trilium 使用说明](trilium/使用说明.md)。管理面板自动维护发布标签，GitHub 工作流读取、校验并构建内容后才推送，随后显式触发现有 Pages 部署。默认令牌产生的提交不会自动触发另一个 `push` 工作流，因此这里使用 `workflow_dispatch`。
-
-- `npm run trilium:check`：运行同步逻辑测试。
-- `npm run trilium:preview`：只读预览待同步文件，不修改仓库。
-- `npm run trilium:sync`：写入本地内容文件，不自动提交或推送。
-- CLI 使用 `TRILIUM_SERVER_URL`、`TRILIUM_ETAPI_TOKEN`；本机 PowerShell 可运行 `./scripts/trilium/local.ps1 preview`，复用已配置的 Codex 凭据。
-- GitHub Secrets：`TRILIUM_SERVER_URL`、`TRILIUM_ETAPI_TOKEN`。不要将令牌写入仓库。
-- 发布按钮保存内容后直接调用 GitHub workflow_dispatch，成功时显示已触发；缺少令牌、鉴权或网络失败时明确提示仅排队，并提供手动运行链接。令牌只临时读取，不写入源码、DOM、日志或浏览器存储。定时队列仅作后备，调度可能延迟。
-
-同步管理 `src/data/site.json`、`src/data/photo-library.json`、`src/content/posts/*.md`、`public/trilium-media/` 和已发布快照。管理台“删除 / 下架”会提交可恢复的删除请求；直接删原笔记不会自动下架。图片以 Trilium 文件笔记保存，已发布引用自动导出为 WebP 和缩略图，并保留原图供下载；草稿图片不公开。已接管内容请在 Trilium 修改，避免与 GitHub 手工修改同一内容。
+完整操作、节点迁移清单和 App 原子发布约定见 [Trilium 使用说明](trilium/使用说明.md)。停用旧目录不意味着删除网站既有内容，文章和共享原图必须保留。
 
 ### 博客文章
 
@@ -94,7 +89,7 @@ image:
 
 ### 站点配置
 
-`src/config.ts` 集中管理导航栏、社交链接、首页内容等，修改后自动生效。
+`src/data/site.json` 保存导航栏、社交链接、首页、动态及其他站点内容，`src/config.ts` 从中导出配置。修改并提交后由 Pages 构建生效。
 
 ### 页面
 
@@ -121,7 +116,7 @@ image:
 
 ## 摄影图片
 
-`src/data/photos.ts` 统一维护原图地址、尺寸、说明及预览图路径。
+`src/data/photo-library.json` 保存原图地址、尺寸、无障碍 alt 与预览路径，`src/data/photos.ts` 负责类型及导出。相册和灯箱不显示说明文字。
 添加或更换图片后运行 `npm run images:generate`，生成 480 / 960 像素的 WebP
 预览图，并将 `public/photos/` 的产物一起提交。该命令需要联网读取图床，
 日常 `npm run build` 使用已生成的预览图，不依赖图床可用性。
@@ -139,6 +134,6 @@ CloudBase 静态网站托管：框架选 Astro，Node.js 24，目标目录 `./`�
 
 ### 相册图片
 
-相册和 Talks 共用 `src/data/photos.ts`，图片保存在 `public/photos/`，随网站部署，不依赖外部图床。当前 11 张照片使用原图生成的最长边 2560 像素 WebP 大图，另外 2 张暂用已有 960 像素宽版本。原始 JPG 不随网站发布。
+相册使用 `src/data/photo-library.json`，Talks 配图保存在 `src/data/site.json` 的 `talksPageContent.entries[].images`，图片保存在 `public/photos/`，随网站部署，不依赖外部图床。当前 11 张照片使用原图生成的最长边 2560 像素 WebP 大图，另外 2 张暂用已有 960 像素宽版本。App 新上传的 JPG 可提交到 `public/photos/` 并使用 `/photos/*.jpg` 路径；既有 WebP 保留。
 
 新增照片时，将图片放入 `public/photos/`，在照片数据中填写以 `/photos/` 开头的站内路径，再运行 `npm run images:generate` 生成 480/960 像素宽预览图。该命令只读取本地文件；若源文件本身就是目标预览图，会保留源文件以避免重复压缩。

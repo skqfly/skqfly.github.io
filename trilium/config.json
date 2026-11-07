@@ -3,24 +3,31 @@
   "repository": "skqfly/skqfly.github.io",
   "branch": "main",
   "initialized": true,
+  "scope": "blog-only",
   "controls": {
     "settings": "CFQku6wnTRZu",
     "backend": "1ErmTwoBJyyE",
     "button": "4lPsmL2qq0mV",
-    "panel": "dEig60EtRXab",
     "log": "pG7OAnNvOR8q"
   },
   "folders": {
     "post": "0ukvnZSfy1Gr",
+    "asset": "e79Dj57Z5UB3"
+  },
+  "templates": {
+    "post": "BT0VvJX0HD9a"
+  },
+  "retiredFolders": {
     "talk": "YszU3fSFSm6M",
     "photo": "lzmTLvWqkrm7",
     "friend": "GB6AUsChqjmZ",
     "project": "EwalrEKKreYi",
-    "settings": "tjjsURiAErtc",
-    "asset": "e79Dj57Z5UB3"
+    "settings": "tjjsURiAErtc"
   },
-  "templates": {
-    "post": "BT0VvJX0HD9a",
+  "retiredControls": {
+    "panel": "dEig60EtRXab"
+  },
+  "retiredTemplates": {
     "talk": "QL8mxMiGp39o",
     "photo": "kAWldiydn1eH",
     "friend": "i4kZ3NOPd2lp",

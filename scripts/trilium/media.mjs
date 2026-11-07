@@ -1,4 +1,3 @@
-import sharp from 'sharp';
 import { createHash } from 'node:crypto';
 
 const allowedMime = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif']);
@@ -56,6 +55,7 @@ export async function prepareMedia(client, records, snapshot) {
     paths[id] = path;
     published[id] = { ...snapshot.assets?.[id], path, sha256 };
     if (snapshot.assets?.[id]?.sha256 === sha256) continue;
+    const { default: sharp } = await import('sharp');
     const { data: full, info } = await sharp(original, { animated: true, limitInputPixels: 40000000 }).rotate().resize({ width: 4096, height: 4096, fit: 'inside', withoutEnlargement: true }).webp({ quality: 88 }).toBuffer({ resolveWithObject: true });
     Object.assign(published[id], { width: info.width, height: info.pageHeight || info.height });
     files.set(`public${path}`, full);

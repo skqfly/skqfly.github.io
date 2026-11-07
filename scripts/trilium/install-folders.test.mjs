@@ -29,8 +29,9 @@ test('native folder pages use ordinary note links, image references and real nat
   const talkPreview = folderPage('talk', [{ noteId: 'talk1', title: '动态', attrs: {}, attributes: [{ type: 'relation', name: 'blogPhotos', value: 'photo1' }] }], config, undefined, [{ noteId: 'photo1', title: '配图', attrs: { src: 'trilium:photoAsset' } }]);
   assert.match(talkPreview, /api\/images\/photoAsset\/image/);
   const home = rootPage({ ...config, folders: Object.fromEntries(Object.keys(folderSpecs).map(kind => [kind, `folder-${kind}`])) });
-  for (const kind of Object.keys(folderSpecs)) assert.match(home, new RegExp(`#root/folder-${kind}`));
-  assert.match(home, /Trinote 不支持 Trilium 的脚本面板/);
+  for (const kind of ['post', 'asset']) assert.match(home, new RegExp(`#root/folder-${kind}`));
+  for (const kind of ['talk', 'photo', 'friend', 'project', 'settings']) assert.doesNotMatch(home, new RegExp(`#root/folder-${kind}`));
+  assert.match(home, /旧全站管理面板已停用/);
   assert.doesNotMatch(home, /<script|onclick|<button/);
 });
 
@@ -103,12 +104,12 @@ test('installation preserves records and children, creates native templates and 
   };
   const config = { rootNoteId: 'root1', controls: { log: 'log1' } };
   await installFolders(client, config);
-  assert.equal(Object.keys(config.folders).length, 7);
-  assert.equal(Object.keys(config.templates).length, 5);
+  assert.equal(Object.keys(config.folders).length, 2);
+  assert.equal(Object.keys(config.templates).length, 1);
   assert.equal(notes.get('root1').type, 'text');
   assert.match(notes.get('root1').content, /内容分类/);
   assert.match(notes.get('root1').content, /href="#root\/log1"/);
-  for (const kind of Object.keys(folderSpecs)) {
+  for (const kind of ['post', 'asset']) {
     const folder = notes.get(config.folders[kind]);
     assert.equal(folder.type, 'text'); assert.equal(folder.mime, 'text/html');
     assert.match(folder.content, /href="#root\/log1"/);
@@ -129,8 +130,11 @@ test('installation preserves records and children, creates native templates and 
   }
   assert.deepEqual(notes.get('post1'), originalPost);
   assert.equal(inheritedDefinition.value, 'promoted,alias=全局自定义,single,boolean');
-  assert.equal(notes.get('home1').content, originalHome.content);
-  assert.ok(notes.get('home1').attributes.some(attr => attr.name === 'relation:blogAvatar'));
+  assert.deepEqual(notes.get('home1'), originalHome);
+  for (const kind of ['talk', 'photo', 'friend', 'project', 'settings']) {
+    assert.equal(notes.get(`folder-${kind}`).content, '');
+    assert.equal(config.folders[kind], undefined);
+  }
   assert.ok(notes.get('folder-post').childNoteIds.includes('post1'));
   const count = notes.size;
   const templatePost = notes.get(config.templates.post);

@@ -1,7 +1,8 @@
 import { createHash } from 'node:crypto';
 import { labels } from './client.mjs';
 
-const contentKinds = new Set(['post', 'talk', 'photo', 'project', 'friend', 'settings']);
+const contentKinds = new Set(['post']);
+const retiredKinds = new Set(['talk', 'photo', 'project', 'friend', 'settings']);
 const contentMimes = new Set(['text/markdown', 'text/x-markdown', 'text/x-gfm', 'application/json', 'text/plain']);
 const templateNames = new Set(['template', 'workspaceTemplate', 'workspacetemplate']);
 const ownLabel = (note, name) => note.attributes.find(a => a.type === 'label' && a.name === name && (!a.noteId || a.noteId === note.noteId));
@@ -27,22 +28,27 @@ export function nativeRequest(note) {
 export async function collectNative(client, rootId, config = {}) {
   const records = [];
   const visited = new Set();
-  const controls = new Set(Object.values(config.controls || {}).filter(value => typeof value === 'string'));
+  const controls = new Set([...Object.values(config.controls || {}), ...Object.values(config.retiredControls || {})].filter(value => typeof value === 'string'));
   const folderKinds = new Map();
+  const retiredFolders = new Set(Object.entries(config.retiredFolders || {}).map(([, id]) => id));
   for (const [kind, id] of Object.entries(config.folders || {})) {
-    if (contentKinds.has(kind) || kind === 'asset') folderKinds.set(id, kind);
+    if (retiredKinds.has(kind)) retiredFolders.add(id);
+    else if (retiredKinds.has(id)) retiredFolders.add(kind);
+    else if (contentKinds.has(kind) || kind === 'asset') folderKinds.set(id, kind);
     else if (contentKinds.has(id) || id === 'asset') folderKinds.set(kind, id);
   }
   async function walk(id, folderKind, depth = 0) {
-    if (visited.has(id) || controls.has(id)) return;
+    if (visited.has(id) || controls.has(id) || retiredFolders.has(id)) return;
     if (visited.size >= 1000 || depth > 8) throw new Error('Blog tree exceeds safety limit.');
     visited.add(id);
     const note = await client(`notes/${encodeURIComponent(id)}`);
     if (isTemplate(note)) return;
     const attrs = labels(note);
+    if (retiredKinds.has(attrs.blogFolder) || retiredKinds.has(attrs.blogKind)) return;
     const currentFolder = attrs.blogFolder || folderKinds.get(id);
     const managedKind = currentFolder || folderKind;
     const isImage = ['image', 'file'].includes(note.type) && note.mime?.startsWith('image/');
+    if (managedKind === 'asset' && !isImage && !attrs.blogKind && !currentFolder) return;
     const kind = attrs.blogKind || (!currentFolder && isImage && managedKind ? 'asset' : !currentFolder && managedKind !== 'asset' ? managedKind : undefined);
     if (kind && id !== rootId && !currentFolder) {
       attrs.blogKind = kind;
@@ -71,7 +77,7 @@ export async function collectNative(client, rootId, config = {}) {
 }
 
 export function selectPublicationRecords(records, snapshot) {
-  const selectedRecords = records.map(record => {
+  const selectedRecords = records.filter(record => ['post', 'asset'].includes(record.attrs.blogKind)).map(record => {
     const selected = { ...record, attrs: { ...record.attrs } };
     if (record.attrs.blogKind === 'asset') return selected;
     if (record.nativeRequested) selected.attrs.publish = 'native';
