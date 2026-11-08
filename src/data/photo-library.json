@@ -1,42 +1,7 @@
 {
-  "drone-green-hills" : {
-    "alt" : "无人机镜头下的绿山与石屋",
-    "height" : 1920,
-    "preview" : "/trilium-media/PPnyu2f2rdIt.webp",
-    "previewLarge" : "/trilium-media/PPnyu2f2rdIt.webp",
-    "src" : "/trilium-media/PPnyu2f2rdIt.webp",
-    "width" : 2560
-  },
-  "qiye-2d5d1cfe-6aba-433b-b981-64f22f218298" : {
-    "alt" : "本地照片",
-    "height" : 2560,
-    "preview" : "/photos/qiye-2d5d1cfe-6aba-433b-b981-64f22f218298-91d7e6aa-8a48-4998-9453-897ad8fad127.jpg",
-    "previewLarge" : "/photos/qiye-2d5d1cfe-6aba-433b-b981-64f22f218298-91d7e6aa-8a48-4998-9453-897ad8fad127.jpg",
-    "src" : "/photos/qiye-2d5d1cfe-6aba-433b-b981-64f22f218298-91d7e6aa-8a48-4998-9453-897ad8fad127.jpg",
-    "width" : 1920
-  },
-  "qiye-7b9b80c2-061d-48cb-8dbf-fc72360650e1" : {
-    "alt" : "本地照片",
-    "height" : 2560,
-    "preview" : "/photos/qiye-7b9b80c2-061d-48cb-8dbf-fc72360650e1-e888b84c-a231-4fbd-8cad-2bfdcb1ed520.jpg",
-    "previewLarge" : "/photos/qiye-7b9b80c2-061d-48cb-8dbf-fc72360650e1-e888b84c-a231-4fbd-8cad-2bfdcb1ed520.jpg",
-    "src" : "/photos/qiye-7b9b80c2-061d-48cb-8dbf-fc72360650e1-e888b84c-a231-4fbd-8cad-2bfdcb1ed520.jpg",
-    "width" : 1920
-  },
-  "qiye-dc5cc263-ba33-4ccc-8502-f1c73249de8f" : {
-    "alt" : "本地照片",
-    "height" : 2560,
-    "preview" : "/photos/qiye-dc5cc263-ba33-4ccc-8502-f1c73249de8f-0f4aaf03-05bb-483f-ad1f-bee3bb9d6b7a.jpg",
-    "previewLarge" : "/photos/qiye-dc5cc263-ba33-4ccc-8502-f1c73249de8f-0f4aaf03-05bb-483f-ad1f-bee3bb9d6b7a.jpg",
-    "src" : "/photos/qiye-dc5cc263-ba33-4ccc-8502-f1c73249de8f-0f4aaf03-05bb-483f-ad1f-bee3bb9d6b7a.jpg",
-    "width" : 1920
-  },
-  "qiye-f1dbeae2-17e5-47e1-97f7-612d453c32dd" : {
-    "alt" : "本地照片",
-    "height" : 2560,
-    "preview" : "/photos/qiye-f1dbeae2-17e5-47e1-97f7-612d453c32dd-8331c40c-cc30-4594-929e-0137d4c3408a.jpg",
-    "previewLarge" : "/photos/qiye-f1dbeae2-17e5-47e1-97f7-612d453c32dd-8331c40c-cc30-4594-929e-0137d4c3408a.jpg",
-    "src" : "/photos/qiye-f1dbeae2-17e5-47e1-97f7-612d453c32dd-8331c40c-cc30-4594-929e-0137d4c3408a.jpg",
-    "width" : 1920
-  }
+  "drone-green-hills": {"preview":"/trilium-media/PPnyu2f2rdIt.webp","previewLarge":"/trilium-media/PPnyu2f2rdIt.webp","alt":"无人机镜头下的绿山与石屋","height":1920,"src":"/trilium-media/PPnyu2f2rdIt.webp","width":2560},
+  "qiye-dc5cc263-ba33-4ccc-8502-f1c73249de8f": {"preview":"/photos/qiye-dc5cc263-ba33-4ccc-8502-f1c73249de8f-0f4aaf03-05bb-483f-ad1f-bee3bb9d6b7a.jpg","previewLarge":"/photos/qiye-dc5cc263-ba33-4ccc-8502-f1c73249de8f-0f4aaf03-05bb-483f-ad1f-bee3bb9d6b7a.jpg","alt":"本地照片","height":2560,"src":"/photos/qiye-dc5cc263-ba33-4ccc-8502-f1c73249de8f-0f4aaf03-05bb-483f-ad1f-bee3bb9d6b7a.jpg","width":1920},
+  "qiye-7b9b80c2-061d-48cb-8dbf-fc72360650e1": {"preview":"/photos/qiye-7b9b80c2-061d-48cb-8dbf-fc72360650e1-e888b84c-a231-4fbd-8cad-2bfdcb1ed520.jpg","previewLarge":"/photos/qiye-7b9b80c2-061d-48cb-8dbf-fc72360650e1-e888b84c-a231-4fbd-8cad-2bfdcb1ed520.jpg","alt":"本地照片","height":2560,"src":"/photos/qiye-7b9b80c2-061d-48cb-8dbf-fc72360650e1-e888b84c-a231-4fbd-8cad-2bfdcb1ed520.jpg","width":1920},
+  "qiye-f1dbeae2-17e5-47e1-97f7-612d453c32dd": {"preview":"/photos/qiye-f1dbeae2-17e5-47e1-97f7-612d453c32dd-8331c40c-cc30-4594-929e-0137d4c3408a.jpg","previewLarge":"/photos/qiye-f1dbeae2-17e5-47e1-97f7-612d453c32dd-8331c40c-cc30-4594-929e-0137d4c3408a.jpg","alt":"本地照片","height":2560,"src":"/photos/qiye-f1dbeae2-17e5-47e1-97f7-612d453c32dd-8331c40c-cc30-4594-929e-0137d4c3408a.jpg","width":1920},
+  "qiye-2d5d1cfe-6aba-433b-b981-64f22f218298": {"preview":"/photos/qiye-2d5d1cfe-6aba-433b-b981-64f22f218298-91d7e6aa-8a48-4998-9453-897ad8fad127.jpg","previewLarge":"/photos/qiye-2d5d1cfe-6aba-433b-b981-64f22f218298-91d7e6aa-8a48-4998-9453-897ad8fad127.jpg","alt":"本地照片","height":2560,"src":"/photos/qiye-2d5d1cfe-6aba-433b-b981-64f22f218298-91d7e6aa-8a48-4998-9453-897ad8fad127.jpg","width":1920}
 }
