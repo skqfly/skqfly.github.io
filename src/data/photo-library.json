@@ -7,69 +7,13 @@
     "src" : "/trilium-media/gw2rYe0OGixC.webp",
     "width" : 2560
   },
-  "caveLight" : {
-    "alt" : "手中拿着的一杯饮品",
-    "height" : 2560,
-    "preview" : "/trilium-media/YQjo9stzKRQ2-480.webp",
-    "previewLarge" : "/trilium-media/YQjo9stzKRQ2-960.webp",
-    "src" : "/trilium-media/YQjo9stzKRQ2.webp",
-    "width" : 1920
-  },
-  "coast" : {
-    "alt" : "高楼之间的两人合影",
-    "height" : 2560,
-    "preview" : "/trilium-media/BCYzP1pBR9WL-480.webp",
-    "previewLarge" : "/trilium-media/BCYzP1pBR9WL-960.webp",
-    "src" : "/trilium-media/BCYzP1pBR9WL.webp",
-    "width" : 1920
-  },
   "drone-green-hills" : {
     "alt" : "无人机镜头下的绿山与石屋",
     "height" : 1920,
-    "preview" : "/trilium-media/PPnyu2f2rdIt-480.webp",
-    "previewLarge" : "/trilium-media/PPnyu2f2rdIt-960.webp",
+    "preview" : "/trilium-media/PPnyu2f2rdIt.webp",
+    "previewLarge" : "/trilium-media/PPnyu2f2rdIt.webp",
     "src" : "/trilium-media/PPnyu2f2rdIt.webp",
     "width" : 2560
-  },
-  "eveningCoast" : {
-    "alt" : "skqfly 摄影作品 10",
-    "height" : 2560,
-    "preview" : "/trilium-media/rpejPMhAWMtC-480.webp",
-    "previewLarge" : "/trilium-media/rpejPMhAWMtC-960.webp",
-    "src" : "/trilium-media/rpejPMhAWMtC.webp",
-    "width" : 1920
-  },
-  "glassCabinet" : {
-    "alt" : "东方明珠塔前的人",
-    "height" : 2560,
-    "preview" : "/trilium-media/BvXTab9QpoCY-480.webp",
-    "previewLarge" : "/trilium-media/BvXTab9QpoCY-960.webp",
-    "src" : "/trilium-media/BvXTab9QpoCY.webp",
-    "width" : 1920
-  },
-  "greenObject" : {
-    "alt" : "电影场记板和胶片装置前的人",
-    "height" : 1920,
-    "preview" : "/trilium-media/vgM1Md96FJ5b-480.webp",
-    "previewLarge" : "/trilium-media/vgM1Md96FJ5b-960.webp",
-    "src" : "/trilium-media/vgM1Md96FJ5b.webp",
-    "width" : 2560
-  },
-  "mountainView" : {
-    "alt" : "skqfly 摄影作品 9",
-    "height" : 1920,
-    "preview" : "/trilium-media/pWjI6LmFtrK4-480.webp",
-    "previewLarge" : "/trilium-media/pWjI6LmFtrK4-960.webp",
-    "src" : "/trilium-media/pWjI6LmFtrK4.webp",
-    "width" : 2560
-  },
-  "nightLights" : {
-    "alt" : "城市街头戴着眼镜的人",
-    "height" : 2560,
-    "preview" : "/trilium-media/wjASPN7JsGKa-480.webp",
-    "previewLarge" : "/trilium-media/wjASPN7JsGKa-960.webp",
-    "src" : "/trilium-media/wjASPN7JsGKa.webp",
-    "width" : 1920
   },
   "paperGeometry" : {
     "alt" : "雨天撑着透明雨伞站在绿地旁的人",
@@ -95,29 +39,45 @@
     "src" : "/trilium-media/BvrFPgrwsdUE.webp",
     "width" : 4096
   },
-  "photoEleven" : {
-    "alt" : "skqfly 摄影作品 11",
-    "height" : 1280,
-    "preview" : "/trilium-media/SvJetzfyO5bp-480.webp",
-    "previewLarge" : "/trilium-media/SvJetzfyO5bp-960.webp",
-    "src" : "/trilium-media/SvJetzfyO5bp.webp",
-    "width" : 960
-  },
   "qiye-1c3b98c6-c35c-4b2f-8445-c1fc3c852e3e" : {
     "alt" : "照片",
     "height" : 1920,
     "preview" : "/photos/qiye-1c3b98c6-c35c-4b2f-8445-c1fc3c852e3e.jpg",
     "previewLarge" : "/photos/qiye-1c3b98c6-c35c-4b2f-8445-c1fc3c852e3e.jpg",
+    "publishedAt" : "2026-11-08T01:17:41+08:00",
     "src" : "/photos/qiye-1c3b98c6-c35c-4b2f-8445-c1fc3c852e3e.jpg",
-    "width" : 2560,
-    "publishedAt" : "2026-11-08T01:17:41+08:00"
-  },
-  "sunlitWalk" : {
-    "alt" : "海边栏杆旁的人与远处海岸",
-    "height" : 1920,
-    "preview" : "/trilium-media/iQlqXg4gZzaH-480.webp",
-    "previewLarge" : "/trilium-media/iQlqXg4gZzaH-960.webp",
-    "src" : "/trilium-media/iQlqXg4gZzaH.webp",
     "width" : 2560
+  },
+  "qiye-2d5d1cfe-6aba-433b-b981-64f22f218298" : {
+    "alt" : "本地照片",
+    "height" : 2560,
+    "preview" : "/photos/qiye-2d5d1cfe-6aba-433b-b981-64f22f218298-91d7e6aa-8a48-4998-9453-897ad8fad127.jpg",
+    "previewLarge" : "/photos/qiye-2d5d1cfe-6aba-433b-b981-64f22f218298-91d7e6aa-8a48-4998-9453-897ad8fad127.jpg",
+    "src" : "/photos/qiye-2d5d1cfe-6aba-433b-b981-64f22f218298-91d7e6aa-8a48-4998-9453-897ad8fad127.jpg",
+    "width" : 1920
+  },
+  "qiye-7b9b80c2-061d-48cb-8dbf-fc72360650e1" : {
+    "alt" : "本地照片",
+    "height" : 2560,
+    "preview" : "/photos/qiye-7b9b80c2-061d-48cb-8dbf-fc72360650e1-e888b84c-a231-4fbd-8cad-2bfdcb1ed520.jpg",
+    "previewLarge" : "/photos/qiye-7b9b80c2-061d-48cb-8dbf-fc72360650e1-e888b84c-a231-4fbd-8cad-2bfdcb1ed520.jpg",
+    "src" : "/photos/qiye-7b9b80c2-061d-48cb-8dbf-fc72360650e1-e888b84c-a231-4fbd-8cad-2bfdcb1ed520.jpg",
+    "width" : 1920
+  },
+  "qiye-dc5cc263-ba33-4ccc-8502-f1c73249de8f" : {
+    "alt" : "本地照片",
+    "height" : 2560,
+    "preview" : "/photos/qiye-dc5cc263-ba33-4ccc-8502-f1c73249de8f-0f4aaf03-05bb-483f-ad1f-bee3bb9d6b7a.jpg",
+    "previewLarge" : "/photos/qiye-dc5cc263-ba33-4ccc-8502-f1c73249de8f-0f4aaf03-05bb-483f-ad1f-bee3bb9d6b7a.jpg",
+    "src" : "/photos/qiye-dc5cc263-ba33-4ccc-8502-f1c73249de8f-0f4aaf03-05bb-483f-ad1f-bee3bb9d6b7a.jpg",
+    "width" : 1920
+  },
+  "qiye-f1dbeae2-17e5-47e1-97f7-612d453c32dd" : {
+    "alt" : "本地照片",
+    "height" : 2560,
+    "preview" : "/photos/qiye-f1dbeae2-17e5-47e1-97f7-612d453c32dd-8331c40c-cc30-4594-929e-0137d4c3408a.jpg",
+    "previewLarge" : "/photos/qiye-f1dbeae2-17e5-47e1-97f7-612d453c32dd-8331c40c-cc30-4594-929e-0137d4c3408a.jpg",
+    "src" : "/photos/qiye-f1dbeae2-17e5-47e1-97f7-612d453c32dd-8331c40c-cc30-4594-929e-0137d4c3408a.jpg",
+    "width" : 1920
   }
 }
