@@ -1,12 +1,4 @@
 {
-  "carWindow" : {
-    "alt" : "夜色中亮起灯光的和平饭店外墙",
-    "height" : 1920,
-    "preview" : "/trilium-media/gw2rYe0OGixC-480.webp",
-    "previewLarge" : "/trilium-media/gw2rYe0OGixC-960.webp",
-    "src" : "/trilium-media/gw2rYe0OGixC.webp",
-    "width" : 2560
-  },
   "drone-green-hills" : {
     "alt" : "无人机镜头下的绿山与石屋",
     "height" : 1920,
@@ -14,30 +6,6 @@
     "previewLarge" : "/trilium-media/PPnyu2f2rdIt.webp",
     "src" : "/trilium-media/PPnyu2f2rdIt.webp",
     "width" : 2560
-  },
-  "paperGeometry" : {
-    "alt" : "雨天撑着透明雨伞站在绿地旁的人",
-    "height" : 1920,
-    "preview" : "/trilium-media/EtEKZGn9wR9K-480.webp",
-    "previewLarge" : "/trilium-media/EtEKZGn9wR9K-960.webp",
-    "src" : "/trilium-media/EtEKZGn9wR9K.webp",
-    "width" : 2560
-  },
-  "photo-1792773174674-xsrfq" : {
-    "alt" : "新的Photos 照片",
-    "height" : 1254,
-    "preview" : "/trilium-media/emXUibKmGZq7-480.webp",
-    "previewLarge" : "/trilium-media/emXUibKmGZq7-960.webp",
-    "src" : "/trilium-media/emXUibKmGZq7.webp",
-    "width" : 1254
-  },
-  "photo-1792852952922-d8wim" : {
-    "alt" : "雪山日照金山",
-    "height" : 2621,
-    "preview" : "/trilium-media/BvrFPgrwsdUE-480.webp",
-    "previewLarge" : "/trilium-media/BvrFPgrwsdUE-960.webp",
-    "src" : "/trilium-media/BvrFPgrwsdUE.webp",
-    "width" : 4096
   },
   "qiye-2d5d1cfe-6aba-433b-b981-64f22f218298" : {
     "alt" : "本地照片",
