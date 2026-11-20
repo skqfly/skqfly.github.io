@@ -54,19 +54,9 @@ npm run preview
 
 ## 内容管理
 
-### Trilium 仅发布博客文章
+### 内容来源
 
-Trilium / Trinote 保留原生文章编辑、文章模板、封面及正文图片、提交 / 下架开关、发布按钮和同步日志。动态、相册、友链、项目及站点设置改由 GitHub / App 管理，旧网页全站面板停用。保存文章后打开“提交发布”，再运行 `trilium-sync.yml`，或等待定时检查；未提交的编辑不会夹带发布。
-
-同步仅写本次提交的 `src/content/posts/*.md`、公开文章索引 `src/content/posts.json`、`public/trilium-media/` 中文章引用的图片、`trilium/published.json` 与 `trilium/signals.json`。未提交的文章文件保持原样；发布已有文章时保留 GitHub 中的额外 frontmatter（包括 `draft`）。它不再写 `src/data/site.json`、`src/data/photo-library.json` 或 `public/photos/`，不会自动清理共享媒体。已有照片、动态、文章和媒体原样保留。`published.json` 的旧 `site` / `photos` / `ids` 是迁移历史，不能用于恢复或覆盖 App 内容。
-
-- `npm run trilium:check`：发布与迁移边界测试。
-- `npm run trilium:preview`：只读远端预览；`npm run trilium:sync`：写本地文章，不自动提交或推送。
-- CLI / GitHub Secrets 使用 `TRILIUM_SERVER_URL`、`TRILIUM_ETAPI_TOKEN`；不要把令牌写入源码。
-- 文章同步通过显式 dispatch 触发 Pages 部署并记录回执；App 的 GitHub OAuth 提交通过既有 push 工作流部署。
-- 旧面板与多分类辅助代码保持休眠；`scope=blog-only` 阻止重装旧面板，原生目录安装器仅维护文章和 Media。
-
-完整操作、节点迁移清单和 App 原子发布约定见 [Trilium 使用说明](trilium/使用说明.md)。停用旧目录不意味着删除网站既有内容，文章和共享原图必须保留。
+博客文章、相册图片和站点内容都以静态文件直接维护在仓库中，不再依赖 Trilium。文章引用的图片放在 `public/media/`，相册图片放在 `public/photos/`；动态、项目、友链与站点设置由 App / GitHub 直接更新，推送 `main` 后由 Pages 构建生效。
 
 ### 博客文章
 
@@ -87,9 +77,9 @@ image:
 ---
 ```
 
-公开文章索引由 `npm run posts:index` 生成，读取与内容加载器一致的 Markdown / MDX 路径并排序。`npm run build` 的 `prebuild` 自动更新索引；Trilium 同步在写入前同时计算新增、下架后的索引，dry-run 不改文件。手动在 GitHub 添加、删除文章后，Pages 构建成功会将变化的索引单独提交回 `main`，供栖页匿名读取；使用 `GITHUB_TOKEN` 的提交不会再次触发 push 构建。若构建期间 `main` 已更新，普通推送会拒绝覆盖，需重跑最新版本的部署。
+公开文章索引由 `npm run posts:index` 生成，读取与内容加载器一致的 Markdown / MDX 路径并排序。`npm run build` 的 `prebuild` 自动更新索引。手动在 GitHub 添加、删除文章后，Pages 构建成功会将变化的索引单独提交回 `main`，供栖页匿名读取；使用 `GITHUB_TOKEN` 的提交不会再次触发 push 构建。若构建期间 `main` 已更新，普通推送会拒绝覆盖，需重跑最新版本的部署。
 
-可选 `draft: true` 隐藏文章，`draft: false` 或省略表示公开；必须使用 YAML 布尔值。草稿不会出现在索引、博客列表、分类、文章路由或 RSS 中。仓库本身仍是公开的，草稿文件可被直接访问。运行 `npm run posts:check` 检查索引增删、草稿过滤及同步对手动编辑的保护。
+可选 `draft: true` 隐藏文章，`draft: false` 或省略表示公开；必须使用 YAML 布尔值。草稿不会出现在索引、博客列表、分类、文章路由或 RSS 中。仓库本身仍是公开的，草稿文件可被直接访问。运行 `npm run posts:check` 检查索引增删与草稿过滤。
 
 ### 站点配置
 

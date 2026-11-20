@@ -4,7 +4,6 @@ import { mkdtemp, mkdir, readFile, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import { postsIndex, updatePostsIndex, frontmatter } from './posts-index.mjs';
-import { publicationFiles } from './trilium/sync.mjs';
 
 const post = (meta = '') => `---\ntitle: Article\n${meta}---\n\nBody\n`;
 async function fixture(t) {
@@ -56,21 +55,4 @@ test('malformed metadata fails before replacing the last good index', async t =>
   await put(root, 'bad.md', '---\ntitle: [broken\n---\nBody');
   await assert.rejects(postsIndex(root));
   assert.equal(frontmatter('\uFEFF---\r\ndraft: true\r\n---\r\n').draft, true);
-});
-
-test('sync writes submitted posts only and retains GitHub frontmatter including draft', async t => {
-  const root = await fixture(t);
-  await put(root, 'edited.md', post('draft: true\ncustom: keep\n'));
-  const snapshot = { posts: { edited: { meta: { title: 'Published', pubDate: '2026-11-07' }, content: 'New body' }, untouched: { meta: { title: 'Snapshot' }, content: 'Stale' } } };
-  const records = [
-    { attrs: { blogKind: 'post', blogId: 'edited', publish: '' } },
-    { attrs: { blogKind: 'post', blogId: 'untouched' } },
-  ];
-  const files = await publicationFiles(snapshot, records, root);
-  assert.ok(!files.has('src/content/posts/untouched.md'));
-  assert.equal(frontmatter(files.get('src/content/posts/edited.md')).draft, true);
-  assert.equal(frontmatter(files.get('src/content/posts/edited.md')).custom, 'keep');
-  assert.equal(frontmatter(files.get('src/content/posts/edited.md')).title, 'Published');
-  assert.deepEqual(JSON.parse(await postsIndex(root, files)), []);
-  assert.deepEqual(snapshot.posts.edited.meta, { title: 'Published', pubDate: '2026-11-07' });
 });
