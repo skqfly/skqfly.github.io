@@ -56,7 +56,7 @@ npm run preview
 
 ### 内容来源
 
-博客文章、相册图片和站点内容都以静态文件直接维护在仓库中，不再依赖 Trilium。文章引用的图片放在 `public/media/`，相册图片放在 `public/photos/`；动态、项目、友链与站点设置由 App / GitHub 直接更新，推送 `main` 后由 Pages 构建生效。
+博客文章、相册图片和站点内容都以静态文件直接维护在仓库中，不再依赖外部笔记系统。文章引用的图片放在 `public/media/`，相册图片放在 `public/photos/`；动态、项目、友链与站点设置由 App / GitHub 直接更新，推送 `main` 后由 Pages 构建生效。
 
 ### 博客文章
 
